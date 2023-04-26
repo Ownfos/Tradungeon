@@ -1,6 +1,6 @@
 add_executable(tradungeon
     main.cpp
-    Hello.cpp
+    Console.cpp
 )
 
 target_include_directories(tradungeon PUBLIC ${CMAKE_SOURCE_DIR}/include)

@@ -28,3 +28,4 @@ so you'd better cook or boil things before you consume.
 - C++
 - Cmake
 - Visual Studio 2022
+- Windows 11
