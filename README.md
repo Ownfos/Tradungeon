@@ -29,3 +29,13 @@ so you'd better cook or boil things before you consume.
 - Cmake
 - Visual Studio 2022
 - Windows 11
+
+## How to Build and Run
+```
+mkdir build
+cd build
+cmake ..
+cmake -- build .
+./src/Debug/tradungeon.exe
+```
+The path to executable file might be different on other build systems.
