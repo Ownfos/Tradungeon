@@ -84,14 +84,14 @@ bool OrderQueue::is_contract_possible(Order order) const
     }
 }
 
-const std::vector<Order>& Market::get_buy_queue(int item_id) const
+const std::vector<Order>& Market::get_buy_queue(int item_id)
 {
-    return m_buy_queue.at(item_id).get_queue();
+    return m_buy_queue[item_id].get_queue();
 }
 
-const std::vector<Order>& Market::get_sell_queue(int item_id) const
+const std::vector<Order>& Market::get_sell_queue(int item_id)
 {
-    return m_sell_queue.at(item_id).get_queue();
+    return m_sell_queue[item_id].get_queue();
 }
 
 std::optional<Contract> Market::register_order(Order order)
