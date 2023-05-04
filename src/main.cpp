@@ -62,7 +62,7 @@ int main()
         // test_console();
         test_market();
     }
-    catch(std::exception&& e)
+    catch(const std::exception& e)
     {
         std::cout << "FATAL ERROR: " << e.what() << std::endl;
     }
