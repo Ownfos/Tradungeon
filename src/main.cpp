@@ -27,13 +27,13 @@ void test_market()
     };
 
     auto name_dict = std::map<int, std::string>{
-        std::pair{0, "John"},
+        {0, "John"},
         {1, "Peter"},
         {2, "Harry"},
     };
 
     auto item_dict = std::map<int, std::string>{
-        std::pair{0, "Apple"},
+        {0, "Apple"},
         {1, "Lemon"},
     };
 
