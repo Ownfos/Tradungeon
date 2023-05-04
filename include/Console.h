@@ -1,5 +1,5 @@
-#ifndef CONSOLE_H
-#define CONSOLE_H
+#ifndef TRADUNGEON_CONSOLE_H
+#define TRADUNGEON_CONSOLE_H
 
 #include <string>
 
@@ -21,9 +21,9 @@ private:
     // Convert coordinates to corresponding index in buffer.
     int pos2Ind(int x, int y) const;
 
-    int width;
-    int height;
-    std::string buffer;
+    int m_width;
+    int m_height;
+    std::string m_buffer;
 };
 
 } // namespace tradungeon
