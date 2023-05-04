@@ -1,4 +1,6 @@
 #include "Market.h"
+#include <algorithm>
+#include <iterator>
 
 namespace tradungeon
 {
@@ -38,6 +40,26 @@ Order OrderQueue::pop()
 Order OrderQueue::top() const
 {
     return m_queue.back();
+}
+
+std::vector<Order>::const_iterator OrderQueue::begin() const
+{
+    return m_queue.cbegin();
+}
+
+std::vector<Order>::const_iterator OrderQueue::end() const
+{
+    return m_queue.cend();
+}
+
+size_t OrderQueue::size() const
+{
+    return m_queue.size();
+}
+
+Order OrderQueue::operator[](int index) const
+{
+    return m_queue[index];
 }
 
 bool OrderQueue::is_sorted(Order lhs, Order rhs)
@@ -92,6 +114,26 @@ const std::vector<Order>& Market::get_buy_queue(int item_id)
 const std::vector<Order>& Market::get_sell_queue(int item_id)
 {
     return m_sell_queue[item_id].get_queue();
+}
+
+std::vector<Order> Market::get_user_orders(int user_id) const
+{
+    auto ret = std::vector<Order>();
+    auto cmp_id = [user_id](auto order){
+        return order.m_user_id == user_id;
+    };
+
+    for (const auto& [item_id, queue] : m_buy_queue)
+    {
+        std::copy_if(queue.begin(), queue.end(), std::back_inserter(ret), cmp_id);
+    }
+
+    for (const auto& [item_id, queue] : m_sell_queue)
+    {
+        std::copy_if(queue.begin(), queue.end(), std::back_inserter(ret), cmp_id);
+    }
+
+    return ret;
 }
 
 std::optional<Contract> Market::register_order(Order order)

@@ -48,6 +48,12 @@ public:
 
     bool is_empty() const;
 
+    std::vector<Order>::const_iterator begin() const;
+    std::vector<Order>::const_iterator end() const;
+
+    size_t size() const;
+    Order operator[](int index) const;
+
     // Given an opposite type of order,
     // check if there is a matching order waiting in the queue.
     bool is_contract_possible(Order order) const;
@@ -76,9 +82,12 @@ struct Contract
 class Market
 {
 public:
-    // Note: an empty queue is returned if there are no pending Orders.
+    // Note: an empty queue is returned if there are no pending Orders (thereby non-const getter).
     const std::vector<Order>& get_buy_queue(int item_id);
     const std::vector<Order>& get_sell_queue(int item_id);
+
+    // Returns every order made from a user.
+    std::vector<Order> get_user_orders(int user_id) const;
 
     // Add an Order to buy or sell queue.
     // If the Order can be fulfilled, returns corresponding Contract.
