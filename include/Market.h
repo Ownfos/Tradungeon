@@ -27,6 +27,16 @@ struct Order
 
 // OrderQueue is a priority queue for buy or sell orders.
 // Most expensive buy order and cheapest sell order comes first.
+//
+// The reason for not using std::priority_queue is that we need
+// a random access to every elements in the list
+// so that player can know how much it will cost to trade desired quantity.
+//
+// Note that the game's market will be much smaller than real-life stock markets.
+// This makes current market price for each item quite unstable,
+// due to small quantity assigned per each order.
+// For example, you wan't to buy three apple but there are only two cheapest apples available.
+// In such case, you will be interested in the second-cheapest apple's information as well as the cheapest.
 class OrderQueue
 {
 public:
@@ -60,22 +70,27 @@ struct Contract
     Order m_sell_order;
 };
 
+// Market is a simulator that manages buy and sell Orders.
+// If possible, a pair of buy-sell orders (a Contract!) is produced.
+// It also provides getter functions that allows you to see the waitlist in details.
 class Market
 {
 public:
-    const std::vector<Order>& get_buy_queue(int item_id) const;
-    const std::vector<Order>& get_sell_queue(int item_id) const;
+    // Note: an empty queue is returned if there are no pending Orders.
+    const std::vector<Order>& get_buy_queue(int item_id);
+    const std::vector<Order>& get_sell_queue(int item_id);
 
-    // Add an order to buy or sell queue.
-    // If the order can be fulfilled, returns corresponding contract.
-    // Buy order with highest price and sell order with lowest price have highest priority.
-    //
-    // Minor note: if OrderQueue didn't exist for this item, a new one is automatically generated.
+    // Add an Order to buy or sell queue.
+    // If the Order can be fulfilled, returns corresponding Contract.
+    // The one with the maximum buy-price (minumum sell-price) has highest priority.
+    // Any remaining quantity will be registered again as a new order.
     std::optional<Contract> register_order(Order order);
 
 private:
+    // Create a contract and register the unfulfilled quantity as a new Order.
     Contract establish_contract(Order buy_order, Order sell_order);
 
+    // Waitlist of Orders for each item.
     std::map<int, OrderQueue> m_buy_queue;
     std::map<int, OrderQueue> m_sell_queue;
 };
