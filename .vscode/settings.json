@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "algorithm": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
         "cctype": "cpp",
@@ -25,8 +26,10 @@
         "map": "cpp",
         "memory": "cpp",
         "new": "cpp",
+        "numeric": "cpp",
         "optional": "cpp",
         "ostream": "cpp",
+        "random": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "string": "cpp",

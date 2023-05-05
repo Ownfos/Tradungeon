@@ -95,6 +95,10 @@ public:
     // Any remaining quantity will be registered again as a new order.
     std::optional<Contract> register_order(Order order);
 
+    // Remove every orders from queues.
+    // Used to reset the market for a new day.
+    void clear_orders();
+
 private:
     // Create a contract and register the unfulfilled quantity as a new Order.
     Contract establish_contract(Order buy_order, Order sell_order);

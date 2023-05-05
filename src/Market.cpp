@@ -20,7 +20,7 @@ void OrderQueue::push(Order order)
 
     // Insertion sort
     m_queue.push_back(order);
-    for (int i = m_queue.size() - 1; i > 0; ++i)
+    for (int i = m_queue.size() - 1; i > 0; --i)
     {
         if (!is_sorted(m_queue[i-1], m_queue[i]))
         {
@@ -195,6 +195,12 @@ Contract Market::establish_contract(Order buy_order, Order sell_order)
 
         return {buy_order, sell_order};
     }
+}
+
+void Market::clear_orders()
+{
+    m_buy_queue.clear();
+    m_sell_queue.clear();
 }
 
 } // namespace tradungeon
