@@ -8,9 +8,10 @@ int main()
     try
     {
         // test_random();
-        test_console();
+        // test_console();
         // test_market();
         // test_price_fluctuation();
+        test_ui();
     }
     catch(const std::exception& e)
     {

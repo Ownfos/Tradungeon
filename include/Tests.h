@@ -3,6 +3,7 @@
 #define TRADUNGEON_TESTS_H
 
 #include "Market.h"
+#include "UI.h"
 #include <vector>
 #include <string>
 
@@ -13,6 +14,7 @@ void test_random();
 void test_console();
 void test_market();
 void test_price_fluctuation();
+void test_ui();
 
 struct Preference
 {
@@ -44,6 +46,14 @@ struct MarketSimulator
     std::vector<Item> m_items;
     std::vector<User> m_users;
     Market m_market;
+};
+
+class TestUI : public UI
+{
+public:
+    TestUI(std::shared_ptr<Console> console, const Viewport& viewport);
+
+    virtual void onRender() override;
 };
 
 } // namespace tradungeon::test

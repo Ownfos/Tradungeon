@@ -1,11 +1,22 @@
 #include "Tests.h"
 #include "Console.h"
 #include "Random.h"
+#include "UIManager.h"
 #include <iostream>
 #include <numeric>
 
 namespace tradungeon::test
 {
+
+TestUI::TestUI(std::shared_ptr<Console> console, const Viewport& viewport)
+    : UI(console, viewport)
+{}
+
+void TestUI::onRender()
+{
+    renderChar('#', {0, 0});
+    renderString("hahahoho", {{1,1},{3,3}});
+}
 
 void test_random()
 {
@@ -27,7 +38,7 @@ void test_random()
 
 void test_console()
 {
-    auto console = Console(20, 10);
+    auto console = Console({20, 10});
     console.renderChar('#', {0, 0});
     console.renderChar('#', {19, 0});
     console.renderChar('#', {0, 9});
@@ -238,6 +249,13 @@ void test_price_fluctuation()
             // break; // Test with only one item for now.
         }
     }
+}
+
+void test_ui()
+{
+    auto ui_manager = UIManager::getInstance();
+    ui_manager.push<TestUI>(Viewport{{2, 2}, {5, 5}});
+    ui_manager.render();
 }
    
 } // namespace tradungeon::test

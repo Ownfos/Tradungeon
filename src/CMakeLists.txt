@@ -4,6 +4,9 @@ add_executable(tradungeon
     Market.cpp
     Tests.cpp
     Random.cpp
+    Common.cpp
+    UIManager.cpp
+    UI.cpp
 )
 
 target_include_directories(tradungeon PUBLIC ${CMAKE_SOURCE_DIR}/include)

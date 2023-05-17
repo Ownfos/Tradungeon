@@ -13,18 +13,27 @@ namespace tradungeon
 class Console
 {
 public:
-    Console(int width, int height);
+    Console(Size size);
     void print() const;
 
     void renderChar(char ch, const Point& pos);
+
+    // Prints a multi-line string to a given region.
+    // Overflowing string is handled in following manner:
+    //   Horizontal overflow => automatic newline
+    //   Vertical overflow   => stop rendering (ignores remainder)
+    //
+    // Escape sequence except '\n' is NOT supported!
     void renderString(std::string_view str, const Viewport& viewport);
+
+    // Fills a region with given character.
+    void fill(char ch, const Viewport& viewport);
 
 private:
     // Convert coordinates to corresponding index in buffer.
     int pos2Ind(const Point& pos) const;
 
-    int m_width;
-    int m_height;
+    Size m_size;
     std::string m_buffer;
 };
 
