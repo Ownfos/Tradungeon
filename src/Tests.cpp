@@ -28,13 +28,16 @@ void test_random()
 void test_console()
 {
     auto console = Console(20, 10);
-    console.setChar('#', 0, 0);
-    console.setChar('#', 19, 0);
-    console.setChar('#', 0, 9);
-    console.setChar('#', 19, 9);
+    console.renderChar('#', {0, 0});
+    console.renderChar('#', {19, 0});
+    console.renderChar('#', {0, 9});
+    console.renderChar('#', {19, 9});
     console.print();
 
-    console.setChar('@', 19, 9);
+    console.renderChar('@', {19, 9});
+    console.print();
+
+    console.renderString("hello, world!\nnewline test\n\nnewline test newline test newline test", {{4, 2}, {15, 5}});
     console.print();
 }
 
@@ -96,8 +99,8 @@ void test_price_fluctuation()
     // Initial settings
     auto simulator = MarketSimulator{};
     simulator.m_items = {
-        {11, "Lemon", 100, 50, 30},
-        {44, "Apple", 200, 30, 50},
+        {11, "Lemon", 100, 30, 30, 70},
+        {44, "Apple", 200, 30, 30, 10},
     };
     simulator.m_users = {
         {1234, "Jenny"},
@@ -134,8 +137,14 @@ void test_price_fluctuation()
     }
 
     // Simulate 10 days of market trade
-    for (int day = 0; day < 20; ++day)
+    for (int day = 0; day < 50; ++day)
     {
+        if (day == 25)
+        {
+            simulator.m_items[0].m_desired_net_demand -= 30;
+            simulator.m_items[1].m_desired_net_demand += 30;
+        }
+
         std::cout << "[day " << day << "]\n\n";
 
         for (auto& item : simulator.m_items)
@@ -218,10 +227,12 @@ void test_price_fluctuation()
             auto net_unresolved_demand = std::accumulate(unresolved_demands.begin(), unresolved_demands.end(), 0, [](auto sum, auto order){ return sum + order.m_quantity; });
             std::cout << "Unresolved demand: " << net_unresolved_demand << " / " << item.m_net_demand << std::endl;
 
-            // Adjust net supply and demand up to 5~20% of the difference
-            auto extra_demand = net_unresolved_demand - net_unresolved_supply;
-            item.m_net_supply += extra_demand * Random::range(5, 20) / 100;
-            item.m_net_demand -= extra_demand * Random::range(5, 20) / 100;
+            // Adjust net supply and demand up to 1~10% of the difference
+            auto extra_supply = net_unresolved_supply - net_unresolved_demand;
+            item.m_net_supply -= extra_supply * Random::range(1, 10) / 100;
+
+            // Force net demand to reach desired level
+            item.m_net_demand += (item.m_desired_net_demand - item.m_net_demand) * 4 / 10;
 
             std::cout << std::endl;
             // break; // Test with only one item for now.

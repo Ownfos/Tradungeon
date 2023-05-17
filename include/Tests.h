@@ -28,6 +28,7 @@ struct Item
     int m_initial_price;
     int m_net_supply;
     int m_net_demand;
+    int m_desired_net_demand;
     std::vector<Preference> m_buyers;
     std::vector<Preference> m_sellers;
 };

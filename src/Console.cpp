@@ -19,21 +19,45 @@ void Console::print() const
     std::cout << m_buffer;
 }
 
-void Console::setChar(char value, int x, int y)
+void Console::renderChar(char ch, const Point& pos)
 {
-    m_buffer[pos2Ind(x, y)] = value;
+    m_buffer[pos2Ind(pos)] = ch;
 }
 
-char Console::getChar(int x, int y) const
+void Console::renderString(std::string_view str, const Viewport& viewport)
 {
-    return m_buffer[pos2Ind(x, y)];
+    Point cursor_pos = viewport.offset;
+    for (char ch : str)
+    {
+        // Print non-newline character
+        if (ch != '\n')
+        {
+            // Print and move cursor to the right
+            renderChar(ch, cursor_pos);
+            ++cursor_pos.x;
+        }
+
+        // If this row is full or a newline character is given,
+        // move cursor to the next line's starting point.
+        if (ch == '\n' || cursor_pos.x >= viewport.offset.x + viewport.size.width)
+        {
+            ++cursor_pos.y;
+            cursor_pos.x = viewport.offset.x;
+        }
+
+        // Ignore overflowing string
+        if (cursor_pos.y >= viewport.offset.y + viewport.size.height)
+        {
+            return;
+        }
+    }
 }
 
-int Console::pos2Ind(int x, int y) const
+int Console::pos2Ind(const Point& pos) const
 {
     // Each line ends with a newline character '\n',
     // so there are width + 1 characters in a row.
-    return y * (m_width + 1) + x;
+    return pos.y * (m_width + 1) + pos.x;
 }
 
 } // namespace tradungeon

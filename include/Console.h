@@ -1,6 +1,7 @@
 #ifndef TRADUNGEON_CONSOLE_H
 #define TRADUNGEON_CONSOLE_H
 
+#include "Common.h"
 #include <string>
 
 namespace tradungeon
@@ -14,12 +15,13 @@ class Console
 public:
     Console(int width, int height);
     void print() const;
-    void setChar(char value, int x, int y);
-    char getChar(int x, int y) const;
+
+    void renderChar(char ch, const Point& pos);
+    void renderString(std::string_view str, const Viewport& viewport);
 
 private:
     // Convert coordinates to corresponding index in buffer.
-    int pos2Ind(int x, int y) const;
+    int pos2Ind(const Point& pos) const;
 
     int m_width;
     int m_height;
