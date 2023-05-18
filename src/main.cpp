@@ -11,7 +11,8 @@ int main()
         // test_console();
         // test_market();
         // test_price_fluctuation();
-        test_ui();
+        // test_ui();
+        test_message_log();
     }
     catch(const std::exception& e)
     {

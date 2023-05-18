@@ -2,6 +2,7 @@
 #include "Console.h"
 #include "Random.h"
 #include "UIManager.h"
+#include "MessageLog.h"
 #include <iostream>
 #include <numeric>
 
@@ -258,5 +259,22 @@ void test_ui()
     ui_manager.push<TestUI>(Viewport{{5, 10}, {5, 5}});
     ui_manager.render();
 }
-   
+
+void test_message_log()
+{
+    auto log = MessageLog({20, 5});
+    log.push("Hi");
+    log.push("Hello, World!");
+    log.push("A very long string that overflows");
+    std::cout << log.size() << std::endl;
+    std::cout << log.getLines(0, 3);
+
+    log.push("asdf");
+    log.push("asdf");
+    log.push("asdf");
+    log.push("asdf");
+    std::cout << log.size() << std::endl;
+    std::cout << log.getLines(0, 3);
+}
+
 } // namespace tradungeon::test
