@@ -1,14 +1,11 @@
 #include "UIManager.h"
-#include <iostream>
 
 namespace tradungeon
 {
 
 UIManager::UIManager()
-    : m_console(std::make_shared<Console>(Size{80, 40}))
-{
-    std::cout << "UIMANAGER";
-}
+    : m_console(std::make_shared<Console>(Size{80, 25}))
+{}
 
 void UIManager::pop()
 {
@@ -19,6 +16,7 @@ void UIManager::render()
 {
     for (auto& ui : m_ui_stack)
     {
+        ui->clear('#', ' ');
         ui->onRender();
     }
     m_console->print();

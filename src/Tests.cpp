@@ -14,7 +14,7 @@ TestUI::TestUI(std::shared_ptr<Console> console, const Viewport& viewport)
 
 void TestUI::onRender()
 {
-    renderChar('#', {0, 0});
+    renderChar('@', {0, 0});
     renderString("hahahoho", {{1,1},{3,3}});
 }
 
@@ -254,7 +254,8 @@ void test_price_fluctuation()
 void test_ui()
 {
     auto ui_manager = UIManager::getInstance();
-    ui_manager.push<TestUI>(Viewport{{2, 2}, {5, 5}});
+    ui_manager.push<TestUI>(Viewport{{0, 0}, {80, 25}});
+    ui_manager.push<TestUI>(Viewport{{5, 10}, {5, 5}});
     ui_manager.render();
 }
    

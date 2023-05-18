@@ -17,6 +17,8 @@ public:
     // virtual void onInput() = 0;
     virtual void onRender() = 0;
 
+    void clear(char boundary, char background);
+
 protected:
     void renderChar(char ch, const Point& rel_pos);
     void renderString(std::string_view str, const Viewport& rel_viewport);
