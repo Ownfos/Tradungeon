@@ -18,7 +18,8 @@ namespace tradungeon
 class UIManager
 {
 public:
-    static UIManager& getInstance(); // Singleton pattern
+    UIManager(std::shared_ptr<Console> console);
+
 
     // Creates and registers an instance of T which is a subclass of UI.
     // This calls std::make_shared<T>, forwarding all the variadic parameters
@@ -36,8 +37,6 @@ public:
     void render();
 
 private:
-    UIManager(); // Singleton pattern
-
     std::shared_ptr<Console> m_console;
     std::vector<std::shared_ptr<UI>> m_ui_stack;
 };

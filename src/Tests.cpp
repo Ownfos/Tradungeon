@@ -254,9 +254,11 @@ void test_price_fluctuation()
 
 void test_ui()
 {
-    auto ui_manager = UIManager::getInstance();
+    auto ui_manager = UIManager(std::make_shared<Console>(Size{80, 25}));
     ui_manager.push<TestUI>(Viewport{{0, 0}, {80, 25}});
     ui_manager.push<TestUI>(Viewport{{5, 10}, {5, 5}});
+    ui_manager.render();
+    ui_manager.pop();
     ui_manager.render();
 }
 

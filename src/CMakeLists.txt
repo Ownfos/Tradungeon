@@ -8,6 +8,7 @@ add_executable(tradungeon
     UIManager.cpp
     UI.cpp
     MessageLog.cpp
+    Game.cpp
 )
 
 target_include_directories(tradungeon PUBLIC ${CMAKE_SOURCE_DIR}/include)

@@ -3,8 +3,8 @@
 namespace tradungeon
 {
 
-UIManager::UIManager()
-    : m_console(std::make_shared<Console>(Size{80, 25}))
+UIManager::UIManager(std::shared_ptr<Console> console)
+    : m_console(console)
 {}
 
 void UIManager::pop()
@@ -20,13 +20,6 @@ void UIManager::render()
         ui->onRender();
     }
     m_console->print();
-}
-
-UIManager& UIManager::getInstance()
-{
-    static UIManager instance;
-
-    return instance;
 }
 
 } // namespace tradungeon
