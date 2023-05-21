@@ -13,6 +13,7 @@ int main()
         // test_price_fluctuation();
         test_ui();
         test_message_log();
+        test_message_log_viewer();
     }
     catch(const std::exception& e)
     {

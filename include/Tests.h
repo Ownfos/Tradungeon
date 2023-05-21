@@ -16,6 +16,7 @@ void test_market();
 void test_price_fluctuation();
 void test_ui();
 void test_message_log();
+void test_message_log_viewer();
 
 struct Preference
 {
@@ -52,9 +53,9 @@ struct MarketSimulator
 class TestUI : public UI
 {
 public:
-    TestUI(std::shared_ptr<Console> console, const Viewport& viewport);
+    TestUI(const Viewport& viewport);
 
-    virtual void onRender() override;
+    virtual void onRender(Console& console) override;
 };
 
 } // namespace tradungeon::test

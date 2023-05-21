@@ -3,7 +3,6 @@
 
 #include "Console.h"
 #include "Common.h"
-#include <memory>
 
 namespace tradungeon
 {
@@ -11,20 +10,17 @@ namespace tradungeon
 class UI
 {
 public:
-    UI(std::shared_ptr<Console> console, const Viewport& viewport);
+    UI(const Viewport& viewport);
     virtual ~UI() = default;
 
     // virtual void onInput() = 0;
-    virtual void onRender() = 0;
+    virtual void onRender(Console& console) = 0;
 
-    void clear(char boundary, char background);
-
-protected:
-    void renderChar(char ch, const Point& rel_pos);
-    void renderString(std::string_view str, const Viewport& rel_viewport);
+    void clear(Console& console, char boundary, char background);
+    void renderChar(Console& console, char ch, const Point& rel_pos);
+    void renderString(Console& console, std::string_view str, const Viewport& rel_viewport);
 
 private:
-    std::shared_ptr<Console> m_console;
     Viewport m_viewport;
 };
 

@@ -8,6 +8,7 @@ add_executable(tradungeon
     UIManager.cpp
     UI.cpp
     MessageLog.cpp
+    MessageLogViewer.cpp
     Game.cpp
 )
 

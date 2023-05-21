@@ -3,13 +3,13 @@
 namespace tradungeon
 {
 
-UI::UI(std::shared_ptr<Console> console, const Viewport& viewport)
-    : m_console(console), m_viewport(viewport)
+UI::UI(const Viewport& viewport)
+    : m_viewport(viewport)
 {}
 
-void UI::clear(char boundary, char background)
+void UI::clear(Console& console, char boundary, char background)
 {
-    m_console->fill(background, m_viewport);
+    console.fill(background, m_viewport);
 
     auto [width, height] = m_viewport.m_size;
     auto up = Viewport{m_viewport.m_offset, {width, 1}};
@@ -17,29 +17,29 @@ void UI::clear(char boundary, char background)
     auto left = Viewport{m_viewport.m_offset, {1, height}};
     auto right = Viewport{m_viewport.m_offset + Point{width - 1, 0}, {1, height}};
     
-    m_console->fill(boundary, up);
-    m_console->fill(boundary, down);
-    m_console->fill(boundary, left);
-    m_console->fill(boundary, right);
+    console.fill(boundary, up);
+    console.fill(boundary, down);
+    console.fill(boundary, left);
+    console.fill(boundary, right);
 }
 
-void UI::renderChar(char ch, const Point& pos)
+void UI::renderChar(Console& console, char ch, const Point& pos)
 {
     auto abs_pos = pos + m_viewport.m_offset;
 
     // TODO: throw exception if abs_pos is inside viewport boundary
 
-    m_console->renderChar(ch, abs_pos);
+    console.renderChar(ch, abs_pos);
 }
 
-void UI::renderString(std::string_view str, const Viewport& rel_viewport)
+void UI::renderString(Console& console, std::string_view str, const Viewport& rel_viewport)
 {
     auto abs_viewport = rel_viewport;
     abs_viewport.m_offset += m_viewport.m_offset;
 
     // TODO: throw exception if abs_viewport is inside viewport boundary
 
-    m_console->renderString(str, abs_viewport);
+    console.renderString(str, abs_viewport);
 }
 
 } // namespace tradungeon

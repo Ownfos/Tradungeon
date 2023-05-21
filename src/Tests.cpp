@@ -2,21 +2,21 @@
 #include "Console.h"
 #include "Random.h"
 #include "UIManager.h"
-#include "MessageLog.h"
+#include "MessageLogViewer.h"
 #include <iostream>
 #include <numeric>
 
 namespace tradungeon::test
 {
 
-TestUI::TestUI(std::shared_ptr<Console> console, const Viewport& viewport)
-    : UI(console, viewport)
+TestUI::TestUI(const Viewport& viewport)
+    : UI(viewport)
 {}
 
-void TestUI::onRender()
+void TestUI::onRender(Console& console)
 {
-    renderChar('@', {0, 0});
-    renderString("hahahoho", {{1,1},{3,3}});
+    renderChar(console, '@', {0, 0});
+    renderString(console, "hahahoho", {{1,1},{3,3}});
 }
 
 void test_random()
@@ -254,12 +254,13 @@ void test_price_fluctuation()
 
 void test_ui()
 {
-    auto ui_manager = UIManager(std::make_shared<Console>(Size{80, 25}));
-    ui_manager.push<TestUI>(Viewport{{0, 0}, {80, 25}});
-    ui_manager.push<TestUI>(Viewport{{5, 10}, {5, 5}});
-    ui_manager.render();
+    auto console = Console({80, 25});
+    auto ui_manager = UIManager();
+    ui_manager.push(std::make_shared<TestUI>(Viewport{{0, 0}, {80, 25}}));
+    ui_manager.push(std::make_shared<TestUI>(Viewport{{5, 10}, {5, 5}}));
+    ui_manager.render(console);
     ui_manager.pop();
-    ui_manager.render();
+    ui_manager.render(console);
 }
 
 void test_message_log()
@@ -277,6 +278,35 @@ void test_message_log()
     log.push("asdf");
     std::cout << log.size() << std::endl;
     std::cout << log.getLines(0, 3);
+}
+
+void test_message_log_viewer()
+{
+    auto console = Console({80, 5});
+    auto ui_manager = UIManager();
+    auto msg_viewer = std::make_shared<MessageLogViewer>(Viewport{{0, 0}, {80, 5}}, 20);
+
+    ui_manager.push(msg_viewer);
+    ui_manager.render(console);
+
+    msg_viewer->push("Single Line");
+    ui_manager.render(console);
+
+    msg_viewer->scrollDown();
+    ui_manager.render(console);
+
+    msg_viewer->scrollUp();
+    ui_manager.render(console);
+
+    for (int i=0;i<10;++i)
+    {
+        msg_viewer->push("Hello, World!" + std::to_string(i));
+    }
+    ui_manager.render(console);
+
+    msg_viewer->scrollUp();
+    msg_viewer->scrollUp();
+    ui_manager.render(console);
 }
 
 } // namespace tradungeon::test

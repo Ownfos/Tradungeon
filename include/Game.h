@@ -3,6 +3,7 @@
 
 #include "UIManager.h"
 #include "Console.h"
+#include "MessageLogViewer.h"
 #include <memory>
 
 namespace tradungeon
@@ -13,8 +14,9 @@ class Game
 public:
     static Game& getInstance();
 
-    std::shared_ptr<Console> m_console;
+    Console m_console;
     UIManager m_ui_manager;
+    std::shared_ptr<MessageLogViewer> m_msg_log_viewer;
 
 private:
     Game();

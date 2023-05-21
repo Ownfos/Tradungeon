@@ -3,23 +3,24 @@
 namespace tradungeon
 {
 
-UIManager::UIManager(std::shared_ptr<Console> console)
-    : m_console(console)
-{}
+void UIManager::push(std::shared_ptr<UI> ui)
+{
+    m_ui_stack.push_back(ui);
+}
 
 void UIManager::pop()
 {
     m_ui_stack.pop_back();
 }
 
-void UIManager::render()
+void UIManager::render(Console& console)
 {
     for (auto& ui : m_ui_stack)
     {
-        ui->clear('#', ' ');
-        ui->onRender();
+        ui->clear(console, '#', ' ');
+        ui->onRender(console);
     }
-    m_console->print();
+    console.print();
 }
 
 } // namespace tradungeon

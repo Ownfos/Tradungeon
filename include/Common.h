@@ -20,6 +20,12 @@ struct Size
 {
     int m_width;
     int m_height;
+
+    Size& operator+=(const Size& other);
+    Size& operator-=(const Size& other);
+
+    Size operator+(const Size& other) const;
+    Size operator-(const Size& other) const;
 };
 
 struct Viewport
