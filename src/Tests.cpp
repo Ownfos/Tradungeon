@@ -3,6 +3,7 @@
 #include "Random.h"
 #include "UIManager.h"
 #include "MessageLogViewer.h"
+#include "Event.h"
 #include <iostream>
 #include <numeric>
 
@@ -307,6 +308,20 @@ void test_message_log_viewer()
     msg_viewer->scrollUp();
     msg_viewer->scrollUp();
     ui_manager.render(console);
+}
+
+void test_events()
+{
+    auto event = Event<std::string>();
+    auto cb1 = event.addCallback([](const std::string& message){ std::cout << message << std::endl; });
+    auto cb2 = event.addCallback([](const std::string& message){ std::cout << message.size() << std::endl; });
+    event.signal("Hello, World!");
+
+    event.removeCallback(cb2);
+    event.signal("Removed second callback");
+    
+    event.removeCallback(cb1);
+    event.signal("Removed first callback");
 }
 
 } // namespace tradungeon::test

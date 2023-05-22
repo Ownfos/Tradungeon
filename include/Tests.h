@@ -17,6 +17,7 @@ void test_price_fluctuation();
 void test_ui();
 void test_message_log();
 void test_message_log_viewer();
+void test_events();
 
 struct Preference
 {
