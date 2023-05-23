@@ -1,4 +1,5 @@
 #include "Tests.h"
+#include "TextBuffer.h"
 #include "Console.h"
 #include "Random.h"
 #include "UIManager.h"
@@ -14,7 +15,7 @@ TestUI::TestUI(const Viewport& viewport)
     : UI(viewport)
 {}
 
-void TestUI::onRender(Console& console)
+void TestUI::onRender(TextBuffer& console)
 {
     renderChar(console, '@', {0, 0});
     renderString(console, "hahahoho", {{1,1},{3,3}});
@@ -38,20 +39,27 @@ void test_random()
     std::cout << "\n";
 }
 
+void test_text_buffer()
+{
+    auto buffer = TextBuffer({20, 10});
+    buffer.renderChar('#', {0, 0});
+    buffer.renderChar('#', {19, 0});
+    buffer.renderChar('#', {0, 9});
+    buffer.renderChar('#', {19, 9});
+    std::cout << buffer.getContent();
+
+    buffer.renderChar('@', {19, 9});
+    std::cout << buffer.getContent();
+
+    buffer.renderString("hello, world!\nnewline test\n\nnewline test newline test newline test", {{4, 2}, {15, 5}});
+    std::cout << buffer.getContent();
+}
+
 void test_console()
 {
-    auto console = Console({20, 10});
-    console.renderChar('#', {0, 0});
-    console.renderChar('#', {19, 0});
-    console.renderChar('#', {0, 9});
-    console.renderChar('#', {19, 9});
-    console.print();
-
-    console.renderChar('@', {19, 9});
-    console.print();
-
-    console.renderString("hello, world!\nnewline test\n\nnewline test newline test newline test", {{4, 2}, {15, 5}});
-    console.print();
+    auto console = Console();
+    console.setCursor({5, 2});
+    std::cout << console.getKey() << std::endl;
 }
 
 void test_market()
@@ -255,7 +263,7 @@ void test_price_fluctuation()
 
 void test_ui()
 {
-    auto console = Console({80, 25});
+    auto console = TextBuffer({80, 25});
     auto ui_manager = UIManager();
     ui_manager.push(std::make_shared<TestUI>(Viewport{{0, 0}, {80, 25}}));
     ui_manager.push(std::make_shared<TestUI>(Viewport{{5, 10}, {5, 5}}));
@@ -283,31 +291,37 @@ void test_message_log()
 
 void test_message_log_viewer()
 {
-    auto console = Console({80, 5});
+    auto buffer = TextBuffer({80, 5});
     auto ui_manager = UIManager();
     auto msg_viewer = std::make_shared<MessageLogViewer>(Viewport{{0, 0}, {80, 5}}, 20);
 
     ui_manager.push(msg_viewer);
-    ui_manager.render(console);
+    ui_manager.render(buffer);
+    std::cout << buffer.getContent();
 
     msg_viewer->push("Single Line");
-    ui_manager.render(console);
+    ui_manager.render(buffer);
+    std::cout << buffer.getContent();
 
     msg_viewer->scrollDown();
-    ui_manager.render(console);
+    ui_manager.render(buffer);
+    std::cout << buffer.getContent();
 
     msg_viewer->scrollUp();
-    ui_manager.render(console);
+    ui_manager.render(buffer);
+    std::cout << buffer.getContent();
 
     for (int i=0;i<10;++i)
     {
         msg_viewer->push("Hello, World!" + std::to_string(i));
     }
-    ui_manager.render(console);
+    ui_manager.render(buffer);
+    std::cout << buffer.getContent();
 
     msg_viewer->scrollUp();
     msg_viewer->scrollUp();
-    ui_manager.render(console);
+    ui_manager.render(buffer);
+    std::cout << buffer.getContent();
 }
 
 void test_events()
@@ -322,6 +336,22 @@ void test_events()
     
     event.removeCallback(cb1);
     event.signal("Removed first callback");
+}
+
+void test_render_loop()
+{
+    auto console = Console();
+    auto buffer = TextBuffer({20, 20});
+    for (char ch = 'a'; ch <= 'e'; ++ch)
+    {
+        // Render this frame
+        buffer.fill(ch);
+        console.setCursor({0, 0});
+        std::cout << buffer.getContent();
+
+        // Wait for input
+        console.getKey();
+    }
 }
 
 } // namespace tradungeon::test

@@ -22,7 +22,7 @@ public:
         int max_buffer_size
     );
 
-    virtual void onRender(Console& console) override;
+    virtual void onRender(TextBuffer& console) override;
 
     void push(const std::string& message);
     void scrollUp();

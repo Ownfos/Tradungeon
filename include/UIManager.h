@@ -23,7 +23,7 @@ public:
     void pop();
 
     // Renders all existing UI to the console.
-    void render(Console& console);
+    void render(TextBuffer& console);
 
 private:
     std::vector<std::shared_ptr<UI>> m_ui_stack;

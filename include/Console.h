@@ -2,39 +2,28 @@
 #define TRADUNGEON_CONSOLE_H
 
 #include "Common.h"
-#include <string>
+#include <Windows.h>
 
 namespace tradungeon
 {
 
-// Console is a buffer that helps printing characters on specific position.
-// A whole screen is treated as a single std::string instance.
-// (0, 0) points to the left-top corner.
+// Console handles Windows specific console input and output,
+// such as positioning cursor and receiving keystrokes.
 class Console
 {
 public:
-    Console(Size size);
-    void print() const;
+    Console();
 
-    void renderChar(char ch, const Point& pos);
+    // Wait for a key press event and return its ascii code.
+    // This is a blocking funciton, so it will not return until something is pressed.
+    int getKey();
 
-    // Prints a multi-line string to a given region.
-    // Overflowing string is handled in following manner:
-    //   Horizontal overflow => automatic newline
-    //   Vertical overflow   => stop rendering (ignores remainder)
-    //
-    // Escape sequence except '\n' is NOT supported!
-    void renderString(std::string_view str, const Viewport& viewport);
-
-    // Fills a region with given character.
-    void fill(char ch, const Viewport& viewport);
+    // Moves the cursor position of console.
+    void setCursor(const Point& pos);
 
 private:
-    // Convert coordinates to corresponding index in buffer.
-    int pos2Ind(const Point& pos) const;
-
-    Size m_size;
-    std::string m_buffer;
+    HANDLE m_input_handle;
+    HANDLE m_output_handle;
 };
 
 } // namespace tradungeon

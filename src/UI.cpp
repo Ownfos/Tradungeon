@@ -7,7 +7,7 @@ UI::UI(const Viewport& viewport)
     : m_viewport(viewport)
 {}
 
-void UI::clear(Console& console, char boundary, char background)
+void UI::clear(TextBuffer& console, char boundary, char background)
 {
     console.fill(background, m_viewport);
 
@@ -23,7 +23,7 @@ void UI::clear(Console& console, char boundary, char background)
     console.fill(boundary, right);
 }
 
-void UI::renderChar(Console& console, char ch, const Point& pos)
+void UI::renderChar(TextBuffer& console, char ch, const Point& pos)
 {
     auto abs_pos = pos + m_viewport.m_offset;
 
@@ -32,7 +32,7 @@ void UI::renderChar(Console& console, char ch, const Point& pos)
     console.renderChar(ch, abs_pos);
 }
 
-void UI::renderString(Console& console, std::string_view str, const Viewport& rel_viewport)
+void UI::renderString(TextBuffer& console, std::string_view str, const Viewport& rel_viewport)
 {
     auto abs_viewport = rel_viewport;
     abs_viewport.m_offset += m_viewport.m_offset;

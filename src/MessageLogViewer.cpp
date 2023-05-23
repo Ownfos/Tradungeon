@@ -12,7 +12,7 @@ MessageLogViewer::MessageLogViewer(
     m_msg_log(Size{m_msg_viewport.m_size.m_width, max_buffer_size})
 {}
 
-void MessageLogViewer::onRender(Console& console)
+void MessageLogViewer::onRender(TextBuffer& console)
 {
     auto num_available_lines = m_msg_log.size() - m_offset;
     auto msg = m_msg_log.getLines(m_offset, num_available_lines);

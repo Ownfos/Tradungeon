@@ -11,6 +11,7 @@ namespace tradungeon::test
 {
 
 void test_random();
+void test_text_buffer();
 void test_console();
 void test_market();
 void test_price_fluctuation();
@@ -18,6 +19,7 @@ void test_ui();
 void test_message_log();
 void test_message_log_viewer();
 void test_events();
+void test_render_loop();
 
 struct Preference
 {
@@ -56,7 +58,7 @@ class TestUI : public UI
 public:
     TestUI(const Viewport& viewport);
 
-    virtual void onRender(Console& console) override;
+    virtual void onRender(TextBuffer& console) override;
 };
 
 } // namespace tradungeon::test

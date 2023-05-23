@@ -1,74 +1,45 @@
 #include "Console.h"
-#include <iostream>
+#include <string>
+#include <exception>
 
 namespace tradungeon
 {
 
-Console::Console(Size size)
-    : m_size(size)
+Console::Console()
+    : m_input_handle(GetStdHandle(STD_INPUT_HANDLE)),
+    m_output_handle(GetStdHandle(STD_OUTPUT_HANDLE))
+{}
+
+int Console::getKey()
 {
-    for (int row = 0; row < m_size.m_height; ++row)
+    // Keep reading input events until we find a key press event.
+    auto input_record = INPUT_RECORD{};
+    auto num_events_reads = DWORD{};
+    while (true)
     {
-        m_buffer.append(m_size.m_width, ' ');
-        m_buffer.append("\n");
-    }
-}
-
-void Console::print() const
-{
-    std::cout << m_buffer;
-}
-
-void Console::renderChar(char ch, const Point& pos)
-{
-    m_buffer[pos2Ind(pos)] = ch;
-}
-
-void Console::renderString(std::string_view str, const Viewport& viewport)
-{
-    Point cursor_pos = viewport.m_offset;
-    for (char ch : str)
-    {
-        // Print non-newline character
-        if (ch != '\n')
+        // ReadConsoleInput should return nonzero value on success,
+        // but sometimes it returns 0 while GetLastError() says it was successful (ERROR_SUCCESS).
+        if (ReadConsoleInput(m_input_handle, &input_record, 1, &num_events_reads) != 0 && GetLastError() != 0)
         {
-            // Print and move cursor to the right
-            renderChar(ch, cursor_pos);
-            ++cursor_pos.m_x;
+            throw std::exception(("ReadConsoleInput() failed with error code " + std::to_string(GetLastError())).c_str());
         }
 
-        // If this row is full or a newline character is given,
-        // move cursor to the next line's starting point.
-        if (ch == '\n' || cursor_pos.m_x >= viewport.m_offset.m_x + viewport.m_size.m_width)
+        // Since other events like window buffer resize or focus comes in,
+        // we need to wait for a key press event specifically.
+        if (input_record.EventType == KEY_EVENT && input_record.Event.KeyEvent.bKeyDown)
         {
-            ++cursor_pos.m_y;
-            cursor_pos.m_x = viewport.m_offset.m_x;
-        }
-
-        // Ignore overflowing string
-        if (cursor_pos.m_y >= viewport.m_offset.m_y + viewport.m_size.m_height)
-        {
-            return;
+            return input_record.Event.KeyEvent.wVirtualKeyCode;
         }
     }
 }
 
-void Console::fill(char ch, const Viewport& viewport)
+void Console::setCursor(const Point& pos)
 {
-    for (int x = 0; x < viewport.m_size.m_width; ++x)
-    {
-        for (int y = 0; y < viewport.m_size.m_height; ++y)
-        {
-            renderChar(ch, {viewport.m_offset.m_x + x, viewport.m_offset.m_y + y});
-        }
-    }
-}
-
-int Console::pos2Ind(const Point& pos) const
-{
-    // Each line ends with a newline character '\n',
-    // so there are width + 1 characters in a row.
-    return pos.m_y * (m_size.m_width + 1) + pos.m_x;
+    auto coord = COORD{
+        static_cast<short>(pos.m_x),
+        static_cast<short>(pos.m_y)
+    };
+    SetConsoleCursorPosition(m_output_handle, coord);
 }
 
 } // namespace tradungeon

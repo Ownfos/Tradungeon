@@ -1,5 +1,6 @@
 add_executable(tradungeon
     main.cpp
+    TextBuffer.cpp
     Console.cpp
     Market.cpp
     Tests.cpp

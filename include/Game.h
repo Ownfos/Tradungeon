@@ -2,7 +2,7 @@
 #define TRADUNGEON_GAME_H
 
 #include "UIManager.h"
-#include "Console.h"
+#include "TextBuffer.h"
 #include "MessageLogViewer.h"
 #include <memory>
 
@@ -14,7 +14,7 @@ class Game
 public:
     static Game& getInstance();
 
-    Console m_console;
+    TextBuffer m_buffer;
     UIManager m_ui_manager;
     std::shared_ptr<MessageLogViewer> m_msg_log_viewer;
 

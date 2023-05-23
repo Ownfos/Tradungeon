@@ -13,14 +13,13 @@ void UIManager::pop()
     m_ui_stack.pop_back();
 }
 
-void UIManager::render(Console& console)
+void UIManager::render(TextBuffer& console)
 {
     for (auto& ui : m_ui_stack)
     {
         ui->clear(console, '#', ' ');
         ui->onRender(console);
     }
-    console.print();
 }
 
 } // namespace tradungeon
