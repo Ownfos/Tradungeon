@@ -22,6 +22,9 @@ public:
     void push(std::shared_ptr<UI> ui);
     void pop();
 
+    // Cascade input through UI stack.
+    void handleInput(int keycode);
+
     // Renders all existing UI to the console.
     void render(TextBuffer& console);
 

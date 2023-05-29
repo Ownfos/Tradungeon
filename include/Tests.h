@@ -20,6 +20,7 @@ void test_message_log();
 void test_message_log_viewer();
 void test_events();
 void test_render_loop();
+void test_array2d();
 
 struct Preference
 {
@@ -56,9 +57,13 @@ struct MarketSimulator
 class TestUI : public UI
 {
 public:
-    TestUI(const Viewport& viewport);
+    TestUI(const Viewport& viewport, int id);
 
+    virtual bool onInput(int keycode) override;
     virtual void onRender(TextBuffer& console) override;
+
+private:
+    int m_id;
 };
 
 } // namespace tradungeon::test

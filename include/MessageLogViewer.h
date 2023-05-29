@@ -22,6 +22,7 @@ public:
         int max_buffer_size
     );
 
+    virtual bool onInput(int keycode) override;
     virtual void onRender(TextBuffer& console) override;
 
     void push(const std::string& message);

@@ -13,7 +13,7 @@ public:
     UI(const Viewport& viewport);
     virtual ~UI() = default;
 
-    // virtual void onInput() = 0;
+    virtual bool onInput(int keycode) = 0;
     virtual void onRender(TextBuffer& console) = 0;
 
     void clear(TextBuffer& console, char boundary, char background);

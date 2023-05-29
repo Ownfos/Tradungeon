@@ -4,18 +4,6 @@
 namespace tradungeon
 {
 
-struct Point
-{
-    int m_x;
-    int m_y;
-
-    Point& operator+=(const Point& other);
-    Point& operator-=(const Point& other);
-
-    Point operator+(const Point& other) const;
-    Point operator-(const Point& other) const;
-};
-
 struct Size
 {
     int m_width;
@@ -26,6 +14,22 @@ struct Size
 
     Size operator+(const Size& other) const;
     Size operator-(const Size& other) const;
+
+    int area() const;
+};
+
+struct Point
+{
+    int m_x;
+    int m_y;
+
+    Point& operator+=(const Point& other);
+    Point& operator-=(const Point& other);
+
+    Point operator+(const Point& other) const;
+    Point operator-(const Point& other) const;
+
+    bool isInside(const Size& boundary) const;
 };
 
 struct Viewport

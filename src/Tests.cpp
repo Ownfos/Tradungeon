@@ -5,15 +5,22 @@
 #include "UIManager.h"
 #include "MessageLogViewer.h"
 #include "Event.h"
+#include "Array2D.h"
 #include <iostream>
 #include <numeric>
 
 namespace tradungeon::test
 {
 
-TestUI::TestUI(const Viewport& viewport)
-    : UI(viewport)
+TestUI::TestUI(const Viewport& viewport, int id)
+    : UI(viewport), m_id(id)
 {}
+
+bool TestUI::onInput(int keycode)
+{
+    std::cout << "UI #" << m_id << " received input " << keycode << std::endl;
+    return false;
+}
 
 void TestUI::onRender(TextBuffer& console)
 {
@@ -265,11 +272,17 @@ void test_ui()
 {
     auto console = TextBuffer({80, 25});
     auto ui_manager = UIManager();
-    ui_manager.push(std::make_shared<TestUI>(Viewport{{0, 0}, {80, 25}}));
-    ui_manager.push(std::make_shared<TestUI>(Viewport{{5, 10}, {5, 5}}));
+    ui_manager.push(std::make_shared<TestUI>(Viewport{{0, 0}, {80, 25}}, 1));
+    ui_manager.push(std::make_shared<TestUI>(Viewport{{5, 10}, {5, 5}}, 2));
+    
     ui_manager.render(console);
+    ui_manager.handleInput(12345);
+    std::cout << console.getContent();
+
     ui_manager.pop();
     ui_manager.render(console);
+    ui_manager.handleInput(12345);
+    std::cout << console.getContent();
 }
 
 void test_message_log()
@@ -352,6 +365,18 @@ void test_render_loop()
         // Wait for input
         console.getKey();
     }
+}
+
+void test_array2d()
+{
+    auto arr1 = Array2D<int>({2, 5});
+    arr1[{0, 1}] = 12345;
+    std::cout << arr1[{0, 0}] << " " << arr1[{0, 1}] << std::endl;
+    arr1.fill(777);
+    std::cout << arr1[{0, 0}] << " " << arr1[{0, 1}] << std::endl;
+
+    auto arr2 = Array2D<char>({3, 3}, '#');
+    std::cout << arr2[{2, 0}] << " " << arr2[{1, 2}] << std::endl;
 }
 
 } // namespace tradungeon::test

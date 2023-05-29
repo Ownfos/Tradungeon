@@ -16,7 +16,8 @@ int main()
         // test_message_log();
         // test_message_log_viewer();
         // test_events();
-        test_render_loop();
+        // test_render_loop();
+        test_array2d();
     }
     catch(const std::exception& e)
     {
