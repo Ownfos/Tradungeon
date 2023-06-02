@@ -41,6 +41,11 @@ public:
         std::fill(m_data.begin(), m_data.end(), value);
     }
 
+    Size size() const
+    {
+        return m_size;
+    }
+
 private:
     Size m_size;
     std::vector<T> m_data;

@@ -13,10 +13,11 @@ namespace tradungeon
 class Random
 {
 public:
-    // Returns a random integer in half-closed interval using uniform distribution.
-    // Min value: begin
-    // Max value: end - 1
+    // Returns a random integer in an interval [begin, end) using uniform distribution.
     static int range(int begin, int end);
+
+    // Returns a random real number in an inverval [begin, end) using uniform distribution.
+    static double range(double begin, double end);
 
     static std::vector<int> sample_indices(int num_elements, int n);
 

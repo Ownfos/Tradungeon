@@ -379,4 +379,9 @@ void test_array2d()
     std::cout << arr2[{2, 0}] << " " << arr2[{1, 2}] << std::endl;
 }
 
+void test_map_generation()
+{
+    auto map = Map({80, 25});
+}
+
 } // namespace tradungeon::test

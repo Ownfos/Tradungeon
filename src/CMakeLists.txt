@@ -11,6 +11,8 @@ add_executable(tradungeon
     MessageLog.cpp
     MessageLogViewer.cpp
     Game.cpp
+    Map.cpp
+    DiamondSquare.cpp
 )
 
 target_include_directories(tradungeon PUBLIC ${CMAKE_SOURCE_DIR}/include)

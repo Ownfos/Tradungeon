@@ -4,6 +4,7 @@
 
 #include "Market.h"
 #include "UI.h"
+#include "Map.h"
 #include <vector>
 #include <string>
 
@@ -21,6 +22,7 @@ void test_message_log_viewer();
 void test_events();
 void test_render_loop();
 void test_array2d();
+void test_map_generation();
 
 struct Preference
 {
