@@ -15,6 +15,8 @@ struct Size
     Size operator+(const Size& other) const;
     Size operator-(const Size& other) const;
 
+    bool operator==(const Size& other) const;
+
     int area() const;
 };
 
@@ -28,6 +30,8 @@ struct Point
 
     Point operator+(const Point& other) const;
     Point operator-(const Point& other) const;
+
+    bool operator==(const Point& other) const;
 
     bool isInside(const Size& boundary) const;
 };

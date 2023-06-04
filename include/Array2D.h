@@ -36,6 +36,16 @@ public:
         return m_data[indices.m_x * m_size.m_height + indices.m_y];
     }
 
+    const T& operator[](const Point& indices) const
+    {
+        if (!indices.isInside(m_size))
+        {
+            throw std::exception("Index out of range");
+        }
+
+        return m_data[indices.m_x * m_size.m_height + indices.m_y];
+    }
+
     void fill(const T& value)
     {
         std::fill(m_data.begin(), m_data.end(), value);

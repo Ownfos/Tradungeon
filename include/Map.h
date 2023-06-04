@@ -8,12 +8,14 @@ namespace tradungeon
 
 enum class Tile : char
 {
-    Water = '~',
-    Mud = '/',
+    Water = '/',
+    Mud = 'm',
     Dirt = '-',
-    Rock = '#',
-    OreVein = '$',
-    Lava = '+'
+    Rock = '+',
+    OreVein = '?',
+    Lava = 'L',
+    Wall = '#',
+    Empty = ' '
 };
 
 class Map
@@ -21,7 +23,11 @@ class Map
 public:
     Map(const Size& size);
 
+    Size size() const;
+    Tile tileset(const Point& pos) const;
+
     void reset();
+    void groupSimilarTileset(int threshold);
 
 private:
     Array2D<Tile> m_tiles;

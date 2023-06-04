@@ -22,10 +22,10 @@ bool TestUI::onInput(int keycode)
     return false;
 }
 
-void TestUI::onRender(TextBuffer& console)
+void TestUI::onRender(TextBuffer& buffer)
 {
-    renderChar(console, '@', {0, 0});
-    renderString(console, "hahahoho", {{1,1},{3,3}});
+    renderChar(buffer, '@', {0, 0});
+    renderString(buffer, "hahahoho", {{1,1},{3,3}});
 }
 
 void test_random()
@@ -381,7 +381,26 @@ void test_array2d()
 
 void test_map_generation()
 {
-    auto map = Map({80, 25});
+    auto print_map = [](const auto& map){
+        auto [width, height] = map.size();
+        for (int y=0; y<height; ++y)
+        {
+            for (int x=0; x<width; ++x)
+            {
+                std::cout << static_cast<char>(map.tileset({x, y}));
+            }
+            std::cout << "\n";
+        }
+        std::cout << "\n";
+    };
+
+    auto map = Map({100, 400});
+    print_map(map);
+
+    // map.groupSimilarTileset(6);
+    map.groupSimilarTileset(5);
+
+    print_map(map);
 }
 
 } // namespace tradungeon::test

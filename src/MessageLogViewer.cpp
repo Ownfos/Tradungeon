@@ -8,7 +8,7 @@ MessageLogViewer::MessageLogViewer(
     int max_buffer_size
 )
     : UI(viewport),
-    m_msg_viewport(Viewport{{1, 1}, viewport.m_size - Size{2, 2}}),
+    m_msg_viewport(Viewport{{2, 2}, viewport.m_size - Size{4, 4}}),
     m_msg_log(Size{m_msg_viewport.m_size.m_width, max_buffer_size})
 {}
 
@@ -18,11 +18,11 @@ bool MessageLogViewer::onInput(int keycode)
     return false;
 }
 
-void MessageLogViewer::onRender(TextBuffer& console)
+void MessageLogViewer::onRender(TextBuffer& buffer)
 {
     auto num_available_lines = m_msg_log.size() - m_offset;
     auto msg = m_msg_log.getLines(m_offset, num_available_lines);
-    renderString(console, msg, m_msg_viewport);
+    renderString(buffer, msg, m_msg_viewport);
 }
 
 void MessageLogViewer::push(const std::string& message)

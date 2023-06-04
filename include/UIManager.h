@@ -25,8 +25,8 @@ public:
     // Cascade input through UI stack.
     void handleInput(int keycode);
 
-    // Renders all existing UI to the console.
-    void render(TextBuffer& console);
+    // Renders all existing UI to the buffer.
+    void render(TextBuffer& buffer);
 
 private:
     std::vector<std::shared_ptr<UI>> m_ui_stack;

@@ -11,17 +11,24 @@ class UI
 {
 public:
     UI(const Viewport& viewport);
+
+    // Prevent object slicing.
+    UI(const UI&) = delete;
+    UI(UI&&) = delete;
+    UI& operator=(const UI&) = delete;
+    UI& operator=(UI&&) = delete;
+
     virtual ~UI() = default;
 
     virtual bool onInput(int keycode) = 0;
-    virtual void onRender(TextBuffer& console) = 0;
+    virtual void onRender(TextBuffer& buffer) = 0;
 
-    void clear(TextBuffer& console, char boundary, char background);
-    void renderChar(TextBuffer& console, char ch, const Point& rel_pos);
-    void renderString(TextBuffer& console, std::string_view str, const Viewport& rel_viewport);
+    void clear(TextBuffer& buffer, char boundary, char background);
+    void renderChar(TextBuffer& buffer, char ch, const Point& rel_pos);
+    void renderString(TextBuffer& buffer, std::string_view str, const Viewport& rel_viewport);
 
-private:
-    Viewport m_viewport;
+protected:
+    const Viewport m_viewport;
 };
 
 } // namespace tradungeon

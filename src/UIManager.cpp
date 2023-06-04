@@ -26,12 +26,12 @@ void UIManager::handleInput(int keycode)
     }
 }
 
-void UIManager::render(TextBuffer& console)
+void UIManager::render(TextBuffer& buffer)
 {
     for (auto& ui : m_ui_stack)
     {
-        ui->clear(console, '#', ' ');
-        ui->onRender(console);
+        ui->clear(buffer, '#', ' ');
+        ui->onRender(buffer);
     }
 }
 
