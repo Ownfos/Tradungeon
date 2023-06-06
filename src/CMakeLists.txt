@@ -15,6 +15,7 @@ add_executable(tradungeon
     DiamondSquare.cpp
     Player.cpp
     MapViewer.cpp
+    EventMediator.cpp
 )
 
 target_include_directories(tradungeon PUBLIC ${CMAKE_SOURCE_DIR}/include)

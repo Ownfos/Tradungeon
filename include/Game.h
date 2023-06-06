@@ -1,6 +1,7 @@
 #ifndef TRADUNGEON_GAME_H
 #define TRADUNGEON_GAME_H
 
+#include "Event.h"
 #include "UIManager.h"
 #include "TextBuffer.h"
 #include "MessageLogViewer.h"

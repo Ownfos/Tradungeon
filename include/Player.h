@@ -13,7 +13,7 @@ public:
 
     Point position() const;
 
-public:
+private:
     Point m_pos;
 };
 

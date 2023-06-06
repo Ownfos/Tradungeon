@@ -8,11 +8,11 @@ namespace tradungeon
 
 enum class Tile : char
 {
-    Water = '/',
-    Mud = 'm',
-    Dirt = '-',
-    Rock = '+',
-    OreVein = '?',
+    Water = '~',
+    Mud = '/',
+    Dirt = ' ',
+    Rock = '`',
+    OreVein = '^',
     Lava = 'L',
     Wall = '#',
     Empty = ' '
@@ -25,6 +25,8 @@ public:
 
     Size size() const;
     Tile tileset(const Point& pos) const;
+
+    bool isMovable(const Point& pos) const;
 
     void reset();
     void groupSimilarTileset(int threshold);

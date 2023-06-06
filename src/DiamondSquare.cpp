@@ -55,14 +55,20 @@ void squareStep(Array2D<double>& map, const Point& pos, int patch_size, double r
     map[pos] = avg + Random::range(-rand_range, rand_range);
 }
 
-Array2D<double> diamondSquare(int num_edge, double initial_value, double rand_range, double rand_decay)
+Array2D<double> diamondSquare(int num_edge, double bias, double rand_range, double rand_decay)
 {
     if (!isPowerOfTwo(num_edge))
     {
         throw std::exception("There should be 2^n edges");
     }
 
-    auto ret = Array2D<double>({num_edge + 1, num_edge + 1}, initial_value);
+    // Initialize map with random corners.
+    auto ret = Array2D<double>({num_edge + 1, num_edge + 1});
+    ret[{0, 0}] = bias + Random::range(-rand_range, rand_range);
+    ret[{num_edge, 0}] = bias + Random::range(-rand_range, rand_range);
+    ret[{0, num_edge}] = bias + Random::range(-rand_range, rand_range);
+    ret[{num_edge, num_edge}] = bias + Random::range(-rand_range, rand_range);
+
     for (int patch_size = num_edge; patch_size > 1; patch_size /= 2)
     {
         // Diamond step

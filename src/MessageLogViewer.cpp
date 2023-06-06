@@ -1,4 +1,5 @@
 #include "MessageLogViewer.h"
+#include "EventMediator.h"
 
 namespace tradungeon
 {
@@ -10,7 +11,14 @@ MessageLogViewer::MessageLogViewer(
     : UI(viewport),
     m_msg_viewport(Viewport{{2, 2}, viewport.m_size - Size{4, 4}}),
     m_msg_log(Size{m_msg_viewport.m_size.m_width, max_buffer_size})
-{}
+{
+    // Grab every message logging event and show the content.
+    // Since a unique MessageLogViewer instance exists throughout the game,
+    // removing callback on instance destruction is not necessary.
+    EventMediator::m_on_message.addCallback([this](const std::string& message){
+        push(message);
+    });
+}
 
 bool MessageLogViewer::onInput(int keycode)
 {
@@ -24,7 +32,7 @@ void MessageLogViewer::onRender(TextBuffer& buffer)
     auto msg = m_msg_log.getLines(m_offset, num_available_lines);
     renderString(buffer, msg, m_msg_viewport);
 }
-
+ 
 void MessageLogViewer::push(const std::string& message)
 {
     m_msg_log.push(message);

@@ -8,7 +8,7 @@ namespace tradungeon
 {
 
 template<typename T>
-using EventCallback = std::function<void(const T&)>;
+using EventCallback = std::function<void(T)>;
 
 template<typename EventInfo>
 class Event

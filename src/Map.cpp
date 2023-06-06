@@ -22,6 +22,20 @@ Tile Map::tileset(const Point& pos) const
     return m_tiles[pos];
 }
 
+bool Map::isMovable(const Point& pos) const
+{
+    switch(tileset(pos))
+    {
+    case Tile::Lava:
+    case Tile::Wall:
+    case Tile::Empty:
+        return false;
+        
+    default:
+        return true;
+    }
+}
+
 void Map::reset()
 {
 

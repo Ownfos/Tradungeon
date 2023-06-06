@@ -43,10 +43,10 @@ void diamondStep(Array2D<double>& map, const Point& pos, int patch_size, double 
 void squareStep(Array2D<double>& map, const Point& pos, int patch_size, double rand_range);
 
 // Generates a random heightmap where # vertices = edge_length + 1.
-// Four corners are initialized with initial_value.
-// Each inner points are randomized with average value plus random value in range [-rand_range, +rand_range].
+// Four corners are initialized with bias plus random value in range [-rand_range, +rand_range].
+// Each inner points are randomized with average value plus random value.
 // The randomness decreases exponentially, multiplying rand_decay to rand_range after an interation.
-Array2D<double> diamondSquare(int edge_length, double initial_value, double rand_range, double rand_decay);
+Array2D<double> diamondSquare(int edge_length, double bias, double rand_range, double rand_decay);
 
 } // namespace tradungeon
 

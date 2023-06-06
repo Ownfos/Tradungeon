@@ -1,4 +1,8 @@
 #include "MapViewer.h"
+#include "EventMediator.h"
+#include <map>
+
+using namespace std::string_literals;
 
 namespace tradungeon
 {
@@ -9,29 +13,32 @@ MapViewer::MapViewer(const Viewport& viewport, Map* map, Player* player)
 
 bool MapViewer::onInput(int keycode)
 {
-    if (keycode == 'D')
+    if ("WASD"s.find(keycode) != std::string::npos)
     {
-        m_player->m_pos.m_x++;
+        auto direction = std::map<char, Point>{
+            {'W', {0, -1}},
+            {'A', {-1, 0}},
+            {'S', {0, 1}},
+            {'D', {1, 0}},
+        };
+        auto new_pos = m_player->position() + direction[keycode];
+        if (m_map->isMovable(new_pos))
+        {
+            EventMediator::m_on_player_move.signal(new_pos);
+            return true;
+        }
     }
-    if (keycode == 'A')
-    {
-        m_player->m_pos.m_x--;
-    }
-    if (keycode == 'W')
-    {
-        m_player->m_pos.m_y--;
-    }
-    if (keycode == 'S')
-    {
-        m_player->m_pos.m_y++;
-    }
-    if (keycode == 'R')
+    else if (keycode == 'R')
     {
         m_map->reset();
+        EventMediator::m_on_message.signal("reset map");
+        return true;
     }
-    if (keycode == 'G')
+    else if (keycode == 'G')
     {
         m_map->groupSimilarTileset(6);
+        EventMediator::m_on_message.signal("group similar tiles");
+        return true;
     }
     return false;
 }
@@ -58,7 +65,7 @@ void MapViewer::onRender(TextBuffer& buffer)
             if (viewport_coord == viewport_center)
             {
                 // Draw player at the center.
-                buffer.renderChar('P', viewport_coord);
+                buffer.renderChar('@', viewport_coord);
             }
             else
             {

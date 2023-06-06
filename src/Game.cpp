@@ -5,8 +5,8 @@ namespace tradungeon
 
 Game::Game()
     : m_buffer({120, 25}),
-    m_map({100, 100}),
-    m_player({50, 50}),
+    m_map({1000, 1000}),
+    m_player({500, 500}),
     m_msg_log_viewer(std::make_shared<MessageLogViewer>(Viewport{{80, 0}, {40, 25}}, 50)),
     m_map_viewer(std::make_shared<MapViewer>(Viewport{{0, 0}, {80, 25}}, &m_map, &m_player))
 {
