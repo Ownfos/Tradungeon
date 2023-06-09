@@ -7,7 +7,7 @@ namespace tradungeon
 {
 
 Map::Map(const Size& size)
-    : m_tiles(size)
+    : m_tiles(size), m_interactables(size)
 {
     reset();
 }
@@ -20,6 +20,26 @@ Size Map::size() const
 Tile Map::tileset(const Point& pos) const
 {
     return m_tiles[pos];
+}
+
+const std::vector<std::shared_ptr<Interactable>>& Map::interactables(const Point& pos) const
+{
+    return m_interactables[pos];
+}
+
+void Map::addInteractable(const Point& pos, std::shared_ptr<Interactable> interactable)
+{
+    m_interactables[pos].push_back(interactable);
+}
+
+void Map::removeInteractable(const Point& pos, Interactable* interactable)
+{
+    auto is_same = [interactable](const std::shared_ptr<Interactable>& ptr){
+        return ptr.get() == interactable;
+    };
+
+    auto& v = m_interactables[pos];
+    v.erase(std::remove_if(v.begin(), v.end(), is_same), v.end());
 }
 
 bool Map::isMovable(const Point& pos) const

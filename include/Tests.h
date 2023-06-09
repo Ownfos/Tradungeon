@@ -23,6 +23,7 @@ void test_events();
 void test_render_loop();
 void test_array2d();
 void test_map_generation();
+void test_interactable();
 
 struct Preference
 {
@@ -66,6 +67,30 @@ public:
 
 private:
     int m_id;
+};
+
+class TestAction : public Action
+{
+public:
+    TestAction(std::string&& description);
+
+    virtual void execute() override;
+    virtual std::string description() const override;
+
+private:
+    std::string m_description;
+};
+
+class TestInteractable : public Interactable
+{
+public:
+    TestInteractable(std::string&& description);
+
+    virtual std::string description() const override;
+    virtual std::vector<std::shared_ptr<Action>> availableActions() const override;
+    
+private:
+    std::string m_description;
 };
 
 } // namespace tradungeon::test

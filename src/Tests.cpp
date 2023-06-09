@@ -6,6 +6,7 @@
 #include "window/MessageLogWindow.h"
 #include "Event.h"
 #include "Array2D.h"
+#include "interactable/Interactable.h"
 #include <iostream>
 #include <numeric>
 
@@ -26,6 +27,38 @@ void TestUI::onRender(TextBuffer& buffer)
 {
     renderChar(buffer, '@', {0, 0});
     renderString(buffer, "hahahoho", {{1,1},{3,3}});
+}
+
+TestAction::TestAction(std::string&& description)
+    : m_description(std::move(description))
+{}
+
+void TestAction::execute()
+{
+    std::cout << "executed action: " << m_description << std::endl;
+}
+
+std::string TestAction::description() const
+{
+    return m_description;
+}
+
+TestInteractable::TestInteractable(std::string&& description)
+    : m_description(std::move(description))
+{}
+
+std::string TestInteractable::description() const
+{
+    return m_description;
+}
+
+std::vector<std::shared_ptr<Action>> TestInteractable::availableActions() const
+{
+    return {
+        std::make_shared<TestAction>("talk"),
+        std::make_shared<TestAction>("attack"),
+        std::make_shared<TestAction>("flee")
+    };
 }
 
 void test_random()
@@ -401,6 +434,33 @@ void test_map_generation()
     map.groupSimilarTileset(5);
 
     print_map(map);
+}
+
+void test_interactable()
+{
+    auto map = Map({10, 10});
+
+    auto jack = std::make_shared<TestInteractable>("Jack");
+    auto robinson = std::make_shared<TestInteractable>("Robinson");
+
+    map.addInteractable({1, 1}, jack);
+    map.addInteractable({1, 1}, robinson);
+
+    for (const auto& interactable : map.interactables({1, 1}))
+    {
+        std::cout << interactable->description() << std::endl;
+        for (const auto& action : interactable->availableActions())
+        {
+            std::cout << action->description() << std::endl;
+        }
+    }
+
+    map.removeInteractable({1, 1}, jack.get());
+
+    for (const auto& interactable : map.interactables({1, 1}))
+    {
+        std::cout << interactable->description() << std::endl;
+    }
 }
 
 } // namespace tradungeon::test

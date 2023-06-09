@@ -22,6 +22,8 @@ int main()
         // test_render_loop();
         // test_array2d();
         // test_map_generation();
+        test_interactable();
+        return 0;
 
         auto console = Console();
         auto game = Game();
