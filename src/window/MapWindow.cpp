@@ -1,4 +1,4 @@
-#include "MapViewer.h"
+#include "window/MapWindow.h"
 #include "EventMediator.h"
 #include <map>
 
@@ -7,11 +7,11 @@ using namespace std::string_literals;
 namespace tradungeon
 {
 
-MapViewer::MapViewer(const Viewport& viewport, Map* map, Player* player)
-    : UI(viewport), m_map(map), m_player(player)
+MapWindow::MapWindow(const Viewport& viewport, Map* map, Player* player)
+    : Window(viewport), m_map(map), m_player(player)
 {}
 
-bool MapViewer::onInput(int keycode)
+bool MapWindow::onInput(int keycode)
 {
     if ("WASD"s.find(keycode) != std::string::npos)
     {
@@ -43,7 +43,7 @@ bool MapViewer::onInput(int keycode)
     return false;
 }
 
-void MapViewer::onRender(TextBuffer& buffer)
+void MapWindow::onRender(TextBuffer& buffer)
 {
     // The position where player icon should be rendered.
     const auto viewport_center = Point{
@@ -51,7 +51,7 @@ void MapViewer::onRender(TextBuffer& buffer)
         m_viewport.m_size.m_height / 2
     };
 
-    // Giving distance between map and the UI boundary
+    // Giving distance between map and the Window boundary
     // improves overall visibility by hugh factor!
     constexpr auto horizontals_padding = 4;
     constexpr auto vertical_padding = 2;

@@ -1,7 +1,7 @@
 #ifndef TRADUNGEON_MESSAGE_LOG_VIEWER_H
 #define TRADUNGEON_MESSAGE_LOG_VIEWER_H
 
-#include "UI.h"
+#include "window/Window.h"
 #include "MessageLog.h"
 
 namespace tradungeon
@@ -14,10 +14,10 @@ namespace tradungeon
 //
 // The message log's buffer width will be 2 tiles smaller than the UI's viewport
 // because we don't want to overwrite the boundary.
-class MessageLogViewer : public UI
+class MessageLogWindow : public Window
 {
 public:
-    MessageLogViewer(
+    MessageLogWindow(
         const Viewport& viewport,
         int max_buffer_size
     );

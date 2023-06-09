@@ -1,17 +1,17 @@
 #ifndef TRADUNGEON_MAP_VIEWER_H
 #define TRADUNGEON_MAP_VIEWER_H
 
-#include "UI.h"
+#include "window/Window.h"
 #include "Map.h"
 #include "Player.h"
 
 namespace tradungeon
 {
 
-class MapViewer : public UI
+class MapWindow : public Window
 {
 public:
-    MapViewer(const Viewport& viewport, Map* map, Player* player);
+    MapWindow(const Viewport& viewport, Map* map, Player* player);
 
     virtual bool onInput(int keycode) override;
     virtual void onRender(TextBuffer& console) override;

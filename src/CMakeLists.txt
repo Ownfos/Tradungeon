@@ -6,16 +6,17 @@ add_executable(tradungeon
     Tests.cpp
     Random.cpp
     Common.cpp
-    UIManager.cpp
-    UI.cpp
     MessageLog.cpp
-    MessageLogViewer.cpp
     Game.cpp
     Map.cpp
     DiamondSquare.cpp
     Player.cpp
-    MapViewer.cpp
     EventMediator.cpp
+    Inventory.cpp
+    window/Window.cpp
+    window/WindowManager.cpp
+    window/MapWindow.cpp
+    window/MessageLogWindow.cpp
 )
 
 target_include_directories(tradungeon PUBLIC ${CMAKE_SOURCE_DIR}/include)

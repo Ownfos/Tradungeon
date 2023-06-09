@@ -7,18 +7,18 @@
 namespace tradungeon
 {
 
-class UI
+class Window
 {
 public:
-    UI(const Viewport& viewport);
+    Window(const Viewport& viewport);
 
     // Prevent object slicing.
-    UI(const UI&) = delete;
-    UI(UI&&) = delete;
-    UI& operator=(const UI&) = delete;
-    UI& operator=(UI&&) = delete;
+    Window(const Window&) = delete;
+    Window(Window&&) = delete;
+    Window& operator=(const Window&) = delete;
+    Window& operator=(Window&&) = delete;
 
-    virtual ~UI() = default;
+    virtual ~Window() = default;
 
     virtual bool onInput(int keycode) = 0;
     virtual void onRender(TextBuffer& buffer) = 0;

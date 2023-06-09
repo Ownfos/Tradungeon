@@ -2,8 +2,8 @@
 #include "TextBuffer.h"
 #include "Console.h"
 #include "Random.h"
-#include "UIManager.h"
-#include "MessageLogViewer.h"
+#include "window/WindowManager.h"
+#include "window/MessageLogWindow.h"
 #include "Event.h"
 #include "Array2D.h"
 #include <iostream>
@@ -13,12 +13,12 @@ namespace tradungeon::test
 {
 
 TestUI::TestUI(const Viewport& viewport, int id)
-    : UI(viewport), m_id(id)
+    : Window(viewport), m_id(id)
 {}
 
 bool TestUI::onInput(int keycode)
 {
-    std::cout << "UI #" << m_id << " received input " << keycode << std::endl;
+    std::cout << "Window #" << m_id << " received input " << keycode << std::endl;
     return false;
 }
 
@@ -271,7 +271,7 @@ void test_price_fluctuation()
 void test_ui()
 {
     auto console = TextBuffer({80, 25});
-    auto ui_manager = UIManager();
+    auto ui_manager = WindowManager();
     ui_manager.push(std::make_shared<TestUI>(Viewport{{0, 0}, {80, 25}}, 1));
     ui_manager.push(std::make_shared<TestUI>(Viewport{{5, 10}, {5, 5}}, 2));
     
@@ -305,8 +305,8 @@ void test_message_log()
 void test_message_log_viewer()
 {
     auto buffer = TextBuffer({80, 5});
-    auto ui_manager = UIManager();
-    auto msg_viewer = std::make_shared<MessageLogViewer>(Viewport{{0, 0}, {80, 5}}, 20);
+    auto ui_manager = WindowManager();
+    auto msg_viewer = std::make_shared<MessageLogWindow>(Viewport{{0, 0}, {80, 5}}, 20);
 
     ui_manager.push(msg_viewer);
     ui_manager.render(buffer);

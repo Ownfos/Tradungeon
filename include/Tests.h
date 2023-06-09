@@ -3,7 +3,7 @@
 #define TRADUNGEON_TESTS_H
 
 #include "Market.h"
-#include "UI.h"
+#include "window/Window.h"
 #include "Map.h"
 #include <vector>
 #include <string>
@@ -56,7 +56,7 @@ struct MarketSimulator
     Market m_market;
 };
 
-class TestUI : public UI
+class TestUI : public Window
 {
 public:
     TestUI(const Viewport& viewport, int id);

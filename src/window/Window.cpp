@@ -1,13 +1,13 @@
-#include "UI.h"
+#include "window/Window.h"
 
 namespace tradungeon
 {
 
-UI::UI(const Viewport& viewport)
+Window::Window(const Viewport& viewport)
     : m_viewport(viewport)
 {}
 
-void UI::clear(TextBuffer& buffer, char boundary, char background)
+void Window::clear(TextBuffer& buffer, char boundary, char background)
 {
     buffer.fill(background, m_viewport);
 
@@ -23,7 +23,7 @@ void UI::clear(TextBuffer& buffer, char boundary, char background)
     buffer.fill(boundary, right);
 }
 
-void UI::renderChar(TextBuffer& buffer, char ch, const Point& pos)
+void Window::renderChar(TextBuffer& buffer, char ch, const Point& pos)
 {
     auto abs_pos = pos + m_viewport.m_offset;
 
@@ -32,7 +32,7 @@ void UI::renderChar(TextBuffer& buffer, char ch, const Point& pos)
     buffer.renderChar(ch, abs_pos);
 }
 
-void UI::renderString(TextBuffer& buffer, std::string_view str, const Viewport& rel_viewport)
+void Window::renderString(TextBuffer& buffer, std::string_view str, const Viewport& rel_viewport)
 {
     auto abs_viewport = rel_viewport;
     abs_viewport.m_offset += m_viewport.m_offset;

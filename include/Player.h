@@ -2,6 +2,7 @@
 #define TRADUNGEON_PLAYER_H
 
 #include "Common.h"
+#include "Inventory.h"
 
 namespace tradungeon
 {
@@ -15,6 +16,7 @@ public:
 
 private:
     Point m_pos;
+    Inventory inventory;
 };
 
 } // namespace tradungeon

@@ -2,10 +2,10 @@
 #define TRADUNGEON_GAME_H
 
 #include "Event.h"
-#include "UIManager.h"
 #include "TextBuffer.h"
-#include "MessageLogViewer.h"
-#include "MapViewer.h"
+#include "window/WindowManager.h"
+#include "window/MessageLogWindow.h"
+#include "window/MapWindow.h"
 #include <memory>
 
 namespace tradungeon
@@ -21,11 +21,11 @@ public:
 
 private:
     TextBuffer m_buffer;
-    UIManager m_ui_manager;
+    WindowManager m_window_manager;
     Map m_map;
     Player m_player;
-    std::shared_ptr<MessageLogViewer> m_msg_log_viewer;
-    std::shared_ptr<MapViewer> m_map_viewer;
+    std::shared_ptr<MessageLogWindow> m_msg_log_window;
+    std::shared_ptr<MapWindow> m_map_window;
 };
 
 } // namespace tradungeon
