@@ -9,9 +9,8 @@ namespace tradungeon
 class Item : public Interactable
 {
 public:
-    virtual std::string name() = 0;
-    virtual int quantity() = 0;
-    virtual int unit_weight() = 0;
+    virtual int id() const = 0;
+    virtual int weight() const = 0;
 };
 
 

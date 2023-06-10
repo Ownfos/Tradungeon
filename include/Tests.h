@@ -3,8 +3,9 @@
 #define TRADUNGEON_TESTS_H
 
 #include "Market.h"
-#include "window/Window.h"
 #include "Map.h"
+#include "window/Window.h"
+#include "interactable/Item.h"
 #include <vector>
 #include <string>
 
@@ -24,6 +25,7 @@ void test_render_loop();
 void test_array2d();
 void test_map_generation();
 void test_interactable();
+void test_inventory();
 
 struct Preference
 {
@@ -91,6 +93,22 @@ public:
     
 private:
     std::string m_description;
+};
+
+class TestItem : public tradungeon::Item
+{
+public:
+    TestItem(std::string name, int id, int weight);
+
+    virtual int id() const override;
+    virtual int weight() const override;
+    virtual std::string description() const override;
+    virtual std::vector<std::shared_ptr<Action>> availableActions() const override;
+
+private:
+    std::string m_name;
+    int m_id;
+    int m_weight;
 };
 
 } // namespace tradungeon::test

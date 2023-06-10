@@ -22,7 +22,8 @@ int main()
         // test_render_loop();
         // test_array2d();
         // test_map_generation();
-        test_interactable();
+        // test_interactable();
+        test_inventory();
         return 0;
 
         auto console = Console();

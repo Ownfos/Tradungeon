@@ -7,6 +7,7 @@
 #include "Event.h"
 #include "Array2D.h"
 #include "interactable/Interactable.h"
+#include "Inventory.h"
 #include <iostream>
 #include <numeric>
 
@@ -58,6 +59,33 @@ std::vector<std::shared_ptr<Action>> TestInteractable::availableActions() const
         std::make_shared<TestAction>("talk"),
         std::make_shared<TestAction>("attack"),
         std::make_shared<TestAction>("flee")
+    };
+}
+
+TestItem::TestItem(std::string name, int id, int weight)
+    : m_name(name), m_id(id), m_weight(weight)
+{}
+
+int TestItem::id() const
+{
+    return m_id;
+}
+
+int TestItem::weight() const
+{
+    return m_weight;
+}
+
+std::string TestItem::description() const
+{
+    return m_name;
+}
+
+std::vector<std::shared_ptr<Action>> TestItem::availableActions() const
+{
+    return {
+        std::make_shared<TestAction>("Use"),
+        std::make_shared<TestAction>("Throw")
     };
 }
 
@@ -461,6 +489,38 @@ void test_interactable()
     {
         std::cout << interactable->description() << std::endl;
     }
+}
+
+void test_inventory()
+{
+    auto inventory = Inventory();
+    auto print_inventory = [&](){
+        std::cout << "Net weight: " << inventory.netWeight() << std::endl;
+        for (auto& [id, slot] : inventory.slots())
+        {
+            std::cout << slot.m_item->description() << " (x" << slot.m_quantity << ") - " << slot.m_item->weight() * slot.m_quantity << std::endl;
+            for (auto& action : slot.m_item->availableActions())
+            {
+                std::cout << action->description() << std::endl;
+            }
+        }
+        std::cout << std::endl;
+    };
+
+    auto apple = std::make_shared<TestItem>("Apple", 1, 4);
+    auto potion = std::make_shared<TestItem>("Potion", 2, 20);
+
+    print_inventory();
+
+    inventory.addItem(apple, 50);
+    inventory.addItem(potion, 3);
+    print_inventory();
+
+    inventory.removeItem(apple.get(), 20);
+    print_inventory();
+
+    inventory.removeItem(potion.get(), 3);
+    print_inventory();
 }
 
 } // namespace tradungeon::test
