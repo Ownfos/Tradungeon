@@ -3,6 +3,7 @@
 
 #include "Event.h"
 #include "Common.h"
+#include "interactable/Item.h"
 #include <string>
 
 namespace tradungeon
@@ -20,6 +21,12 @@ struct EventMediator
 {
     static Event<const std::string&> m_on_message;
     static Event<const Point&> m_on_player_move;
+
+    // Move item from inventory to map.
+    static Event<const ItemBundle&> m_on_item_drop;
+    
+    // Move item from map to inventory.
+    static Event<const ItemBundle&> m_on_item_loot;
 };
 
 } // namespace tradungeon

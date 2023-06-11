@@ -6,8 +6,9 @@
 #include "window/MessageLogWindow.h"
 #include "Event.h"
 #include "Array2D.h"
-#include "interactable/Interactable.h"
+#include "interactable/DroppedItem.h"
 #include "Inventory.h"
+#include "EventMediator.h"
 #include <iostream>
 #include <numeric>
 
@@ -507,19 +508,36 @@ void test_inventory()
         std::cout << std::endl;
     };
 
+    // Test indivitual function.
     auto apple = std::make_shared<TestItem>("Apple", 1, 4);
     auto potion = std::make_shared<TestItem>("Potion", 2, 20);
 
     print_inventory();
 
-    inventory.addItem(apple, 50);
-    inventory.addItem(potion, 3);
+    inventory.addItem({apple, 50});
+    inventory.addItem({potion, 3});
     print_inventory();
 
-    inventory.removeItem(apple.get(), 20);
+    inventory.removeItem({apple, 20});
     print_inventory();
 
-    inventory.removeItem(potion.get(), 3);
+    inventory.removeItem({potion, 3});
+    print_inventory();
+
+    // Prepare a scenario that simulates Map and its controller.
+    EventMediator::m_on_item_loot.addCallback([&](const ItemBundle& bundle){
+        inventory.addItem(bundle);
+    });
+
+    auto dropped_apple = std::make_shared<DroppedItem>(ItemBundle{potion, 4});
+    std::cout << dropped_apple->description() << std::endl;
+    for (auto& action : dropped_apple->availableActions())
+    {
+        std::cout << action->description() << std::endl;
+    }
+    std::cout << std::endl;
+
+    dropped_apple->availableActions().back()->execute(); // Loot everything.
     print_inventory();
 }
 

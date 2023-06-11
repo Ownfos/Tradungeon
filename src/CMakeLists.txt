@@ -13,6 +13,10 @@ add_executable(tradungeon
     Player.cpp
     EventMediator.cpp
     Inventory.cpp
+    interactable/Item.cpp
+    interactable/DroppedItem.cpp
+    action/ItemDropAction.cpp
+    action/ItemLootAction.cpp
     window/Window.cpp
     window/WindowManager.cpp
     window/MapWindow.cpp
