@@ -1,8 +1,9 @@
-#ifndef TRADUNGEON_MESSAGE_LOG_VIEWER_H
-#define TRADUNGEON_MESSAGE_LOG_VIEWER_H
+#ifndef TRADUNGEON_MESSAGE_LOG_WINDOW_H
+#define TRADUNGEON_MESSAGE_LOG_WINDOW_H
 
 #include "window/Window.h"
 #include "MessageLog.h"
+#include "ScrollView.h"
 
 namespace tradungeon
 {
@@ -28,12 +29,14 @@ public:
     void push(const std::string& message);
     void scrollUp();
     void scrollDown();
-    void scrollToBottom();
+    void scrollBottom();
 
 private:
     Viewport m_msg_viewport;
     MessageLog m_msg_log;
-    int m_offset = 0;
+
+    // We start from empty message log, so there's nothing to show.
+    ScrollView m_scroll_view = ScrollView(0, 0);
 };
 
 } // namespace tradungeon

@@ -1,5 +1,5 @@
-#ifndef TRADUNGEON_UI_MANAGER_H
-#define TRADUNGEON_UI_MANAGER_H
+#ifndef TRADUNGEON_WINDOW_MANAGER_H
+#define TRADUNGEON_WINDOW_MANAGER_H
 
 #include "window/Window.h"
 #include <vector>

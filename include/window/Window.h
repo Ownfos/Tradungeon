@@ -1,5 +1,5 @@
-#ifndef TRADUNGEON_UI_H
-#define TRADUNGEON_UI_H
+#ifndef TRADUNGEON_WINDOW_H
+#define TRADUNGEON_WINDOW_H
 
 #include "TextBuffer.h"
 #include "Common.h"

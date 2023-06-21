@@ -366,9 +366,9 @@ void test_message_log()
 
 void test_message_log_viewer()
 {
-    auto buffer = TextBuffer({80, 5});
+    auto buffer = TextBuffer({80, 7});
     auto ui_manager = WindowManager();
-    auto msg_viewer = std::make_shared<MessageLogWindow>(Viewport{{0, 0}, {80, 5}}, 20);
+    auto msg_viewer = std::make_shared<MessageLogWindow>(Viewport{{0, 0}, {80, 7}}, 20);
 
     ui_manager.push(msg_viewer);
     ui_manager.render(buffer);

@@ -28,37 +28,33 @@ bool MessageLogWindow::onInput(int keycode)
 
 void MessageLogWindow::onRender(TextBuffer& buffer)
 {
-    auto num_available_lines = m_msg_log.size() - m_offset;
-    auto msg = m_msg_log.getLines(m_offset, num_available_lines);
+    auto num_available_lines = m_scroll_view.end() - m_scroll_view.begin();
+    auto msg = m_msg_log.getLines(m_scroll_view.begin(), num_available_lines);
     renderString(buffer, msg, m_msg_viewport);
 }
  
 void MessageLogWindow::push(const std::string& message)
 {
     m_msg_log.push(message);
-    scrollToBottom();
+
+    // Resize the scroll view and make it display the latest message.
+    m_scroll_view = ScrollView(m_msg_log.size(), m_msg_viewport.m_size.m_height);
+    m_scroll_view.scrollBottom();
 }
 
 void MessageLogWindow::scrollUp()
 {
-    if (m_offset > 0)
-    {
-        --m_offset;
-    }
+    m_scroll_view.scrollUp();
 }
 
 void MessageLogWindow::scrollDown()
 {
-    // If there's something left below
-    if (m_offset + m_msg_viewport.m_size.m_height < m_msg_log.size())
-    {
-        ++m_offset;
-    }
+    m_scroll_view.scrollDown();
 }
 
-void MessageLogWindow::scrollToBottom()
+void MessageLogWindow::scrollBottom()
 {
-    m_offset = std::max(0, m_msg_log.size() - m_msg_viewport.m_size.m_height);
+    m_scroll_view.scrollBottom();
 }
 
 } // namespace tradungeon

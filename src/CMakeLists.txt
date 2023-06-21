@@ -6,6 +6,7 @@ add_executable(tradungeon
     Tests.cpp
     Random.cpp
     Common.cpp
+    ScrollView.cpp
     MessageLog.cpp
     Game.cpp
     Map.cpp

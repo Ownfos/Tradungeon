@@ -21,8 +21,6 @@ Try to buy cheap and sell expensive!
 #### Survive
 - Make sure you control hunger and thirst.  
 - You can loot food and water from the dungeon or buy from NPCs.  
-- Raw food and water have chance of poisoning,  
-so you'd better cook or boil things before you consume.
 
 ## Development Tools
 - C++

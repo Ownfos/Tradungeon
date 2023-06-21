@@ -1,5 +1,5 @@
-#ifndef TRADUNGEON_MAP_VIEWER_H
-#define TRADUNGEON_MAP_VIEWER_H
+#ifndef TRADUNGEON_MAP_WINDOW_H
+#define TRADUNGEON_MAP_WINDOW_H
 
 #include "window/Window.h"
 #include "Map.h"
