@@ -34,7 +34,7 @@ int main()
         {
             auto input = console.getKey();
             std::cout << input << std::endl;
-            if (input == 'q')
+            if (input == 'Q')
             {
                 break;
             }

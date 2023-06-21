@@ -22,7 +22,20 @@ MessageLogWindow::MessageLogWindow(
 
 bool MessageLogWindow::onInput(int keycode)
 {
-    // TODO: implement scrolling
+    if (keycode == 'P')
+    {
+        push("test message" + std::to_string(rand() % 10));
+    }
+    if (keycode == 221) // Virtual keycode for ']'
+    {
+        m_scroll_view.scrollDown();
+        return true;
+    }
+    if (keycode == 219) // Virtual keycode for '['
+    {
+        m_scroll_view.scrollUp();
+        return true;
+    }
     return false;
 }
 
