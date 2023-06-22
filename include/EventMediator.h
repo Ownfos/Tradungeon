@@ -4,7 +4,9 @@
 #include "Event.h"
 #include "Common.h"
 #include "interactable/Item.h"
+#include "window/Window.h"
 #include <string>
+#include <memory>
 
 namespace tradungeon
 {
@@ -27,6 +29,11 @@ struct EventMediator
     
     // Move item from map to inventory.
     static Event<const ItemBundle&> m_on_item_loot;
+
+    static Event<void> m_on_inventory_show;
+
+    static Event<std::shared_ptr<Window>> m_on_window_push;
+    static Event<void> m_on_window_pop;
 };
 
 } // namespace tradungeon

@@ -16,7 +16,7 @@ public:
 
 private:
     Point m_pos;
-    Inventory inventory;
+    Inventory m_inventory;
 };
 
 } // namespace tradungeon

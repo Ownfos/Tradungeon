@@ -24,7 +24,7 @@ bool MessageLogWindow::onInput(int keycode)
 {
     if (keycode == 'P')
     {
-        push("test message" + std::to_string(rand() % 10));
+        push(std::string(rand() % 10, '*'));
     }
     if (keycode == 221) // Virtual keycode for ']'
     {

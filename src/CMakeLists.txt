@@ -22,6 +22,7 @@ add_executable(tradungeon
     window/WindowManager.cpp
     window/MapWindow.cpp
     window/MessageLogWindow.cpp
+    window/InventoryWindow.cpp
 )
 
 target_include_directories(tradungeon PUBLIC ${CMAKE_SOURCE_DIR}/include)

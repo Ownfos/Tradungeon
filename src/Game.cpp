@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "EventMediator.h"
 
 namespace tradungeon
 {
@@ -14,6 +15,13 @@ Game::Game()
     m_window_manager.push(m_map_window);
 
     m_msg_log_window->push("Welcome to Tradungeon!");
+
+    EventMediator::m_on_window_push.addCallback([&](std::shared_ptr<Window> window){
+        m_window_manager.push(window);
+    });
+    EventMediator::m_on_window_pop.addCallback([&](){
+        m_window_manager.pop();
+    });
 }
 
 void Game::handleInput(int keycode)

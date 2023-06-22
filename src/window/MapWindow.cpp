@@ -27,6 +27,15 @@ bool MapWindow::onInput(int keycode)
             EventMediator::m_on_player_move.signal(new_pos);
             return true;
         }
+        else
+        {
+            EventMediator::m_on_message.signal("You cannot move to that tile");
+        }
+    }
+    else if (keycode == 'I')
+    {
+        EventMediator::m_on_inventory_show.signal();
+        return true;
     }
     else if (keycode == 'R')
     {
