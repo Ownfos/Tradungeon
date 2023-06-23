@@ -16,6 +16,7 @@ add_executable(tradungeon
     Inventory.cpp
     interactable/Item.cpp
     interactable/DroppedItem.cpp
+    interactable/DummyItem.cpp
     action/ItemDropAction.cpp
     action/ItemLootAction.cpp
     window/Window.cpp

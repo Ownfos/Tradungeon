@@ -34,9 +34,7 @@ public:
 private:
     Viewport m_msg_viewport;
     MessageLog m_msg_log;
-
-    // We start from empty message log, so there's nothing to show.
-    ScrollView m_scroll_view = ScrollView(0, 0);
+    ScrollView m_scroll_view;
 };
 
 } // namespace tradungeon

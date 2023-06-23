@@ -1,5 +1,6 @@
 #include "window/MapWindow.h"
 #include "EventMediator.h"
+#include "interactable/DummyItem.h"
 #include <map>
 
 using namespace std::string_literals;
@@ -35,6 +36,14 @@ bool MapWindow::onInput(int keycode)
     else if (keycode == 'I')
     {
         EventMediator::m_on_inventory_show.signal();
+        return true;
+    }
+    else if (keycode == 'L')
+    {
+        static int next_item_id = 0;
+        auto bundle = ItemBundle{std::make_shared<DummyItem>("Item #" + std::to_string(next_item_id), next_item_id, 10), 1};
+        EventMediator::m_on_item_loot.signal(bundle);
+        ++next_item_id;
         return true;
     }
     else if (keycode == 'R')

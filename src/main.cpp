@@ -34,7 +34,7 @@ int main()
         {
             auto input = console.getKey();
             std::cout << input << std::endl;
-            if (input == 'Q')
+            if (input == 27) // Virtual keycode for ESC
             {
                 break;
             }

@@ -10,7 +10,8 @@ MessageLogWindow::MessageLogWindow(
 )
     : Window(viewport),
     m_msg_viewport(Viewport{{2, 2}, viewport.m_size - Size{4, 4}}),
-    m_msg_log(Size{m_msg_viewport.m_size.m_width, max_buffer_size})
+    m_msg_log(Size{m_msg_viewport.m_size.m_width, max_buffer_size}),
+    m_scroll_view(0, m_msg_viewport.m_size.m_height, true)
 {
     // Grab every message logging event and show the content.
     // Since a unique MessageLogWindow instance exists throughout the game,
@@ -51,7 +52,7 @@ void MessageLogWindow::push(const std::string& message)
     m_msg_log.push(message);
 
     // Resize the scroll view and make it display the latest message.
-    m_scroll_view = ScrollView(m_msg_log.size(), m_msg_viewport.m_size.m_height);
+    m_scroll_view.updateContentSize(m_msg_log.size());
     m_scroll_view.scrollBottom();
 }
 

@@ -15,6 +15,9 @@ namespace tradungeon
 //
 // Input event is passed from top to bottom.
 // Any unhandled event will be passed to the Window layer right below.
+//
+// On the other hand, rendering is done from bottom to top
+// so that the latest window can appear on the top layer.
 class WindowManager
 {
 public:

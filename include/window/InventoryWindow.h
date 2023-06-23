@@ -3,6 +3,7 @@
 
 #include "window/Window.h"
 #include "Inventory.h"
+#include "ScrollView.h"
 
 namespace tradungeon
 {
@@ -17,7 +18,7 @@ public:
 
 private:
     Inventory* m_inventory;
-    int m_cursor_pos = 0;
+    ScrollView m_scroll_view;
 };
 
 } // namespace tradungeon
