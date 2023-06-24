@@ -21,6 +21,8 @@ public:
     // Moves the cursor position of console.
     void setCursor(const Point& pos);
 
+    void clearScreen();
+
 private:
     HANDLE m_input_handle;
     HANDLE m_output_handle;

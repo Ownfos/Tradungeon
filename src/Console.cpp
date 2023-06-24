@@ -42,4 +42,17 @@ void Console::setCursor(const Point& pos)
     SetConsoleCursorPosition(m_output_handle, coord);
 }
 
+void Console::clearScreen()
+{
+    // Screen filling algorithm from stack overflow.
+    // https://stackoverflow.com/questions/5866529/how-do-we-clear-the-console-in-assembly/5866648#5866648
+    COORD tl = {0,0};
+    CONSOLE_SCREEN_BUFFER_INFO s;
+    GetConsoleScreenBufferInfo(m_output_handle, &s);
+    DWORD written, cells = s.dwSize.X * s.dwSize.Y;
+    FillConsoleOutputCharacter(m_output_handle, ' ', cells, tl, &written);
+    FillConsoleOutputAttribute(m_output_handle, s.wAttributes, cells, tl, &written);
+    SetConsoleCursorPosition(m_output_handle, tl);
+}
+
 } // namespace tradungeon

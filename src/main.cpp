@@ -87,6 +87,8 @@ int main()
 
         auto console = Console();
         auto game = Game();
+
+        console.clearScreen();
         std::cout << game.render();
 
         while(true)
