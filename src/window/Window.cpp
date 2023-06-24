@@ -32,14 +32,14 @@ void Window::renderChar(TextBuffer& buffer, char ch, const Point& pos)
     buffer.renderChar(ch, abs_pos);
 }
 
-void Window::renderString(TextBuffer& buffer, std::string_view str, const Viewport& rel_viewport)
+void Window::renderString(TextBuffer& buffer, std::string_view str, const Viewport& rel_viewport, TextAlign align)
 {
     auto abs_viewport = rel_viewport;
     abs_viewport.m_offset += m_viewport.m_offset;
 
     // TODO: throw exception if abs_viewport is inside viewport boundary
 
-    buffer.renderString(str, abs_viewport);
+    buffer.renderString(str, abs_viewport, align);
 }
 
 } // namespace tradungeon

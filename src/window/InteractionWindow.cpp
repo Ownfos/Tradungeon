@@ -34,7 +34,7 @@ bool InteractionWindow::onInput(int keycode)
 
 void InteractionWindow::onRender(TextBuffer& console)
 {
-    renderString(console, "Select Action", Viewport{{3, 1}, {20, 1}});
+    renderString(console, "Select Action", Viewport{{0, 1}, {m_viewport.m_size.m_width, 1}}, TextAlign::Center);
 
     auto actions = m_interactable->availableActions();
 

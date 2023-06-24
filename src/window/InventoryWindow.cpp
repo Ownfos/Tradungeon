@@ -41,7 +41,7 @@ bool InventoryWindow::onInput(int keycode)
 
 void InventoryWindow::onRender(TextBuffer& console)
 {
-    renderString(console, "Inventory", Viewport{{15, 1}, {10, 1}});
+    renderString(console, "Inventory", Viewport{{0, 1}, {m_viewport.m_size.m_width, 1}}, TextAlign::Center);
 
     // # items in the inventory might have changed.
     m_scroll_view.updateContentSize(m_inventory->size());

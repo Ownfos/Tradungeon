@@ -25,7 +25,7 @@ public:
 
     void clear(TextBuffer& buffer, char boundary, char background);
     void renderChar(TextBuffer& buffer, char ch, const Point& rel_pos);
-    void renderString(TextBuffer& buffer, std::string_view str, const Viewport& rel_viewport);
+    void renderString(TextBuffer& buffer, std::string_view str, const Viewport& rel_viewport, TextAlign align = TextAlign::Left);
 
 protected:
     const Viewport m_viewport;

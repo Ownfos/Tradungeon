@@ -7,6 +7,8 @@
 namespace tradungeon
 {
 
+enum class TextAlign { Left, Right, Center };
+
 // TextBuffer is a 2d buffer that helps printing characters on specific position.
 // A whole screen is treated as a single std::string instance.
 // (0, 0) points to the left-top corner.
@@ -23,7 +25,7 @@ public:
     //   Vertical overflow   => stop rendering (ignores remainder)
     //
     // Escape sequences except '\n' are NOT supported!s
-    void renderString(std::string_view str, const Viewport& viewport);
+    void renderString(std::string_view str, const Viewport& viewport, TextAlign align = TextAlign::Left);
 
     // Fills a region with given character.
     void fill(char ch, const Viewport& viewport);
