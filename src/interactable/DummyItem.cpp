@@ -1,4 +1,5 @@
 #include "interactable/DummyItem.h"
+#include "action/DummyAction.h"
 
 namespace tradungeon
 {
@@ -24,7 +25,12 @@ std::string DummyItem::description() const
 
 std::vector<std::shared_ptr<Action>> DummyItem::availableActions() const
 {
-    return {};
+    return {
+        std::make_shared<DummyAction>("Action 1"),
+        std::make_shared<DummyAction>("Action 2"),
+        std::make_shared<DummyAction>("Action 3"),
+        std::make_shared<DummyAction>("Action 4"),
+    };
 }
 
 } // namespace tradungeon

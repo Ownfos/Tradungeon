@@ -41,6 +41,13 @@ const std::map<int, ItemBundle>& Inventory::slots() const
 {
     return m_items;
 }
+const ItemBundle& Inventory::item(int slot_index) const
+{
+    auto it = m_items.begin();
+    std::advance(it, slot_index);
+
+    return it->second;
+}
 
 int Inventory::netWeight() const
 {
@@ -49,6 +56,11 @@ int Inventory::netWeight() const
         return sum + slot.m_item->weight() * slot.m_quantity;
     };
     return std::accumulate(m_items.begin(), m_items.end(), 0, sum_weight);
+}
+
+int Inventory::size() const
+{
+    return m_items.size();
 }
 
 } // namespace tradungeon

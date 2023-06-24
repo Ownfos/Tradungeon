@@ -17,6 +17,7 @@ add_executable(tradungeon
     interactable/Item.cpp
     interactable/DroppedItem.cpp
     interactable/DummyItem.cpp
+    action/DummyAction.cpp
     action/ItemDropAction.cpp
     action/ItemLootAction.cpp
     window/Window.cpp
@@ -24,6 +25,7 @@ add_executable(tradungeon
     window/MapWindow.cpp
     window/MessageLogWindow.cpp
     window/InventoryWindow.cpp
+    window/InteractionWindow.cpp
 )
 
 target_include_directories(tradungeon PUBLIC ${CMAKE_SOURCE_DIR}/include)

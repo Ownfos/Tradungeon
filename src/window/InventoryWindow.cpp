@@ -1,4 +1,5 @@
 #include "window/InventoryWindow.h"
+#include "window/InteractionWindow.h"
 #include "EventMediator.h"
 
 namespace tradungeon
@@ -26,6 +27,15 @@ bool InventoryWindow::onInput(int keycode)
     {
         m_scroll_view.scrollUp();
     }
+    else if (keycode == 'E')
+    {
+        if (m_inventory->size() > 0)
+        {
+            auto item = m_inventory->item(m_scroll_view.cursorPosition()).m_item.get();
+            auto view = Viewport{m_viewport.m_offset + Point{20, 3 + m_scroll_view.cursorPosition()}, {30, 7}};
+            EventMediator::m_on_window_push.signal(std::make_shared<InteractionWindow>(view, item));
+        }
+    }
     return true;
 }
 
@@ -34,25 +44,21 @@ void InventoryWindow::onRender(TextBuffer& console)
     renderString(console, "Inventory", Viewport{{15, 1}, {10, 1}});
 
     // # items in the inventory might have changed.
-    m_scroll_view.updateContentSize(m_inventory->slots().size());
-
-    // Get the iterator to the first item to render.
-    auto item_it = m_inventory->slots().begin();
-    std::advance(item_it, m_scroll_view.begin());
+    m_scroll_view.updateContentSize(m_inventory->size());
 
     // This is the area where the item description will be rendered.
-    auto item_slot_view = Viewport{{2, 3}, {m_viewport.m_size.m_width - 4, 1}};
+    auto desc_area = Viewport{{2, 3}, {m_viewport.m_size.m_width - 4, 1}};
 
     // Render descriptions line by line.
-    for (int i = m_scroll_view.begin(); i < m_scroll_view.end(); ++i, ++item_it, ++item_slot_view.m_offset.m_y)
+    for (int i = m_scroll_view.begin(); i < m_scroll_view.end(); ++i, ++desc_area.m_offset.m_y)
     {
-        auto desc = item_it->second.description();
+        auto desc = m_inventory->item(i).description();
         // Add an arrow to the item under cursor.
         if (i == m_scroll_view.cursorPosition())
         {
             desc += " <==";
         }
-        renderString(console, desc, item_slot_view);
+        renderString(console, desc, desc_area);
     }
 }
 
