@@ -11,13 +11,13 @@ namespace tradungeon
 class InteractionWindow : public Window
 {
 public:
-    InteractionWindow(const Viewport& viewport, Interactable* interactable);
+    InteractionWindow(const Viewport& viewport, const ActionList& actions);
 
     virtual bool onInput(int keycode) override;
     virtual void onRender(TextBuffer& console) override;
 
 private:
-    Interactable* m_interactable;
+    ActionList m_actions;
     ScrollView m_scroll_view;
 };
 

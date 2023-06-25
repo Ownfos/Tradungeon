@@ -8,6 +8,8 @@
 namespace tradungeon
 {
 
+using ActionList = std::vector<std::shared_ptr<Action>>;
+
 class Interactable
 {
 public:
@@ -22,7 +24,7 @@ public:
     virtual ~Interactable() = default;
 
     virtual std::string description() const = 0;
-    virtual std::vector<std::shared_ptr<Action>> availableActions() const = 0;
+    virtual ActionList availableActions() const = 0;
 };
 
 } // namespace tradungeon

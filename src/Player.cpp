@@ -18,6 +18,10 @@ Player::Player(const Point& pos)
         m_inventory.addItem(bundle);
         EventMediator::m_on_message.signal("Looted " + bundle.description());
     });
+    EventMediator::m_on_item_drop.addCallback([this](const ItemBundle& bundle){
+        m_inventory.removeItem(bundle);
+        EventMediator::m_on_message.signal("Dropped " + bundle.description());
+    });
 }
 
 Point Player::position() const

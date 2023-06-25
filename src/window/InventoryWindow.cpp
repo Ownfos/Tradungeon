@@ -1,5 +1,6 @@
 #include "window/InventoryWindow.h"
 #include "window/InteractionWindow.h"
+#include "action/ItemDropAction.h"
 #include "EventMediator.h"
 
 namespace tradungeon
@@ -31,9 +32,15 @@ bool InventoryWindow::onInput(int keycode)
     {
         if (m_inventory->size() > 0)
         {
-            auto item = m_inventory->item(m_scroll_view.cursorPosition()).m_item.get();
-            auto view = Viewport{m_viewport.m_offset + Point{20, 3 + m_scroll_view.cursorPosition()}, {30, 7}};
-            EventMediator::m_on_window_push.signal(std::make_shared<InteractionWindow>(view, item));
+            // Get the list of available actions on this item
+            // and add item drop action at the end.
+            auto item_bundle = m_inventory->item(m_scroll_view.cursorPosition());
+            auto actions = item_bundle.m_item->availableActions();
+            actions.push_back(std::make_shared<ItemDropAction>(item_bundle));
+
+            // Create a child window right beside the cursor.
+            auto viewport = Viewport{m_viewport.m_offset + Point{20, 3 + m_scroll_view.cursorPosition()}, {50, 7}};
+            EventMediator::m_on_window_push.signal(std::make_shared<InteractionWindow>(viewport, actions));
         }
     }
     return true;
