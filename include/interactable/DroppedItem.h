@@ -10,6 +10,8 @@ class DroppedItem : public Interactable
 {
 public:
     DroppedItem(const ItemBundle& bundle);
+
+    const ItemBundle& bundle() const;
     
     virtual std::string description() const override;
     virtual std::vector<std::shared_ptr<Action>> availableActions() const override;

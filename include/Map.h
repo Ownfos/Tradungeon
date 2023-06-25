@@ -29,7 +29,7 @@ public:
     const std::vector<std::shared_ptr<Interactable>>& interactables(const Point& pos) const;
 
     void addInteractable(const Point& pos, std::shared_ptr<Interactable> interactable);
-    void removeInteractable(const Point& pos, Interactable* interactable);
+    void removeInteractable(const Point& pos, const Interactable* interactable);
 
     bool isMovable(const Point& pos) const;
 

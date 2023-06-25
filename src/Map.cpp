@@ -32,7 +32,7 @@ void Map::addInteractable(const Point& pos, std::shared_ptr<Interactable> intera
     m_interactables[pos].push_back(interactable);
 }
 
-void Map::removeInteractable(const Point& pos, Interactable* interactable)
+void Map::removeInteractable(const Point& pos, const Interactable* interactable)
 {
     auto is_same = [interactable](const std::shared_ptr<Interactable>& ptr){
         return ptr.get() == interactable;

@@ -8,6 +8,11 @@ DroppedItem::DroppedItem(const ItemBundle& bundle)
     : m_bundle(bundle)
 {}
 
+const ItemBundle& DroppedItem::bundle() const
+{
+    return m_bundle;
+}
+
 std::string DroppedItem::description() const
 {
     return m_bundle.description();
@@ -15,7 +20,7 @@ std::string DroppedItem::description() const
 
 std::vector<std::shared_ptr<Action>> DroppedItem::availableActions() const
 {
-    return { std::make_shared<ItemLootAction>(m_bundle) };
+    return { std::make_shared<ItemLootAction>(this) };
 }
 
 } // namespace tradungeon

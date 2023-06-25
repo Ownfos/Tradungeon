@@ -1,5 +1,7 @@
 #include "Game.h"
 #include "EventMediator.h"
+#include "interactable/DroppedItem.h"
+#include "interactable/DummyItem.h"
 
 namespace tradungeon
 {
@@ -16,16 +18,34 @@ Game::Game()
 
     m_msg_log_window->push("Welcome to Tradungeon!");
 
+    // Window pop/push handlers.
     EventMediator::m_on_window_push.addCallback([&](std::shared_ptr<Window> window){
         m_window_manager.push(window);
     });
     EventMediator::m_on_window_pop.addCallback([&](){
         m_window_manager.pop();
     });
+
+    // Item loot/drop handlers.
+    EventMediator::m_on_item_loot.addCallback([this](const DroppedItem* dropped_item){
+        m_map.removeInteractable(m_player.position(), dropped_item);
+    });
+    EventMediator::m_on_item_drop.addCallback([this](const ItemBundle& bundle){
+        m_map.addInteractable(m_player.position(), std::make_shared<DroppedItem>(bundle));
+    });
 }
 
 void Game::handleInput(int keycode)
 {
+    if (keycode == 'L')
+    {
+        static int next_item_id = 0;
+        auto bundle = ItemBundle{std::make_shared<DummyItem>("Item #" + std::to_string(next_item_id), next_item_id, 10), 1};
+        auto dropped_item = std::make_shared<DroppedItem>(bundle);
+        m_map.addInteractable(m_player.position(), dropped_item);
+        EventMediator::m_on_item_loot.signal(dropped_item.get());
+        ++next_item_id;
+    }
     m_window_manager.handleInput(keycode);
 }
 

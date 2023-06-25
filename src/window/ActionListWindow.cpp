@@ -1,16 +1,16 @@
-#include "window/InteractionWindow.h"
+#include "window/ActionListWindow.h"
 #include "EventMediator.h"
 
 namespace tradungeon
 {
 
-InteractionWindow::InteractionWindow(const Viewport& viewport, const ActionList& actions)
+ActionListWindow::ActionListWindow(const Viewport& viewport, const ActionList& actions)
     : Window(viewport),
     m_actions(actions),
     m_scroll_view(actions.size(), viewport.m_size.m_height - 4)
 {}
 
-bool InteractionWindow::onInput(int keycode)
+bool ActionListWindow::onInput(int keycode)
 {
     if (keycode == 'Q')
     {
@@ -32,7 +32,7 @@ bool InteractionWindow::onInput(int keycode)
     return true;
 }
 
-void InteractionWindow::onRender(TextBuffer& console)
+void ActionListWindow::onRender(TextBuffer& console)
 {
     renderString(console, "Select Action", Viewport{{0, 1}, {m_viewport.m_size.m_width, 1}}, TextAlign::Center);
 

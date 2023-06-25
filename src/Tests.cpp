@@ -525,8 +525,8 @@ void test_inventory()
     print_inventory();
 
     // Prepare a scenario that simulates Map and its controller.
-    EventMediator::m_on_item_loot.addCallback([&](const ItemBundle& bundle){
-        inventory.addItem(bundle);
+    EventMediator::m_on_item_loot.addCallback([&](const DroppedItem* dropped_item){
+        inventory.addItem(dropped_item->bundle());
     });
 
     auto dropped_apple = std::make_shared<DroppedItem>(ItemBundle{potion, 4});

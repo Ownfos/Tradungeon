@@ -1,5 +1,5 @@
-#ifndef TRADUNGEON_INTERACTION_WINDOW_H
-#define TRADUNGEON_INTERACTION_WINDOW_H
+#ifndef TRADUNGEON_ACTION_LIST_WINDOW_H
+#define TRADUNGEON_ACTION_LIST_WINDOW_H
 
 #include "window/Window.h"
 #include "interactable/Interactable.h"
@@ -8,10 +8,10 @@
 namespace tradungeon
 {
 
-class InteractionWindow : public Window
+class ActionListWindow : public Window
 {
 public:
-    InteractionWindow(const Viewport& viewport, const ActionList& actions);
+    ActionListWindow(const Viewport& viewport, const ActionList& actions);
 
     virtual bool onInput(int keycode) override;
     virtual void onRender(TextBuffer& console) override;

@@ -3,7 +3,7 @@
 
 #include "Event.h"
 #include "Common.h"
-#include "interactable/Item.h"
+#include "interactable/DroppedItem.h"
 #include "window/Window.h"
 #include <string>
 #include <memory>
@@ -28,7 +28,7 @@ struct EventMediator
     static Event<const ItemBundle&> m_on_item_drop;
     
     // Move item from map to inventory.
-    static Event<const ItemBundle&> m_on_item_loot;
+    static Event<const DroppedItem*> m_on_item_loot;
 
     static Event<void> m_on_inventory_show;
 
