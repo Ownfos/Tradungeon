@@ -26,6 +26,7 @@ void test_array2d();
 void test_map_generation();
 void test_interactable();
 void test_inventory();
+void test_path_finding();
 
 struct Preference
 {

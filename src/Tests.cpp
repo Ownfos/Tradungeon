@@ -9,6 +9,7 @@
 #include "interactable/DroppedItem.h"
 #include "Inventory.h"
 #include "EventMediator.h"
+#include "PathFinding.h"
 #include <iostream>
 #include <numeric>
 
@@ -539,6 +540,33 @@ void test_inventory()
 
     dropped_apple->availableActions().back()->execute(); // Loot everything.
     print_inventory();
+}
+
+void test_path_finding()
+{
+    auto print_path = [](const std::optional<Path>& path) {
+        if (!path.has_value())
+        {
+            std::cout << "No path was found" << std::endl;
+        }
+        else
+        {
+            std::cout << "Path length: " << path->size() << std::endl;
+            for (const Point& p : path.value())
+            {
+                std::cout << "(" << p.m_x << ", " << p.m_y << ") ";
+            }
+            std::cout << std::endl;
+        }
+    };
+
+    auto map = Array2D<int>({1000, 1000}, 1);
+
+    print_path(dijkstra(map, {0, 0}, {5, 5}));
+
+    map[{1, 0}] = 0;
+    map[{1, 1}] = 0;
+    print_path(dijkstra(map, {0, 0}, {5, 5}));
 }
 
 } // namespace tradungeon::test
