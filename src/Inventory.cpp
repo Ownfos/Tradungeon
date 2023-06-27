@@ -5,6 +5,10 @@
 namespace tradungeon
 {
 
+Inventory::Inventory(int weight_limit)
+    : m_weight_limit(weight_limit)
+{}
+
 void Inventory::addItem(const ItemBundle& bundle)
 {
     const auto id = bundle.m_item->id();
@@ -56,6 +60,16 @@ int Inventory::netWeight() const
         return sum + slot.m_item->weight() * slot.m_quantity;
     };
     return std::accumulate(m_items.begin(), m_items.end(), 0, sum_weight);
+}
+
+int Inventory::weightLimit() const
+{
+    return m_weight_limit;
+}
+
+int Inventory::spareWeight() const
+{
+    return m_weight_limit - netWeight();
 }
 
 int Inventory::size() const

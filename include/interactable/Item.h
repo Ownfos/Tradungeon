@@ -20,6 +20,7 @@ struct ItemBundle
     int m_quantity;
 
     std::string description() const;
+    int weight() const;
 };
 
 

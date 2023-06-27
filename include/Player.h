@@ -10,7 +10,7 @@ namespace tradungeon
 class Player
 {
 public:
-    Player(const Point& pos);
+    Player(const Point& pos, int inventory_weight_limit);
 
     Point position() const;
 

@@ -494,7 +494,7 @@ void test_interactable()
 
 void test_inventory()
 {
-    auto inventory = Inventory();
+    auto inventory = Inventory(99999999);
     auto print_inventory = [&](){
         std::cout << "Net weight: " << inventory.netWeight() << std::endl;
         for (auto& [id, slot] : inventory.slots())

@@ -13,10 +13,10 @@ enum class Tile : char
     Mud = '/',
     Dirt = ' ',
     Rock = '`',
-    OreVein = '^',
-    Lava = 'L',
+    OreVein = '-',
+    Lava = '*',
     Wall = '#',
-    Empty = ' '
+    Empty = 'x'
 };
 
 class Map

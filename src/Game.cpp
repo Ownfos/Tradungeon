@@ -2,17 +2,24 @@
 #include "EventMediator.h"
 #include "interactable/DroppedItem.h"
 #include "interactable/DummyItem.h"
+#include "Config.h"
 
 namespace tradungeon
 {
 
 Game::Game()
     : m_buffer({120, 25}),
-    m_map({1000, 1000}),
-    m_player({500, 500}),
-    m_msg_log_window(std::make_shared<MessageLogWindow>(Viewport{{80, 0}, {40, 25}}, 50)),
+    m_map(config::map_size),
+    m_player(config::player_start_position, config::inventory_weight_limit),
+    m_msg_log_window(std::make_shared<MessageLogWindow>(Viewport{{80, 0}, {40, 25}}, config::message_log_buffer_size)),
     m_map_window(std::make_shared<MapWindow>(Viewport{{0, 0}, {80, 25}}, &m_map, &m_player))
 {
+    // Regenerate map until player's initial position is a movable tile.
+    while (!m_map.isMovable(config::player_start_position))
+    {
+        m_map.reset();
+    }
+
     m_window_manager.push(m_msg_log_window);
     m_window_manager.push(m_map_window);
 
@@ -40,7 +47,7 @@ void Game::handleInput(int keycode)
     if (keycode == 'L')
     {
         static int next_item_id = 0;
-        auto bundle = ItemBundle{std::make_shared<DummyItem>("Item #" + std::to_string(next_item_id), next_item_id, 10), 1};
+        auto bundle = ItemBundle{std::make_shared<DummyItem>("Item #" + std::to_string(next_item_id), next_item_id, 1), 10};
         auto dropped_item = std::make_shared<DroppedItem>(bundle);
         m_map.addInteractable(m_player.position(), dropped_item);
         EventMediator::m_on_item_loot.signal(dropped_item.get());

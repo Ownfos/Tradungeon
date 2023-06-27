@@ -47,7 +47,11 @@ bool MapWindow::onInput(int keycode)
     }
     else if (keycode == 'R')
     {
-        m_map->reset();
+        do
+        {
+            m_map->reset();
+        }
+        while (!m_map->isMovable(m_player->position()));
         EventMediator::m_on_message.signal("reset map");
         return true;
     }

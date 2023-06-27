@@ -80,6 +80,12 @@ Array2D<double> diamondSquare(int num_edge, double bias, double rand_range, doub
             }
         }
 
+        // Fix the center at bias (i.e., ignore the result of diamond step at first iteration)
+        if (patch_size == num_edge)
+        {
+            ret[{num_edge / 2, num_edge / 2}] = bias;
+        }
+
         // Square step
         for (int i = patch_size / 2; i <= num_edge; i += patch_size)
         {

@@ -58,20 +58,19 @@ bool Map::isMovable(const Point& pos) const
 
 void Map::reset()
 {
-
     // Defines the upper limit of noise map value for a tileset to be assigned.
     // Starting from the tile type with lowest threshold,
     // we will assign the type if noise map value is lower than the threshold.
     auto threshold_config = std::vector<std::pair<Tile, double>>{
+        {Tile::Water, 0.05},
+        {Tile::Mud, 0.1},
+        {Tile::Dirt, 0.3},
+        {Tile::Rock, 0.3},
         {Tile::Water, 0.2},
-        {Tile::Mud, 0.3},
-        {Tile::Dirt, 1.0},
-        {Tile::Rock, 0.5},
-        {Tile::Water, 0.2},
-        {Tile::Rock, 0.5},
+        {Tile::Rock, 0.2},
         {Tile::OreVein, 0.7},
-        {Tile::Rock, 0.5},
-        {Tile::Lava, 1.0},
+        {Tile::Rock, 0.1},
+        {Tile::Lava, 0.4},
     };
 
     auto tileset_threshold = std::map<double, Tile>();
@@ -97,9 +96,13 @@ void Map::reset()
     {
         noise_map_size *= 2;
     }
-    auto noise_map = diamondSquare(noise_map_size, 0, max, 0.7);
+    auto noise_map = diamondSquare(noise_map_size, 0, 3, 0.81);
+    noise_map.normalize();
 
     // Categorize tile types using noise map.
+    // The center of noise map will be aligned to the center of this map.
+    auto size_diff = noise_map.size() - m_tiles.size();
+    auto offset = Point{size_diff.m_width / 2, size_diff.m_height / 2};
     for (int y=0;y<height;++y)
     {
         for (int x=0;x<width;++x)
@@ -113,7 +116,7 @@ void Map::reset()
             auto pos = Point{x, y};
             for (auto [threshold, type] : tileset_threshold)
             {
-                if (noise_map[pos] < threshold)
+                if (noise_map[pos + offset] < threshold)
                 {
                     m_tiles[pos] = type;
                     break;
