@@ -1,6 +1,7 @@
 #ifndef TRADUNGEON_RANDOM_H
 #define TRADUNGEON_RANDOM_H
 
+#include "Common.h"
 #include <random>
 #include <algorithm>
 #include <vector>
@@ -18,6 +19,10 @@ public:
 
     // Returns a random real number in an inverval [begin, end) using uniform distribution.
     static double range(double begin, double end);
+
+    // Returns a random point inside a rectacle with given size.
+    // Coordinates will be in range [0, width) and [0, height) accordingly.
+    static Point pointInRect(const Size& rect_size);
 
     static std::vector<int> sample_indices(int num_elements, int n);
 

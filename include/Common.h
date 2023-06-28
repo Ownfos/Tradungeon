@@ -14,6 +14,8 @@ struct Size
 
     Size operator+(const Size& other) const;
     Size operator-(const Size& other) const;
+    Size operator*(int scale) const;
+    Size operator/(int scale) const;
 
     bool operator==(const Size& other) const;
     bool operator!=(const Size& other) const;
@@ -36,6 +38,8 @@ struct Point
     bool operator!=(const Point& other) const;
 
     bool isInside(const Size& boundary) const;
+
+    int dotProduct(const Point& other) const;
 };
 
 struct Viewport

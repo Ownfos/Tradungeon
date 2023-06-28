@@ -55,6 +55,10 @@
         "functional": "cpp",
         "unordered_map": "cpp",
         "xhash": "cpp",
-        "forward_list": "cpp"
+        "forward_list": "cpp",
+        "deque": "cpp",
+        "queue": "cpp",
+        "ranges": "cpp",
+        "span": "cpp"
     }
 }

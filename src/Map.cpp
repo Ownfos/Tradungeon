@@ -1,13 +1,19 @@
 #include "Map.h"
 #include "DiamondSquare.h"
+#include "PathFinding.h"
+#include "Random.h"
+#include "Config.h"
 #include <map>
 #include <limits>
 
 namespace tradungeon
 {
 
-Map::Map(const Size& size)
-    : m_tiles(size), m_interactables(size)
+Map::Map(const Size& size, int exit_min_distance, int exit_max_distance)
+    : m_squared_exit_min_dist(exit_min_distance * exit_min_distance),
+    m_squared_exit_max_dist(exit_max_distance * exit_max_distance),
+    m_tiles(size),
+    m_interactables(size)
 {
     reset();
 }
@@ -44,11 +50,15 @@ void Map::removeInteractable(const Point& pos, const Interactable* interactable)
 
 bool Map::isMovable(const Point& pos) const
 {
-    switch(tileset(pos))
+    return isMovableTileset(tileset(pos));
+}
+
+bool Map::isMovableTileset(Tile tile)
+{
+    switch(tile)
     {
     case Tile::Lava:
     case Tile::Wall:
-    case Tile::Empty:
         return false;
         
     default:
@@ -57,6 +67,21 @@ bool Map::isMovable(const Point& pos) const
 }
 
 void Map::reset()
+{
+    generateTileset();
+
+    // Try to select a valid exit point.
+    // If we fail, recursively repeat the reset process.
+    if (trySpawnExit() == false)
+    {
+        reset();
+        return;
+    }
+
+    spawnItems();
+}
+
+void Map::generateTileset()
 {
     // Defines the upper limit of noise map value for a tileset to be assigned.
     // Starting from the tile type with lowest threshold,
@@ -124,6 +149,53 @@ void Map::reset()
             }
         }
     }
+}
+
+bool Map::trySpawnExit()
+{
+    const auto center = Point{
+        m_tiles.size().m_width / 2,
+        m_tiles.size().m_height / 2
+    };
+
+    // Try to find a point satisfying distance constraint
+    // that is reachable from the center of the map.
+    //
+    // Since there is no guarantee that such point exists,
+    // we will consider it impossible after several trials.
+    for(int i = 0; i < config::num_trials_spawn_exit; ++i)
+    {
+        // Pick a random point.
+        auto exit_pos = Random::pointInRect(m_tiles.size());
+        
+        // Check if the point meets the min/max exit distance constraint.
+        auto diff = exit_pos - center;
+        auto squared_distance = diff.dotProduct(diff);
+        if (squared_distance < m_squared_exit_min_dist || squared_distance > m_squared_exit_max_dist)
+        {
+            continue;
+        }
+
+        // Check if the point is reachable from the center of the map.
+        auto movable = m_tiles.transform<int>([](auto tile){ return isMovableTileset(tile); });
+        auto path = dijkstra(movable, center, exit_pos);
+        if (!path.has_value())
+        {
+            continue;
+        }
+
+        // Succeeded finding a valid exit.
+        m_tiles[exit_pos] = Tile::Exit;
+        return true;
+    }
+
+    // Failed to find a valid exit.
+    return false;
+}
+
+void Map::spawnItems()
+{
+    // TODO
 }
 
 void Map::groupSimilarTileset(int threshold)

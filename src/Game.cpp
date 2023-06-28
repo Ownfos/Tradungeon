@@ -9,7 +9,7 @@ namespace tradungeon
 
 Game::Game()
     : m_buffer({120, 25}),
-    m_map(config::map_size),
+    m_map(config::map_size, config::exit_min_distance, config::exit_max_distance),
     m_player(config::player_start_position, config::inventory_weight_limit),
     m_msg_log_window(std::make_shared<MessageLogWindow>(Viewport{{80, 0}, {40, 25}}, config::message_log_buffer_size)),
     m_map_window(std::make_shared<MapWindow>(Viewport{{0, 0}, {80, 25}}, &m_map, &m_player))

@@ -20,6 +20,11 @@ namespace tradungeon
 template<typename T>
 class Array2D
 {
+    // Make Array2D with other datatype friend
+    // so that we can access m_data at Array2D::transform() function.
+    template<typename U>
+    friend class Array2D;
+
 public:
     Array2D(const Size& size)
         : m_size(size), m_data(size.area())
@@ -86,6 +91,7 @@ public:
         {
             ret.m_data[i] = op(m_data[i]);
         }
+        return ret;
     }
 
     Size size() const

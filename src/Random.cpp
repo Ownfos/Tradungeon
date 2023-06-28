@@ -16,6 +16,11 @@ double Random::range(double begin, double end)
     return std::uniform_real_distribution(begin, end)(m_generator);
 }
 
+Point Random::pointInRect(const Size& rect_size)
+{
+    return {range(0, rect_size.m_width), range(0, rect_size.m_height)};
+}
+
 std::vector<int> Random::sample_indices(int num_elements, int n)
 {
     std::vector<int> indices(num_elements);

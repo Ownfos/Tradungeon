@@ -3,6 +3,7 @@
 
 #include "Array2D.h"
 #include "interactable/Interactable.h"
+#include <numeric>
 
 namespace tradungeon
 {
@@ -16,13 +17,13 @@ enum class Tile : char
     OreVein = '-',
     Lava = '*',
     Wall = '#',
-    Empty = 'x'
+    Exit = 'E'
 };
 
 class Map
 {
 public:
-    Map(const Size& size);
+    Map(const Size& size, int exit_min_distance = 0, int exit_max_distance = std::numeric_limits<int>::max());
 
     Size size() const;
     Tile tileset(const Point& pos) const;
@@ -31,12 +32,21 @@ public:
     void addInteractable(const Point& pos, std::shared_ptr<Interactable> interactable);
     void removeInteractable(const Point& pos, const Interactable* interactable);
 
-    bool isMovable(const Point& pos) const;
-
     void reset();
     void groupSimilarTileset(int threshold);
 
+    bool isMovable(const Point& pos) const;
+
 private:
+    void generateTileset();
+    bool trySpawnExit();
+    void spawnItems();
+
+    static bool isMovableTileset(Tile tile);
+
+    int m_squared_exit_min_dist;
+    int m_squared_exit_max_dist;
+
     Array2D<Tile> m_tiles;
     Array2D<std::vector<std::shared_ptr<Interactable>>> m_interactables;
 };

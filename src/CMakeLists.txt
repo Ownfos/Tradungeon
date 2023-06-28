@@ -11,6 +11,7 @@ add_executable(tradungeon
     Game.cpp
     Map.cpp
     DiamondSquare.cpp
+    PathFinding.cpp
     Player.cpp
     EventMediator.cpp
     Inventory.cpp
