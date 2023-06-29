@@ -2,7 +2,9 @@
 #define TRADUNGEON_INVENTORY_H
 
 #include "interactable/Item.h"
+#include <numeric>
 #include <map>
+#include <optional>
 
 namespace tradungeon
 {
@@ -10,15 +12,16 @@ namespace tradungeon
 class Inventory
 {
 public:
-    Inventory(int weight_limit);
+    // Note: extra parenthesis around 'std::numeric_limit<int>::max' resolves conflict between member function and macro.
+    Inventory(int weight_limit = (std::numeric_limits<int>::max)());
 
-    const std::map<int, ItemBundle>& slots() const;
-    const ItemBundle& item(int slot_index) const;
+    const ItemBundle& itemBundleAtSlot(int slot_index) const;
+    std::optional<std::reference_wrapper<const ItemBundle>> itemBundleWithID(int item_id) const;
 
     int netWeight() const;
     int weightLimit() const;
     int spareWeight() const;
-    int size() const;
+    int numSlots() const;
 
     void addItem(const ItemBundle& bundle);
     void removeItem(const ItemBundle& bundle);

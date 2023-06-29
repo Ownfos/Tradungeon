@@ -30,11 +30,11 @@ bool InventoryWindow::onInput(int keycode)
     }
     else if (keycode == 'E')
     {
-        if (m_inventory->size() > 0)
+        if (m_inventory->numSlots() > 0)
         {
             // Get the list of available actions on this item
             // and add item drop action at the end.
-            auto item_bundle = m_inventory->item(m_scroll_view.cursorPosition());
+            auto item_bundle = m_inventory->itemBundleAtSlot(m_scroll_view.cursorPosition());
             auto actions = item_bundle.m_item->availableActions();
             actions.push_back(std::make_shared<ItemDropAction>(item_bundle));
 
@@ -51,7 +51,7 @@ void InventoryWindow::onRender(TextBuffer& console)
     renderString(console, "Inventory", Viewport{{0, 1}, {m_viewport.m_size.m_width, 1}}, TextAlign::Center);
 
     // # items in the inventory might have changed.
-    m_scroll_view.updateContentSize(m_inventory->size());
+    m_scroll_view.updateContentSize(m_inventory->numSlots());
 
     // This is the area where the item description will be rendered.
     auto desc_area = Viewport{{2, 3}, {m_viewport.m_size.m_width - 4, 1}};
@@ -59,7 +59,7 @@ void InventoryWindow::onRender(TextBuffer& console)
     // Render descriptions line by line.
     for (int i = m_scroll_view.begin(); i < m_scroll_view.end(); ++i, ++desc_area.m_offset.m_y)
     {
-        auto desc = m_inventory->item(i).description();
+        auto desc = m_inventory->itemBundleAtSlot(i).description();
         // Add an arrow to the item under cursor.
         if (i == m_scroll_view.cursorPosition())
         {

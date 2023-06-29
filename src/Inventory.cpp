@@ -41,16 +41,25 @@ void Inventory::removeItem(const ItemBundle& bundle)
     }
 }
 
-const std::map<int, ItemBundle>& Inventory::slots() const
-{
-    return m_items;
-}
-const ItemBundle& Inventory::item(int slot_index) const
+const ItemBundle& Inventory::itemBundleAtSlot(int slot_index) const
 {
     auto it = m_items.begin();
     std::advance(it, slot_index);
 
     return it->second;
+}
+
+std::optional<std::reference_wrapper<const ItemBundle>> Inventory::itemBundleWithID(int item_id) const
+{
+    auto it = m_items.find(item_id);
+    if (it == m_items.end())
+    {
+        return {};
+    }
+    else
+    {
+        return it->second;
+    }
 }
 
 int Inventory::netWeight() const
@@ -72,7 +81,7 @@ int Inventory::spareWeight() const
     return m_weight_limit - netWeight();
 }
 
-int Inventory::size() const
+int Inventory::numSlots() const
 {
     return m_items.size();
 }

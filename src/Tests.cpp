@@ -12,6 +12,7 @@
 #include "PathFinding.h"
 #include <iostream>
 #include <numeric>
+#include <cassert>
 
 namespace tradungeon::test
 {
@@ -495,13 +496,15 @@ void test_interactable()
 
 void test_inventory()
 {
-    auto inventory = Inventory(99999999);
+    auto inventory = Inventory();
     auto print_inventory = [&](){
         std::cout << "Net weight: " << inventory.netWeight() << std::endl;
-        for (auto& [id, slot] : inventory.slots())
+        for (int i = 0; i < inventory.numSlots(); ++i)
         {
-            std::cout << slot.m_item->description() << " (x" << slot.m_quantity << ") - " << slot.m_item->weight() * slot.m_quantity << std::endl;
-            for (auto& action : slot.m_item->availableActions())
+            const auto& item_bundle = inventory.itemBundleAtSlot(i);
+            std::cout << item_bundle.m_item->description() << " (x" << item_bundle.m_quantity << ") - " << item_bundle.weight() << std::endl;
+            
+            for (auto& action : item_bundle.m_item->availableActions())
             {
                 std::cout << action->description() << std::endl;
             }
@@ -525,21 +528,9 @@ void test_inventory()
     inventory.removeItem({potion, 3});
     print_inventory();
 
-    // Prepare a scenario that simulates Map and its controller.
-    EventMediator::m_on_item_loot.addCallback([&](const DroppedItem* dropped_item){
-        inventory.addItem(dropped_item->bundle());
-    });
-
-    auto dropped_apple = std::make_shared<DroppedItem>(ItemBundle{potion, 4});
-    std::cout << dropped_apple->description() << std::endl;
-    for (auto& action : dropped_apple->availableActions())
-    {
-        std::cout << action->description() << std::endl;
-    }
-    std::cout << std::endl;
-
-    dropped_apple->availableActions().back()->execute(); // Loot everything.
-    print_inventory();
+    assert(inventory.numSlots() == 1);
+    assert(inventory.itemBundleWithID(1).value().get().m_quantity == 30);
+    assert(inventory.itemBundleWithID(2).has_value() == false);
 }
 
 void test_path_finding()
