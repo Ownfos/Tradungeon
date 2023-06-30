@@ -3,6 +3,7 @@
 
 #include "Event.h"
 #include "TextBuffer.h"
+#include "Clock.h"
 #include "window/WindowManager.h"
 #include "window/MessageLogWindow.h"
 #include "window/MapWindow.h"
@@ -24,6 +25,7 @@ private:
     WindowManager m_window_manager;
     Map m_map;
     Player m_player;
+    Clock m_clock;
     std::shared_ptr<MessageLogWindow> m_msg_log_window;
     std::shared_ptr<MapWindow> m_map_window;
 };

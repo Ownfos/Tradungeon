@@ -16,6 +16,8 @@ public:
     Inventory(int weight_limit = (std::numeric_limits<int>::max)());
 
     const ItemBundle& itemBundleAtSlot(int slot_index) const;
+
+    // Note: to get const ItemBundle&, call result->get() (shorthand for result.value().get())
     std::optional<std::reference_wrapper<const ItemBundle>> itemBundleWithID(int item_id) const;
 
     int netWeight() const;

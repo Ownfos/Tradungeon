@@ -6,6 +6,7 @@
 
 using namespace tradungeon;
 using namespace tradungeon::test;
+
 int main()
 {
     try

@@ -14,6 +14,7 @@ add_executable(tradungeon
     PathFinding.cpp
     Player.cpp
     EventMediator.cpp
+    Clock.cpp
     Inventory.cpp
     interactable/Item.cpp
     interactable/DroppedItem.cpp

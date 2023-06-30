@@ -40,6 +40,22 @@ Game::Game()
     EventMediator::m_on_item_drop.addCallback([this](const ItemBundle& bundle){
         m_map.addInteractable(m_player.position(), std::make_shared<DroppedItem>(bundle));
     });
+
+    // Time related events.
+    EventMediator::m_on_time_elapse.addCallback([this](int elapsed_time){
+        m_clock.m_time += elapsed_time;
+
+        // Reset the map periodically.
+        if (m_clock.day() >= config::map_reset_cycle)
+        {
+            m_map.reset();
+
+            // Start counting days from 0.
+            m_clock.m_time -= config::map_reset_cycle * timeunit::day;
+        }
+
+        // TODO: handle market orders
+    });
 }
 
 void Game::handleInput(int keycode)

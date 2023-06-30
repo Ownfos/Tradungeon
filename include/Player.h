@@ -13,10 +13,15 @@ public:
     Player(const Point& pos, int inventory_weight_limit);
 
     Point position() const;
+    int hunger() const;
+    int thirst() const;
 
 private:
     Point m_pos;
     Inventory m_inventory;
+
+    int m_hunger = 0;
+    int m_thirst = 0;
 };
 
 } // namespace tradungeon

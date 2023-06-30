@@ -2,11 +2,17 @@
 #define TRADUNGEON_CONFIG_H
 
 #include "Common.h"
+#include "Clock.h"
 
 namespace tradungeon::config
 {
 
 constexpr auto map_size = Size{1000, 1000};
+
+// # of days required for a periodical map reset.
+constexpr auto map_reset_cycle = 3;
+
+constexpr auto time_per_move = timeunit::day;
 
 // The distance constraint from the center of the map to the exit.
 constexpr auto exit_min_distance = 300;

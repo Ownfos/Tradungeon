@@ -529,7 +529,7 @@ void test_inventory()
     print_inventory();
 
     assert(inventory.numSlots() == 1);
-    assert(inventory.itemBundleWithID(1).value().get().m_quantity == 30);
+    assert(inventory.itemBundleWithID(1)->get().m_quantity == 30);
     assert(inventory.itemBundleWithID(2).has_value() == false);
 }
 

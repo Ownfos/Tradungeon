@@ -1,7 +1,7 @@
 # TRADUNGEON
 #### TRADUNGEON is a survival dungeon trading game.
 You are trapped in a dungeon and there's only one way out.  
-You must earn money to prepare food and water for your journey towards the exit.  
+You must earn money to prepare food for your journey towards the exit.  
 Try to get out of this dungeon before it transforms itself into a completely new terrain.
 
 ## Core Gameplay Mechanics
@@ -21,7 +21,8 @@ Try to buy cheap and sell expensive!
 
 #### Survive
 - Make sure you control hunger and thirst.  
-- You can loot food and water from the dungeon or buy them from NPCs.  
+- You can loot food from the dungeon or buy them from NPCs.  
+- Look for water tiles to stay hydrated.
 
 ## Development Tools
 - C++

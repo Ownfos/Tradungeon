@@ -32,6 +32,8 @@ struct EventMediator
 
     static Event<void> m_on_inventory_show;
 
+    static Event<int> m_on_time_elapse;
+
     static Event<std::shared_ptr<Window>> m_on_window_push;
     static Event<void> m_on_window_pop;
 };

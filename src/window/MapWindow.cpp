@@ -1,6 +1,7 @@
 #include "window/MapWindow.h"
 #include "window/InteractableListWindow.h"
 #include "EventMediator.h"
+#include "Config.h"
 #include <map>
 
 using namespace std::string_literals;
@@ -26,6 +27,7 @@ bool MapWindow::onInput(int keycode)
         if (m_map->isMovable(new_pos))
         {
             EventMediator::m_on_player_move.signal(new_pos);
+            EventMediator::m_on_time_elapse.signal(config::time_per_move);
             return true;
         }
         else
