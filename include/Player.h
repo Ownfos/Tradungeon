@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "Inventory.h"
+#include <any>
 
 namespace tradungeon
 {
@@ -22,6 +23,8 @@ private:
 
     int m_hunger = 0;
     int m_thirst = 0;
+
+    std::vector<std::any> m_callback_handles;
 };
 
 } // namespace tradungeon

@@ -13,6 +13,11 @@ void WindowManager::pop()
     m_window_stack.pop_back();
 }
 
+void WindowManager::clear()
+{
+    m_window_stack.clear();
+}
+
 void WindowManager::handleInput(int keycode)
 {
     for (auto it = m_window_stack.rbegin(); it != m_window_stack.rend(); ++it)

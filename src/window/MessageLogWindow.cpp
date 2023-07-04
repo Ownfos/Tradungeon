@@ -16,7 +16,7 @@ MessageLogWindow::MessageLogWindow(
     // Grab every message logging event and show the content.
     // Since a unique MessageLogWindow instance exists throughout the game,
     // removing callback on instance destruction is not necessary.
-    EventMediator::m_on_message.addCallback([this](const std::string& message){
+    m_callback_handle = EventMediator::m_on_message.addCallback([this](const std::string& message){
         push(message);
     });
 }

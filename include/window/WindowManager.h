@@ -23,6 +23,7 @@ class WindowManager
 public:
     void push(std::shared_ptr<Window> window);
     void pop();
+    void clear();
 
     // Cascade input through Window stack.
     void handleInput(int keycode);

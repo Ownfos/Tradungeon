@@ -408,10 +408,10 @@ void test_events()
     auto cb2 = event.addCallback([](const std::string& message){ std::cout << message.size() << std::endl; });
     event.signal("Hello, World!");
 
-    event.removeCallback(cb2);
+    cb2->removeFromEvent();
     event.signal("Removed second callback");
     
-    event.removeCallback(cb1);
+    cb1->removeFromEvent();
     event.signal("Removed first callback");
 }
 

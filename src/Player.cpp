@@ -9,13 +9,18 @@ namespace tradungeon
 Player::Player(const Point& pos, int inventory_weight_limit)
     : m_pos(pos), m_inventory(inventory_weight_limit)
 {
-    EventMediator::m_on_player_move.addCallback([this](const Point& new_pos){
+    // Player movement handler.
+    m_callback_handles.push_back(EventMediator::m_on_player_move.addCallback([this](const Point& new_pos){
         m_pos = new_pos;
-    });
-    EventMediator::m_on_inventory_show.addCallback([this](){
+    }));
+
+    // Inventory window pop-up handler.
+    m_callback_handles.push_back(EventMediator::m_on_inventory_show.addCallback([this](){
         EventMediator::m_on_window_push.signal(std::make_shared<InventoryWindow>(Viewport{{20, 5}, {40, 15}}, &m_inventory));
-    });
-    EventMediator::m_on_item_loot.addCallback([this](const DroppedItem* dropped_item){
+    }));
+
+    // Item loot/drop handlers.
+    m_callback_handles.push_back(EventMediator::m_on_item_loot.addCallback([this](const DroppedItem* dropped_item){
         const auto& bundle = dropped_item->bundle();
 
         auto spare_weight = m_inventory.spareWeight();
@@ -32,12 +37,15 @@ Player::Player(const Point& pos, int inventory_weight_limit)
             auto excess_items = ItemBundle{bundle.m_item, bundle.m_quantity - num_lootable};
             EventMediator::m_on_item_drop.signal(excess_items);
         }
-    });
-    EventMediator::m_on_item_drop.addCallback([this](const ItemBundle& bundle){
+    }));
+
+    m_callback_handles.push_back(EventMediator::m_on_item_drop.addCallback([this](const ItemBundle& bundle){
         m_inventory.removeItem(bundle);
         EventMediator::m_on_message.signal("Dropped " + bundle.description());
-    });
-    EventMediator::m_on_time_elapse.addCallback([this](int elapsed_time){
+    }));
+
+    // Hunger/thirst increment handler.
+    m_callback_handles.push_back(EventMediator::m_on_time_elapse.addCallback([this](int elapsed_time){
         m_hunger += elapsed_time * config::hunger_per_time;
         m_thirst += elapsed_time * config::thirst_per_time;
 
@@ -49,7 +57,7 @@ Player::Player(const Point& pos, int inventory_weight_limit)
         {
             EventMediator::m_on_message.signal("Player died of thirst");
         }
-    });
+    }));
 }
 
 Point Player::position() const

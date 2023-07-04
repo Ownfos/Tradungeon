@@ -4,6 +4,7 @@
 #include "window/Window.h"
 #include "MessageLog.h"
 #include "ScrollView.h"
+#include <any>
 
 namespace tradungeon
 {
@@ -35,6 +36,8 @@ private:
     Viewport m_msg_viewport;
     MessageLog m_msg_log;
     ScrollView m_scroll_view;
+
+    std::any m_callback_handle;
 };
 
 } // namespace tradungeon
