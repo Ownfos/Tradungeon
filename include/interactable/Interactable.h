@@ -10,19 +10,9 @@ namespace tradungeon
 
 using ActionList = std::vector<std::shared_ptr<Action>>;
 
-class Interactable
+class Interactable : private Polymorphic
 {
 public:
-    Interactable() = default;
-
-    // Prevent object slicing.
-    Interactable(const Interactable&) = delete;
-    Interactable(Interactable&&) = delete;
-    Interactable& operator=(const Interactable&) = delete;
-    Interactable& operator=(Interactable&&) = delete;
-
-    virtual ~Interactable() = default;
-
     virtual std::string description() const = 0;
     virtual ActionList availableActions() const = 0;
 };

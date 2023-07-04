@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "EventMediator.h"
 #include "window/InventoryWindow.h"
+#include "Config.h"
 
 namespace tradungeon
 {
@@ -35,6 +36,19 @@ Player::Player(const Point& pos, int inventory_weight_limit)
     EventMediator::m_on_item_drop.addCallback([this](const ItemBundle& bundle){
         m_inventory.removeItem(bundle);
         EventMediator::m_on_message.signal("Dropped " + bundle.description());
+    });
+    EventMediator::m_on_time_elapse.addCallback([this](int elapsed_time){
+        m_hunger += elapsed_time * config::hunger_per_time;
+        m_thirst += elapsed_time * config::thirst_per_time;
+
+        if (m_hunger >= config::hunger_threshold)
+        {
+            EventMediator::m_on_message.signal("Player died of hunger");
+        }
+        if (m_thirst >= config::thirst_threshold)
+        {
+            EventMediator::m_on_message.signal("Player died of thirst");
+        }
     });
 }
 

@@ -1,24 +1,17 @@
 #ifndef TRADUNGEON_WINDOW_H
 #define TRADUNGEON_WINDOW_H
 
+#include "Polymorphic.h"
 #include "TextBuffer.h"
 #include "Common.h"
 
 namespace tradungeon
 {
 
-class Window
+class Window : private Polymorphic
 {
 public:
     Window(const Viewport& viewport);
-
-    // Prevent object slicing.
-    Window(const Window&) = delete;
-    Window(Window&&) = delete;
-    Window& operator=(const Window&) = delete;
-    Window& operator=(Window&&) = delete;
-
-    virtual ~Window() = default;
 
     virtual bool onInput(int keycode) = 0;
     virtual void onRender(TextBuffer& buffer) = 0;
