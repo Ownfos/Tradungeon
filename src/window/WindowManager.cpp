@@ -31,6 +31,14 @@ void WindowManager::handleInput(int keycode)
     }
 }
 
+void WindowManager::update(std::chrono::milliseconds delta_time)
+{
+    for (auto& window : m_window_stack)
+    {
+        window->onUpdate(delta_time);
+    }
+}
+
 void WindowManager::render(TextBuffer& buffer)
 {
     for (auto& window : m_window_stack)

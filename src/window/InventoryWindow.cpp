@@ -16,7 +16,7 @@ InventoryWindow::InventoryWindow(const Viewport& viewport, Inventory* inventory)
 
 bool InventoryWindow::onInput(int keycode)
 {
-    if (keycode == 'I')
+    if (keycode == 'Q' || keycode == 'I')
     {
         EventMediator::m_on_window_pop.signal();
     }

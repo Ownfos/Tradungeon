@@ -60,6 +60,19 @@
         "queue": "cpp",
         "ranges": "cpp",
         "span": "cpp",
-        "any": "cpp"
+        "any": "cpp",
+        "thread": "cpp",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "format": "cpp",
+        "iomanip": "cpp",
+        "locale": "cpp",
+        "mutex": "cpp",
+        "ratio": "cpp",
+        "stop_token": "cpp",
+        "xlocbuf": "cpp",
+        "xlocmes": "cpp",
+        "xlocmon": "cpp",
+        "xloctime": "cpp"
     }
 }

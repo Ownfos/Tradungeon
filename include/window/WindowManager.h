@@ -16,7 +16,7 @@ namespace tradungeon
 // Input event is passed from top to bottom.
 // Any unhandled event will be passed to the Window layer right below.
 //
-// On the other hand, rendering is done from bottom to top
+// On the other hand, updating and rendering is done from bottom to top
 // so that the latest window can appear on the top layer.
 class WindowManager
 {
@@ -27,6 +27,9 @@ public:
 
     // Cascade input through Window stack.
     void handleInput(int keycode);
+
+    // Updates all existing Windows.
+    void update(std::chrono::milliseconds delta_time);
 
     // Renders all existing Window to the buffer.
     void render(TextBuffer& buffer);

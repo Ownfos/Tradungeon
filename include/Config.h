@@ -3,9 +3,13 @@
 
 #include "Common.h"
 #include "Clock.h"
+#include <chrono>
 
 namespace tradungeon::config
 {
+
+constexpr auto fps = 60;
+constexpr auto delta_time = std::chrono::milliseconds(1000 / fps);
 
 constexpr auto map_size = Size{1000, 1000};
 

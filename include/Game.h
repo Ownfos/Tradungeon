@@ -17,6 +17,7 @@ public:
     Game();
 
     void handleInput(int keycode);
+    void update(std::chrono::milliseconds delta_time);
     std::string_view render();
 
     void loadScene(std::shared_ptr<Scene> scene);

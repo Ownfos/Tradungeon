@@ -1,8 +1,13 @@
 #include "Tests.h"
 #include "Console.h"
 #include "Game.h"
+#include "EventMediator.h"
+#include "Config.h"
 #include <iostream>
 #include <sstream>
+#include <thread>
+#include <queue>
+#include <mutex>
 
 using namespace tradungeon;
 using namespace tradungeon::test;
@@ -31,25 +36,65 @@ int main()
         // return 0;
 
         auto console = Console();
-        auto game = Game();
 
-        console.clearScreen();
-        std::cout << game.render();
+        auto input_queue = std::queue<int>();
+        auto input_mutex = std::mutex();
 
-        while(true)
-        {
-            auto input = console.getKey();
-            std::cout << input << std::endl;
-            if (input == 27) // Virtual keycode for ESC
+        auto terminate = std::atomic_bool{false};
+
+        auto input_thread = std::thread([&]{
+            while(true)
             {
-                break;
+                auto input = console.getKey();
+
+                if (input == 27)
+                {
+                    terminate = true;
+                    return;
+                }
+                else
+                {
+                    auto lg = std::lock_guard(input_mutex);
+                    input_queue.push(input);
+                }
             }
+        });
 
-            game.handleInput(input);
+        auto render_thread = std::thread([&]{
+            auto game = Game();
 
-            console.setCursor({0, 0});
+            console.clearScreen();
             std::cout << game.render();
-        }
+
+            while(!terminate)
+            {
+                std::this_thread::sleep_for(config::delta_time);
+
+                auto input = std::optional<int>();
+                {
+                    auto lg = std::unique_lock(input_mutex);
+                    if (!input_queue.empty())
+                    {
+                        input = input_queue.front();
+                        input_queue.pop();
+                    }
+                };
+
+                if (input.has_value())
+                {
+                    game.handleInput(input.value());
+                    // EventMediator::m_on_message.signal("Input: " + std::to_string(input.value()));
+                }
+
+                game.update(config::delta_time);
+
+                console.setCursor({0, 0});
+                std::cout << game.render();
+            }
+        });
+
+        input_thread.join();
+        render_thread.join();
     }
     catch(const std::exception& e)
     {

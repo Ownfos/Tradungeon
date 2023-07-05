@@ -1,10 +1,13 @@
 #include "window/MapWindow.h"
 #include "window/InteractableListWindow.h"
+#include "interactable/DroppedItem.h"
+#include "interactable/DummyItem.h"
 #include "EventMediator.h"
 #include "Config.h"
 #include <map>
 
 using namespace std::string_literals;
+using namespace std::chrono_literals;
 
 namespace tradungeon
 {
@@ -34,6 +37,15 @@ bool MapWindow::onInput(int keycode)
         {
             EventMediator::m_on_message.signal("You cannot move to that tile");
         }
+    }
+    else if (keycode == 'L')
+    {
+        static int next_item_id = 0;
+        auto bundle = ItemBundle{std::make_shared<DummyItem>("Item #" + std::to_string(next_item_id), next_item_id, 1), 10};
+        auto dropped_item = std::make_shared<DroppedItem>(bundle);
+        m_map->addInteractable(m_player->position(), dropped_item);
+        EventMediator::m_on_item_loot.signal(dropped_item.get());
+        ++next_item_id;
     }
     else if (keycode == 'I')
     {
@@ -100,7 +112,14 @@ void MapWindow::onRender(TextBuffer& buffer)
 
                 if (map_coord.isInside(m_map->size()))
                 {
-                    buffer.renderChar(static_cast<char>(m_map->tileset(map_coord)), viewport_coord);
+                    if (m_highlight_interactables && !m_map->interactables(map_coord).empty())
+                    {
+                        buffer.renderChar('!', viewport_coord);
+                    }
+                    else
+                    {
+                        buffer.renderChar(static_cast<char>(m_map->tileset(map_coord)), viewport_coord);
+                    }
                 }
                 else
                 {
@@ -108,6 +127,17 @@ void MapWindow::onRender(TextBuffer& buffer)
                 }
             }
         }
+    }
+}
+
+void MapWindow::onUpdate(std::chrono::milliseconds delta_time)
+{
+    // Flip flag every second.
+    m_timer += delta_time;
+    if (m_timer > 300ms)
+    {
+        m_timer -= 300ms;
+        m_highlight_interactables = !m_highlight_interactables;
     }
 }
 

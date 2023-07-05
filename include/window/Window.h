@@ -4,6 +4,7 @@
 #include "Polymorphic.h"
 #include "TextBuffer.h"
 #include "Common.h"
+#include <chrono>
 
 namespace tradungeon
 {
@@ -15,6 +16,7 @@ public:
 
     virtual bool onInput(int keycode) = 0;
     virtual void onRender(TextBuffer& buffer) = 0;
+    virtual void onUpdate(std::chrono::milliseconds delta_time) {};
 
     void clear(TextBuffer& buffer, char boundary, char background);
     void renderChar(TextBuffer& buffer, char ch, const Point& rel_pos);

@@ -13,7 +13,7 @@ InteractableListWindow::InteractableListWindow(const Viewport& viewport, const I
 
 bool InteractableListWindow::onInput(int keycode)
 {
-    if (keycode == 'F')
+    if (keycode == 'Q' || keycode == 'F')
     {
         EventMediator::m_on_window_pop.signal();
     }
