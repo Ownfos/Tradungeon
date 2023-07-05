@@ -15,7 +15,7 @@ class GameplayScene : public Scene
 public:
     GameplayScene();
 
-    void onLoad() override;
+    virtual void onLoad() override;
 
 private:
     Map m_map;
