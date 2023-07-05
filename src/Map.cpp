@@ -195,7 +195,16 @@ bool Map::trySpawnExit()
 
 void Map::spawnItems()
 {
-    // TODO
+    auto [width, height] = m_tiles.size();
+    for (int y = 0; y < height; ++y)
+    {
+        for (int x = 0; x < width; ++x)
+        {
+            m_interactables[{x, y}].clear();
+
+            // TODO: spawn items according to tileset.
+        }
+    }
 }
 
 void Map::groupSimilarTileset(int threshold)

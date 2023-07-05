@@ -3,11 +3,11 @@
 #include "Game.h"
 #include "EventMediator.h"
 #include "Config.h"
+#include "AsyncQueue.h"
+#include "scene/GameplayScene.h"
 #include <iostream>
 #include <sstream>
 #include <thread>
-#include <queue>
-#include <mutex>
 
 using namespace tradungeon;
 using namespace tradungeon::test;
@@ -37,9 +37,7 @@ int main()
 
         auto console = Console();
 
-        auto input_queue = std::queue<int>();
-        auto input_mutex = std::mutex();
-
+        auto input_queue = AsyncQueue<int>();
         auto terminate = std::atomic_bool{false};
 
         auto input_thread = std::thread([&]{
@@ -54,7 +52,6 @@ int main()
                 }
                 else
                 {
-                    auto lg = std::lock_guard(input_mutex);
                     input_queue.push(input);
                 }
             }
@@ -70,15 +67,7 @@ int main()
             {
                 std::this_thread::sleep_for(config::delta_time);
 
-                auto input = std::optional<int>();
-                {
-                    auto lg = std::unique_lock(input_mutex);
-                    if (!input_queue.empty())
-                    {
-                        input = input_queue.front();
-                        input_queue.pop();
-                    }
-                };
+                auto input = input_queue.pop();
 
                 if (input.has_value())
                 {

@@ -20,8 +20,8 @@ constexpr auto time_per_move = 1;
 
 constexpr auto hunger_per_time = 2;
 constexpr auto thirst_per_time = 1;
-constexpr auto hunger_threshold = 10;
-constexpr auto thirst_threshold = 10;
+constexpr auto hunger_threshold = 100000;
+constexpr auto thirst_threshold = 100000;
 
 // The distance constraint from the center of the map to the exit.
 constexpr auto exit_min_distance = 300;

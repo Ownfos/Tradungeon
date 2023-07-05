@@ -23,15 +23,6 @@ Game::Game()
 
 void Game::handleInput(int keycode)
 {
-    // if (keycode == 'L')
-    // {
-    //     static int next_item_id = 0;
-    //     auto bundle = ItemBundle{std::make_shared<DummyItem>("Item #" + std::to_string(next_item_id), next_item_id, 1), 10};
-    //     auto dropped_item = std::make_shared<DroppedItem>(bundle);
-    //     m_map.addInteractable(m_player.position(), dropped_item);
-    //     EventMediator::m_on_item_loot.signal(dropped_item.get());
-    //     ++next_item_id;
-    // }
     m_window_manager.handleInput(keycode);
 }
 
