@@ -399,6 +399,11 @@ void test_message_log_viewer()
     msg_viewer->scrollUp();
     ui_manager.render(buffer);
     std::cout << buffer.getContent();
+
+    // Test text overflow handling.
+    msg_viewer->push(std::string(100, '*'));
+    ui_manager.render(buffer);
+    std::cout << buffer.getContent();
 }
 
 void test_events()

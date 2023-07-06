@@ -3,6 +3,7 @@
 #include "PathFinding.h"
 #include "Random.h"
 #include "Config.h"
+#include "interactable/Exit.h"
 #include <map>
 #include <limits>
 
@@ -13,6 +14,7 @@ Map::Map(const Size& size, int exit_min_distance, int exit_max_distance)
     : m_squared_exit_min_dist(exit_min_distance * exit_min_distance),
     m_squared_exit_max_dist(exit_max_distance * exit_max_distance),
     m_tiles(size),
+    m_visibility(size, false),
     m_interactables(size)
 {
     reset();
@@ -48,9 +50,31 @@ void Map::removeInteractable(const Point& pos, const Interactable* interactable)
     v.erase(std::remove_if(v.begin(), v.end(), is_same), v.end());
 }
 
+void Map::expandVisibility(const Point& pos, int radius)
+{
+    auto square_radius = radius * radius;
+    for (int dx = -radius; dx <= radius; ++dx)
+    {
+        for (int dy = -radius; dy <= radius; ++dy)
+        {
+            auto p = pos + Point{dx, dy};
+            auto square_dist = dx * dx + dy * dy;
+            if (square_dist <= square_radius && p.isInside(m_tiles.size()))
+            {
+                m_visibility[p] = true;
+            }
+        }
+    }
+}
+
 bool Map::isMovable(const Point& pos) const
 {
     return isMovableTileset(tileset(pos));
+}
+
+bool Map::isVisible(const Point& pos) const
+{
+    return m_visibility[pos];
 }
 
 bool Map::isMovableTileset(Tile tile)
@@ -147,6 +171,9 @@ void Map::generateTileset()
                     break;
                 }
             }
+
+            // Remove remaining interactables if any.
+            m_interactables[pos].clear();
         }
     }
 }
@@ -186,6 +213,7 @@ bool Map::trySpawnExit()
 
         // Succeeded finding a valid exit.
         m_tiles[exit_pos] = Tile::Exit;
+        addInteractable(exit_pos, std::make_shared<Exit>());
         return true;
     }
 
@@ -200,8 +228,6 @@ void Map::spawnItems()
     {
         for (int x = 0; x < width; ++x)
         {
-            m_interactables[{x, y}].clear();
-
             // TODO: spawn items according to tileset.
         }
     }

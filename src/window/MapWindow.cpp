@@ -1,4 +1,5 @@
 #include "window/MapWindow.h"
+#include "window/MinimapWindow.h"
 #include "window/InteractableListWindow.h"
 #include "interactable/DroppedItem.h"
 #include "interactable/DummyItem.h"
@@ -27,10 +28,10 @@ bool MapWindow::onInput(int keycode)
             {'D', {1, 0}},
         };
         auto new_pos = m_player->position() + direction[keycode];
-        if (m_map->isMovable(new_pos))
+        if (new_pos.isInside(m_map->size()) && m_map->isMovable(new_pos))
         {
-            EventMediator::m_on_player_move.signal(new_pos);
-            EventMediator::m_on_time_elapse.signal(config::time_per_move);
+            m_map->expandVisibility(new_pos, config::map_visibility_radius);
+            m_player->move(new_pos);
             return true;
         }
         else
@@ -46,6 +47,12 @@ bool MapWindow::onInput(int keycode)
         m_map->addInteractable(m_player->position(), dropped_item);
         EventMediator::m_on_item_loot.signal(dropped_item.get());
         ++next_item_id;
+    }
+    else if (keycode == 'M')
+    {
+        auto viewport = Viewport{{20, 5}, {40, 17}};
+        EventMediator::m_on_window_push.signal(std::make_shared<MinimapWindow>(viewport, m_map, m_player));
+        return true;
     }
     else if (keycode == 'I')
     {
@@ -88,44 +95,46 @@ void MapWindow::onRender(TextBuffer& buffer)
 
     // Giving distance between map and the Window boundary
     // improves overall visibility by hugh factor!
-    constexpr auto horizontals_padding = 4;
+    constexpr auto horizontal_padding = 4;
     constexpr auto vertical_padding = 2;
 
-    for (int x=horizontals_padding; x<m_viewport.m_size.m_width - horizontals_padding; ++x)
+    for (int x=horizontal_padding; x<m_viewport.m_size.m_width - horizontal_padding; ++x)
     {
         for (int y=vertical_padding; y<m_viewport.m_size.m_height - vertical_padding; ++y)
         {
             auto viewport_coord = Point{x, y};
-
             if (viewport_coord == viewport_center)
             {
                 // Draw player at the center.
-                buffer.renderChar('@', viewport_coord);
+                renderChar(buffer, '@', viewport_coord);
+                continue;
             }
-            else
-            {
-                // Convert viewport coordinate to map coordinate.
-                // Note that map_coord can go beyond map boundary
-                // if viewport is big enough and player is near the edge.
-                auto rel_coord = viewport_coord - viewport_center;
-                auto map_coord = m_player->position() + rel_coord;
 
-                if (map_coord.isInside(m_map->size()))
-                {
-                    if (m_highlight_interactables && !m_map->interactables(map_coord).empty())
-                    {
-                        buffer.renderChar('!', viewport_coord);
-                    }
-                    else
-                    {
-                        buffer.renderChar(static_cast<char>(m_map->tileset(map_coord)), viewport_coord);
-                    }
-                }
-                else
-                {
-                    buffer.renderChar(' ', viewport_coord);
-                }
+            // Convert viewport coordinate to map coordinate.
+            // Note that map_coord can go beyond map boundary
+            // if viewport is big enough and player is near the edge.
+            auto rel_coord = viewport_coord - viewport_center;
+            auto map_coord = m_player->position() + rel_coord;
+
+            if (!map_coord.isInside(m_map->size()))
+            {
+                renderChar(buffer, ' ', viewport_coord);
+                continue;
             }
+
+            if (!m_map->isVisible(map_coord))
+            {
+                renderChar(buffer, '?', viewport_coord);
+                continue;
+            }
+
+            if (m_highlight_interactables && !m_map->interactables(map_coord).empty())
+            {
+                renderChar(buffer, '!', viewport_coord);
+                continue;
+            }
+
+            renderChar(buffer, static_cast<char>(m_map->tileset(map_coord)), viewport_coord);
         }
     }
 }

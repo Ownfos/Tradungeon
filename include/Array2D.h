@@ -15,6 +15,7 @@ namespace tradungeon
 // This class is implemented using one dimentional container and Point <-> index conversion.
 //
 // Array2D<bool> is not supported because std::vector<bool>::operator[] doesn't give bool reference.
+// Consider using int as an alternative data type.
 // Read the answer to the stackoverflow question below for more details.
 // - https://stackoverflow.com/questions/63476664/what-does-the-error-return-cannot-convert-from-std-vb-referencestd-wrap
 template<typename T>

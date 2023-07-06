@@ -5,6 +5,7 @@
 #include "Common.h"
 #include "interactable/DroppedItem.h"
 #include "window/Window.h"
+#include "scene/Scene.h"
 #include <string>
 #include <memory>
 
@@ -22,7 +23,6 @@ namespace tradungeon
 struct EventMediator
 {
     static Event<const std::string&> m_on_message;
-    static Event<const Point&> m_on_player_move;
 
     // Move item from inventory to map.
     static Event<const ItemBundle&> m_on_item_drop;
@@ -34,8 +34,11 @@ struct EventMediator
 
     static Event<int> m_on_time_elapse;
 
+    static Event<std::shared_ptr<Scene>> m_on_scene_load;
     static Event<std::shared_ptr<Window>> m_on_window_push;
     static Event<void> m_on_window_pop;
+
+    static Event<void> m_on_game_clear;
 };
 
 } // namespace tradungeon

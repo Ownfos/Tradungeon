@@ -30,8 +30,6 @@ int main()
         // test_map_generation();
         // test_interactable();
         // test_inventory();
-        // auto arr = Array2D<bool>({20, 20}, true);
-        // arr[{0,0}] = false;
         // test_path_finding();
         // return 0;
 

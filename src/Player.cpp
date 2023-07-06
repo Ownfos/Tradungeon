@@ -9,11 +9,6 @@ namespace tradungeon
 Player::Player(const Point& pos, int inventory_weight_limit)
     : m_pos(pos), m_inventory(inventory_weight_limit)
 {
-    // Player movement handler.
-    m_callback_handles.push_back(EventMediator::m_on_player_move.addCallback([this](const Point& new_pos){
-        m_pos = new_pos;
-    }));
-
     // Inventory window pop-up handler.
     m_callback_handles.push_back(EventMediator::m_on_inventory_show.addCallback([this](){
         EventMediator::m_on_window_push.signal(std::make_shared<InventoryWindow>(Viewport{{20, 5}, {40, 15}}, &m_inventory));
@@ -63,6 +58,12 @@ Player::Player(const Point& pos, int inventory_weight_limit)
 Point Player::position() const
 {
     return m_pos;
+}
+
+void Player::move(const Point& pos)
+{
+    m_pos = pos;
+    EventMediator::m_on_time_elapse.signal(config::time_per_move);
 }
 
 } // namespace tradungeon

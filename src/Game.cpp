@@ -9,6 +9,11 @@ namespace tradungeon
 Game::Game()
     : m_buffer({120, 25})
 {
+    // Scene loading handler.
+    m_callback_handles.push_back(EventMediator::m_on_scene_load.addCallback([&](std::shared_ptr<Scene> scene){
+        loadScene(scene);
+    }));
+
     // Window pop/push handlers.
     m_callback_handles.push_back(EventMediator::m_on_window_push.addCallback([&](std::shared_ptr<Window> window){
         m_window_manager.push(window);

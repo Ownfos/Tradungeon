@@ -11,7 +11,9 @@ namespace tradungeon::config
 constexpr auto fps = 60;
 constexpr auto delta_time = std::chrono::milliseconds(1000 / fps);
 
-constexpr auto map_size = Size{1000, 1000};
+constexpr auto map_size = Size{100, 100};
+
+constexpr auto map_visibility_radius = 15;
 
 // # of days required for a periodical map reset.
 constexpr auto map_reset_cycle = 3;
@@ -24,8 +26,8 @@ constexpr auto hunger_threshold = 100000;
 constexpr auto thirst_threshold = 100000;
 
 // The distance constraint from the center of the map to the exit.
-constexpr auto exit_min_distance = 300;
-constexpr auto exit_max_distance = 350;
+constexpr auto exit_min_distance = 10;
+constexpr auto exit_max_distance = 20;
 
 // The number of random points to select while spawning an exit.
 // If we can't find one with this sample size, consider it a failure.

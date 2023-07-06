@@ -32,10 +32,15 @@ public:
     void addInteractable(const Point& pos, std::shared_ptr<Interactable> interactable);
     void removeInteractable(const Point& pos, const Interactable* interactable);
 
+    // Mark the tiles around 'pos' within range 'radius' as visible.
+    // Only the tiles marked as visible are rendered.
+    void expandVisibility(const Point& pos, int radius);
+
     void reset();
     void groupSimilarTileset(int threshold);
 
     bool isMovable(const Point& pos) const;
+    bool isVisible(const Point& pos) const;
 
 private:
     void generateTileset();
@@ -48,6 +53,7 @@ private:
     int m_squared_exit_max_dist;
 
     Array2D<Tile> m_tiles;
+    Array2D<int> m_visibility;
     Array2D<std::vector<std::shared_ptr<Interactable>>> m_interactables;
 };
 

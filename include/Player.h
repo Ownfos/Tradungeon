@@ -17,6 +17,8 @@ public:
     int hunger() const;
     int thirst() const;
 
+    void move(const Point& pos);
+
 private:
     Point m_pos;
     Inventory m_inventory;

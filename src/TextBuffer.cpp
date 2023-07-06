@@ -33,16 +33,14 @@ void TextBuffer::renderString(std::string_view str, const Viewport& viewport, Te
 
     for (char ch : str)
     {
-        // Non-newline characters are just appended to the buffer.
-        if (ch != '\n')
+        // Keep accumulating non-newline characters until this line is filled.
+        if (ch != '\n' && line_length < viewport.m_size.m_width)
         {
             line_buffer << ch;
             ++line_length;
         }
-
-        // If this row is full or a newline character is given,
-        // flush the buffer to store it as a complete line.
-        if (ch == '\n' || line_length >= viewport.m_size.m_width)
+        // Flush buffer when we meet newline character or need automatic newline.
+        else
         {
             lines.push_back(line_buffer.str());
 
@@ -53,8 +51,8 @@ void TextBuffer::renderString(std::string_view str, const Viewport& viewport, Te
             line_length = 0;
         }
     }
-    // Flush the remaining tokens.
-    // Without this, some cases like single line output won't be handled correctly.
+    // Flush the last line.
+    // This is required to handle cases like single line output.
     lines.push_back(line_buffer.str());
 
     // Now that we know the content of each line,

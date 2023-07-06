@@ -46,9 +46,9 @@ bool InventoryWindow::onInput(int keycode)
     return true;
 }
 
-void InventoryWindow::onRender(TextBuffer& console)
+void InventoryWindow::onRender(TextBuffer& buffer)
 {
-    renderString(console, "Inventory", Viewport{{0, 1}, {m_viewport.m_size.m_width, 1}}, TextAlign::Center);
+    renderString(buffer, "Inventory", Viewport{{0, 1}, {m_viewport.m_size.m_width, 1}}, TextAlign::Center);
 
     // # items in the inventory might have changed.
     m_scroll_view.updateContentSize(m_inventory->numSlots());
@@ -65,7 +65,7 @@ void InventoryWindow::onRender(TextBuffer& console)
         {
             desc += " <==";
         }
-        renderString(console, desc, desc_area);
+        renderString(buffer, desc, desc_area);
     }
 }
 

@@ -10,7 +10,9 @@ GameplayScene::GameplayScene()
     m_player(config::player_start_position, config::inventory_weight_limit),
     m_msg_log_window(std::make_shared<MessageLogWindow>(Viewport{{80, 0}, {40, 25}}, config::message_log_buffer_size)),
     m_map_window(std::make_shared<MapWindow>(Viewport{{0, 0}, {80, 25}}, &m_map, &m_player))
-{}
+{
+    m_map.expandVisibility(m_player.position(), config::map_visibility_radius);
+}
 
 void GameplayScene::onLoad()
 {
@@ -47,6 +49,13 @@ void GameplayScene::onLoad()
         }
 
         // TODO: handle market orders
+    }));
+
+    // Game clear handler.
+    m_callback_handles.push_back(EventMediator::m_on_game_clear.addCallback([]{
+        // TODO: load game clear scene.
+        // EventMediator::m_on_scene_load.signal(std::make_shared<GameClearScene>(/* gameplay statistics to show on clear scene */));
+        EventMediator::m_on_message.signal("You succeeded finding an exit out of this dungeon!");
     }));
 }
 

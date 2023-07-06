@@ -19,12 +19,15 @@ add_executable(tradungeon
     interactable/Item.cpp
     interactable/DroppedItem.cpp
     interactable/DummyItem.cpp
+    interactable/Exit.cpp
     action/DummyAction.cpp
     action/ItemDropAction.cpp
     action/ItemLootAction.cpp
+    action/ExitAction.cpp
     window/Window.cpp
     window/WindowManager.cpp
     window/MapWindow.cpp
+    window/MinimapWindow.cpp
     window/MessageLogWindow.cpp
     window/InventoryWindow.cpp
     window/ActionListWindow.cpp
