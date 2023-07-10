@@ -3,6 +3,7 @@ add_executable(tradungeon
     TextBuffer.cpp
     Console.cpp
     Market.cpp
+    MarketSimulator.cpp
     Tests.cpp
     Random.cpp
     Common.cpp

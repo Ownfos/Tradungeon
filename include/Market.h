@@ -44,7 +44,7 @@ public:
 
     void push(Order order);
     Order pop();
-    Order top() const;
+    const Order& top() const;
 
     bool is_empty() const;
 
@@ -56,10 +56,10 @@ public:
 
     // Given an opposite type of order,
     // check if there is a matching order waiting in the queue.
-    bool is_contract_possible(Order order) const;
+    bool is_contract_possible(const Order& order) const;
 
 private:
-    bool is_sorted(Order lhs, Order rhs);
+    bool is_sorted(const Order& lhs, const Order& rhs);
 
     std::vector<Order> m_queue;
 };
@@ -93,7 +93,7 @@ public:
     // If the Order can be fulfilled, returns corresponding Contract.
     // The one with the maximum buy-price (minumum sell-price) has highest priority.
     // Any remaining quantity will be registered again as a new order.
-    std::optional<Contract> register_order(Order order);
+    std::optional<Contract> register_order(const Order& order);
 
     // Remove every orders from queues.
     // Used to reset the market for a new day.
@@ -101,7 +101,7 @@ public:
 
 private:
     // Create a contract and register the unfulfilled quantity as a new Order.
-    Contract establish_contract(Order buy_order, Order sell_order);
+    Contract establish_contract(const Order& buy_order, const Order& sell_order);
 
     // Waitlist of Orders for each item.
     std::map<int, OrderQueue> m_buy_queue;

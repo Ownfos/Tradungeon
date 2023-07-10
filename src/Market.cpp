@@ -37,7 +37,7 @@ Order OrderQueue::pop()
     return ret;
 }
 
-Order OrderQueue::top() const
+const Order& OrderQueue::top() const
 {
     return m_queue.back();
 }
@@ -62,7 +62,7 @@ Order OrderQueue::operator[](int index) const
     return m_queue[index];
 }
 
-bool OrderQueue::is_sorted(Order lhs, Order rhs)
+bool OrderQueue::is_sorted(const Order& lhs, const Order& rhs)
 {
     // The first element of the queue should come at the back.
     // Note that buy orders should be sorted in ascending order,
@@ -82,7 +82,7 @@ bool OrderQueue::is_empty() const
     return m_queue.empty();
 }
 
-bool OrderQueue::is_contract_possible(Order order) const
+bool OrderQueue::is_contract_possible(const Order& order) const
 {
     // There are no available orders.
     if (is_empty())
@@ -136,7 +136,7 @@ std::vector<Order> Market::get_user_orders(int user_id) const
     return ret;
 }
 
-std::optional<Contract> Market::register_order(Order order)
+std::optional<Contract> Market::register_order(const Order& order)
 {
     const auto item_id = order.m_item_id; // Alias for a frequently used value.
 
@@ -164,7 +164,7 @@ std::optional<Contract> Market::register_order(Order order)
     return {}; // No successful contract was made.
 }
 
-Contract Market::establish_contract(Order buy_order, Order sell_order)
+Contract Market::establish_contract(const Order& buy_order, const Order& sell_order)
 {
     // If the quantity matches, just return the orders.
     if (buy_order.m_quantity == sell_order.m_quantity)
@@ -191,9 +191,11 @@ Contract Market::establish_contract(Order buy_order, Order sell_order)
         register_order(remaning_order);
 
         // Adjust the quantity for buy and sell order of this contract
-        buy_order.m_quantity = sell_order.m_quantity = accomplished_order.m_quantity;
+        auto accomplished_buy_order = buy_order;
+        auto accomplished_sell_order = sell_order;
+        accomplished_buy_order.m_quantity = accomplished_sell_order.m_quantity = accomplished_order.m_quantity;
 
-        return {buy_order, sell_order};
+        return {accomplished_buy_order, accomplished_sell_order};
     }
 }
 

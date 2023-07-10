@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "window/Window.h"
 #include "interactable/Item.h"
+#include "MarketSimulator.h"
 #include <vector>
 #include <string>
 
@@ -17,6 +18,7 @@ void test_text_buffer();
 void test_console();
 void test_market();
 void test_price_fluctuation();
+void test_market_simulator();
 void test_ui();
 void test_message_log();
 void test_message_log_viewer();
@@ -51,6 +53,22 @@ struct User
 {
     int m_id;
     std::string m_name;
+};
+
+class TestTrader : public Trader
+{
+public:
+    TestTrader(int id, std::string name);
+
+    virtual int id() const override;
+    virtual const std::vector<Order>& remainingOrders() const override;
+    virtual void pushOrder(const Order& order) override;
+    virtual void clearOrders() override;
+
+// private:
+    int m_id;
+    std::string m_name;
+    std::vector<Order> m_orders;
 };
 
 struct MarketSimulator

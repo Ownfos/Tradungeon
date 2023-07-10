@@ -10,9 +10,7 @@ GameplayScene::GameplayScene()
     m_player(config::player_start_position, config::inventory_weight_limit),
     m_msg_log_window(std::make_shared<MessageLogWindow>(Viewport{{80, 0}, {40, 25}}, config::message_log_buffer_size)),
     m_map_window(std::make_shared<MapWindow>(Viewport{{0, 0}, {80, 25}}, &m_map, &m_player))
-{
-    m_map.expandVisibility(m_player.position(), config::map_visibility_radius);
-}
+{}
 
 void GameplayScene::onLoad()
 {
@@ -21,6 +19,7 @@ void GameplayScene::onLoad()
     {
         m_map.reset();
     }
+    m_map.expandVisibility(m_player.position(), config::map_visibility_radius);
 
     EventMediator::m_on_window_push.signal(m_msg_log_window);
     EventMediator::m_on_window_push.signal(m_map_window);

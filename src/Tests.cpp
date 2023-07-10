@@ -92,6 +92,36 @@ std::vector<std::shared_ptr<Action>> TestItem::availableActions() const
     };
 }
 
+TestTrader::TestTrader(int id, std::string name)
+    : m_id(id), m_name(name)
+{}
+
+int TestTrader::id() const
+{
+    return m_id;
+}
+
+const std::vector<Order>& TestTrader::remainingOrders() const
+{
+    return m_orders;
+}
+
+void TestTrader::pushOrder(const Order& order)
+{
+    m_orders.push_back(order);
+    std::cout << "[Assign Order]\n";
+    std::cout << "who: " << m_name << "\n";
+    std::cout << "type: " << (order.m_type == OrderType::Buy ? "Buy" : "Sell") << "\n";
+    std::cout << "item id: " << order.m_item_id << "\n";
+    std::cout << "quantity: " << order.m_quantity << "\n";
+    std::cout << "price: " << order.m_price << "\n\n";
+}
+
+void TestTrader::clearOrders()
+{
+    m_orders.clear();
+}
+
 void test_random()
 {
     for(int i=0;i<100;++i)
@@ -330,6 +360,33 @@ void test_price_fluctuation()
             // break; // Test with only one item for now.
         }
     }
+}
+
+void test_market_simulator()
+{
+    auto traders = std::vector<std::shared_ptr<Trader>>{
+        std::make_shared<TestTrader>(0, "trader#0"),
+        std::make_shared<TestTrader>(1, "trader#1"),
+        std::make_shared<TestTrader>(2, "trader#2"),
+        std::make_shared<TestTrader>(3, "trader#3"),
+        std::make_shared<TestTrader>(4, "trader#4"),
+    };
+    auto simulator = tradungeon::MarketSimulator(traders);
+    simulator.addItem(ItemConfig{
+        std::make_shared<TestItem>("Apple", 0, 1),
+        10, // demand
+        20, // supply
+        1000, // initial price
+        2, // # buyers
+        2 // # sellers 
+    });
+
+    for (int i=0;i<100;++i)
+    {
+        std::cout << "Day " << i << std::endl;
+        simulator.generateDailyOrders();
+    }
+
 }
 
 void test_ui()

@@ -21,6 +21,7 @@ int main()
         // test_console();
         // test_market();
         // test_price_fluctuation();
+        test_market_simulator();
         // test_ui();
         // test_message_log();
         // test_message_log_viewer();
@@ -31,7 +32,7 @@ int main()
         // test_interactable();
         // test_inventory();
         // test_path_finding();
-        // return 0;
+        return 0;
 
         auto console = Console();
 
@@ -43,7 +44,7 @@ int main()
             {
                 auto input = console.getKey();
 
-                if (input == 27)
+                if (input == 27) // Virtual keycode for 'ESC'
                 {
                     terminate = true;
                     return;
