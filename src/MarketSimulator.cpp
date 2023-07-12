@@ -7,7 +7,7 @@ MarketSimulator::MarketSimulator(const std::vector<std::shared_ptr<Trader>>& tra
     : m_traders(traders)
 {}
 
-void MarketSimulator::addItem(const ItemConfig& item_config)
+void MarketSimulator::registerTradableItem(const ItemConfig& item_config)
 {
     m_item_configs.push_back(item_config);
 
@@ -94,7 +94,7 @@ void MarketSimulator::adjustDesiredPrice(ItemConfig& item_config)
     // This means that the trader managed to buy/sell desired quantity.
     auto is_order_successful = [](const std::vector<Order>& remaining_orders, int trader_id){
         auto is_id_same = [&](const Order& order){
-            return order.m_user_id == trader_id;
+            return order.m_user->id() == trader_id;
         };
         auto it = std::find_if(remaining_orders.begin(), remaining_orders.end(), is_id_same);
 
@@ -152,8 +152,8 @@ void MarketSimulator::assignOrders(ItemConfig& item_config)
     {
         auto order = Order{};
         order.m_type = OrderType::Buy;
-        order.m_item_id = item_config.m_item->id();
-        order.m_user_id = buyer_config.m_trader->id();
+        order.m_item = item_config.m_item;
+        order.m_user = buyer_config.m_trader;
         order.m_price = buyer_config.m_desired_price;
         order.m_quantity = std::round(item_config.m_net_demand * buyer_config.m_market_share);
 
@@ -164,8 +164,8 @@ void MarketSimulator::assignOrders(ItemConfig& item_config)
     {
         auto order = Order{};
         order.m_type = OrderType::Sell;
-        order.m_item_id = item_config.m_item->id();
-        order.m_user_id = seller_config.m_trader->id();
+        order.m_item = item_config.m_item;
+        order.m_user = seller_config.m_trader;
         order.m_price = seller_config.m_desired_price;
         order.m_quantity = std::round(item_config.m_net_supply * seller_config.m_market_share);
 

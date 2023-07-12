@@ -3,6 +3,7 @@
 
 #include "Event.h"
 #include "Common.h"
+#include "Market.h"
 #include "interactable/DroppedItem.h"
 #include "window/Window.h"
 #include "scene/Scene.h"
@@ -29,6 +30,9 @@ struct EventMediator
     
     // Move item from map to inventory.
     static Event<const DroppedItem*> m_on_item_loot;
+
+    // Buy or sell an item from NPC.
+    static Event<const Order&> m_on_item_trade;
 
     static Event<void> m_on_inventory_show;
 

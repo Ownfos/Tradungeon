@@ -1,6 +1,8 @@
 #ifndef TRADUNGEON_MARKET_H
 #define TRADUNGEON_MARKET_H
 
+#include "Identifiable.h"
+#include <memory>
 #include <map>
 #include <vector>
 #include <optional>
@@ -19,8 +21,8 @@ enum class OrderType { Buy, Sell };
 struct Order
 {
     OrderType m_type;
-    int m_user_id;
-    int m_item_id;
+    std::shared_ptr<Identifiable> m_user;
+    std::shared_ptr<Identifiable> m_item;
     int m_quantity;
     int m_price;
 };
@@ -85,9 +87,6 @@ public:
     // Note: an empty queue is returned if there are no pending Orders (thereby non-const getter).
     const std::vector<Order>& get_buy_queue(int item_id);
     const std::vector<Order>& get_sell_queue(int item_id);
-
-    // Returns every order made from a user.
-    std::vector<Order> get_user_orders(int user_id) const;
 
     // Add an Order to buy or sell queue.
     // If the Order can be fulfilled, returns corresponding Contract.

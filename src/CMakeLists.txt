@@ -4,6 +4,7 @@ add_executable(tradungeon
     Console.cpp
     Market.cpp
     MarketSimulator.cpp
+    NPCTradeManager.cpp
     Tests.cpp
     Random.cpp
     Common.cpp
@@ -21,6 +22,7 @@ add_executable(tradungeon
     interactable/DroppedItem.cpp
     interactable/DummyItem.cpp
     interactable/Exit.cpp
+    interactable/NPC.cpp
     action/DummyAction.cpp
     action/ItemDropAction.cpp
     action/ItemLootAction.cpp

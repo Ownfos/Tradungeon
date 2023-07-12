@@ -17,7 +17,6 @@ void test_random();
 void test_text_buffer();
 void test_console();
 void test_market();
-void test_price_fluctuation();
 void test_market_simulator();
 void test_ui();
 void test_message_log();

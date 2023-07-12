@@ -2,15 +2,15 @@
 #define TRADUNGEON_ITEM_H
 
 #include "interactable/Interactable.h"
+#include "Identifiable.h"
 #include <memory>
 
 namespace tradungeon
 {
 
-class Item : public Interactable
+class Item : public Interactable, public Identifiable
 {
 public:
-    virtual int id() const = 0;
     virtual int weight() const = 0;
 };
 

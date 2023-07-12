@@ -20,7 +20,6 @@ int main()
         // test_text_buffer();
         // test_console();
         // test_market();
-        // test_price_fluctuation();
         test_market_simulator();
         // test_ui();
         // test_message_log();

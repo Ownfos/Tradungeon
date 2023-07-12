@@ -116,29 +116,9 @@ const std::vector<Order>& Market::get_sell_queue(int item_id)
     return m_sell_queue[item_id].get_queue();
 }
 
-std::vector<Order> Market::get_user_orders(int user_id) const
-{
-    auto ret = std::vector<Order>();
-    auto cmp_id = [user_id](auto order){
-        return order.m_user_id == user_id;
-    };
-
-    for (const auto& [item_id, queue] : m_buy_queue)
-    {
-        std::copy_if(queue.begin(), queue.end(), std::back_inserter(ret), cmp_id);
-    }
-
-    for (const auto& [item_id, queue] : m_sell_queue)
-    {
-        std::copy_if(queue.begin(), queue.end(), std::back_inserter(ret), cmp_id);
-    }
-
-    return ret;
-}
-
 std::optional<Contract> Market::register_order(const Order& order)
 {
-    const auto item_id = order.m_item_id; // Alias for a frequently used value.
+    const auto item_id = order.m_item->id(); // Alias for a frequently used value.
 
     switch (order.m_type)
     {

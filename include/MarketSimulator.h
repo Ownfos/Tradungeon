@@ -3,6 +3,7 @@
 
 #include "Market.h"
 #include "Random.h"
+#include "Trader.h"
 #include "interactable/Item.h"
 #include <vector>
 #include <memory>
@@ -11,15 +12,6 @@
 
 namespace tradungeon
 {
-
-class Trader : private Polymorphic
-{
-public:
-    virtual int id() const = 0;
-    virtual const std::vector<Order>& remainingOrders() const = 0;
-    virtual void pushOrder(const Order& order) = 0;
-    virtual void clearOrders() = 0;
-};
 
 struct TraderConfig
 {
@@ -56,7 +48,7 @@ public:
 
     // Let the NPCs trade this item.
     // According to the given setting, buyers and sellers will be chosen.
-    void addItem(const ItemConfig& item_config);
+    void registerTradableItem(const ItemConfig& item_config);
 
     void generateDailyOrders();
 
