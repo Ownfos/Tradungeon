@@ -59,7 +59,7 @@ bool MapWindow::onInput(int keycode)
         EventMediator::m_on_inventory_show.signal();
         return true;
     }
-    else if (keycode == 'F')
+    else if (keycode == 'E')
     {
         const auto& interactables = m_map->interactables(m_player->position());
         auto viewport = Viewport{{20, 10}, {40, 7}};
@@ -81,6 +81,11 @@ bool MapWindow::onInput(int keycode)
         m_map->groupSimilarTileset(6);
         EventMediator::m_on_message.signal("group similar tiles");
         return true;
+    }
+    else if (keycode == 'T')
+    {
+        EventMediator::m_on_time_elapse.signal(timeunit::day);
+        EventMediator::m_on_message.signal("wait for one day");
     }
     return false;
 }

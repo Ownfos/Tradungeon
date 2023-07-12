@@ -20,7 +20,7 @@ int main()
         // test_text_buffer();
         // test_console();
         // test_market();
-        test_market_simulator();
+        // test_market_simulator();
         // test_ui();
         // test_message_log();
         // test_message_log_viewer();
@@ -31,7 +31,7 @@ int main()
         // test_interactable();
         // test_inventory();
         // test_path_finding();
-        return 0;
+        // return 0;
 
         auto console = Console();
 

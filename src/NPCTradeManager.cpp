@@ -18,14 +18,46 @@ NPCTradeManager::NPCTradeManager()
 
     m_callback_handle = EventMediator::m_on_item_trade.addCallback([this](const Order& order){
         // Get actual NPC and Item instances.
-        
+        auto npc = std::dynamic_pointer_cast<NPC>(order.m_user);
+        auto item = std::dynamic_pointer_cast<Item>(order.m_item);
+
+        // TODO: implement interaction between NPC and player's inventory
+
+        // Print debug info
+        auto message = std::string("Player ");
+        if (order.m_type == OrderType::Buy)
+        {
+            message += "bought ";
+        }
+        else
+        {
+            message += "sold ";
+        }
+        message += item->description();
+        message += " at ";
+        message += std::to_string(order.m_price);
+        EventMediator::m_on_message.signal(message);
     });
+}
+
+void NPCTradeManager::placeNPC(Map& map) const
+{
+    for (auto& [id, npc] : m_npc_dict)
+    {
+        // TODO: implement random positioning
+        map.addInteractable({50, 50}, npc);
+    }
 }
 
 void NPCTradeManager::registerTradableItem(const ItemConfig& item_config)
 {
     m_simulator.registerTradableItem(item_config);
     m_item_dict[item_config.m_item->id()] = item_config.m_item;
+}
+
+void NPCTradeManager::generateDailyOrders()
+{
+    m_simulator.generateDailyOrders();
 }
 
 } // namespace tradungeon

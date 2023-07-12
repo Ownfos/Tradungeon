@@ -1,4 +1,6 @@
 #include "interactable/NPC.h"
+#include "interactable/Item.h"
+#include "action/DummyAction.h"
 
 namespace tradungeon
 {
@@ -14,7 +16,23 @@ std::string NPC::description() const
 
 ActionList NPC::availableActions() const
 {
-    return {}; // TODO: implement buy/sell actions
+    // TODO: implement buy/sell actions
+    auto actions = ActionList{};
+    for (const Order& order : remainingOrders())
+    {
+        auto item = std::dynamic_pointer_cast<Item>(order.m_item);
+        
+        auto desc = std::string();
+        desc += (order.m_type == OrderType::Buy ? "Buy " : "Sell ");
+        desc += item->description();
+        desc += " for ";
+        desc += std::to_string(order.m_price);
+        desc += "G";
+
+        actions.push_back(std::make_shared<DummyAction>(std::move(desc)));
+    }
+    
+    return actions;
 }
 
 int NPC::id() const

@@ -174,6 +174,9 @@ void Map::generateTileset()
 
             // Remove remaining interactables if any.
             m_interactables[pos].clear();
+
+            // Make tiles invisible at the beginning.
+            m_visibility[pos] = false;
         }
     }
 }

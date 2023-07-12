@@ -18,8 +18,11 @@ bool ActionListWindow::onInput(int keycode)
     }
     else if (keycode == 'E')
     {
-        m_actions[m_scroll_view.cursorPosition()]->execute();
-        EventMediator::m_on_window_pop.signal();
+        if (m_actions.size() > 0)
+        {
+            m_actions[m_scroll_view.cursorPosition()]->execute();
+            EventMediator::m_on_window_pop.signal();
+        }
     }
     else if (keycode == 'S')
     {
