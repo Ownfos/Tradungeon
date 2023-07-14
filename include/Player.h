@@ -16,6 +16,7 @@ public:
     Point position() const;
     int hunger() const;
     int thirst() const;
+    int money() const;
 
     void move(const Point& pos);
 
@@ -23,6 +24,7 @@ private:
     Point m_pos;
     Inventory m_inventory;
 
+    int m_money = 100000;
     int m_hunger = 0;
     int m_thirst = 0;
 

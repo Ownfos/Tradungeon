@@ -32,7 +32,10 @@ struct EventMediator
     static Event<const DroppedItem*> m_on_item_loot;
 
     // Buy or sell an item from NPC.
-    static Event<const Order&> m_on_item_trade;
+    // m_on_item_try_trade gets invoked first, then Player checks if it is possible.
+    // If player doesn't have enought money or item, m_on_item_trade_confirm will not be invoked.
+    static Event<const Order&> m_on_item_try_trade;
+    static Event<const Order&> m_on_item_trade_confirm;
 
     static Event<void> m_on_inventory_show;
 

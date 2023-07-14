@@ -20,6 +20,10 @@ public:
     virtual void pushOrder(const Order& order) override;
     virtual void clearOrders() override;
 
+    // Decrease the quantity of this order by 1.
+    // The order will be removed from  was fulfilled.
+    void decreaseOrderQuantity(const Order& order);
+
 private:
     int m_id;
     std::string m_name;

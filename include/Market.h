@@ -25,6 +25,8 @@ struct Order
     std::shared_ptr<Identifiable> m_item;
     int m_quantity;
     int m_price;
+
+    bool operator==(const Order& other) const;
 };
 
 // OrderQueue is a priority queue for buy or sell orders.

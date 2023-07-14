@@ -16,14 +16,14 @@ constexpr auto map_size = Size{100, 100};
 constexpr auto map_visibility_radius = 15;
 
 // # of days required for a periodical map reset.
-constexpr auto map_reset_cycle = 3;
+constexpr auto map_reset_cycle = 99999999;
 
 constexpr auto time_per_move = 1;
 
 constexpr auto hunger_per_time = 2;
 constexpr auto thirst_per_time = 1;
-constexpr auto hunger_threshold = 100000;
-constexpr auto thirst_threshold = 100000;
+constexpr auto hunger_threshold = 9999999;
+constexpr auto thirst_threshold = 9999999;
 
 // The distance constraint from the center of the map to the exit.
 constexpr auto exit_min_distance = 10;

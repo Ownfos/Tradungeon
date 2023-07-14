@@ -11,29 +11,29 @@ NPCTradeManager::NPCTradeManager()
     }),
     m_simulator(m_npcs)
 {
-    for (auto npc : m_npcs)
-    {
-        m_npc_dict[npc->id()] = std::dynamic_pointer_cast<NPC>(npc);
-    }
-
-    m_callback_handle = EventMediator::m_on_item_trade.addCallback([this](const Order& order){
+    m_callback_handle = EventMediator::m_on_item_trade_confirm.addCallback([this](const Order& order){
         // Get actual NPC and Item instances.
         auto npc = std::dynamic_pointer_cast<NPC>(order.m_user);
         auto item = std::dynamic_pointer_cast<Item>(order.m_item);
 
-        // TODO: implement interaction between NPC and player's inventory
+        npc->decreaseOrderQuantity(order);
 
-        // Print debug info
-        auto message = std::string("Player ");
+        // Print contract information.
+        // Note: order type is described in NPC's perspective.
+        auto message = std::string();
         if (order.m_type == OrderType::Buy)
         {
-            message += "bought ";
+            message += "Sold ";
+            message += item->description();
+            message += " to ";
         }
         else
         {
-            message += "sold ";
+            message += "Bought ";
+            message += item->description();
+            message += " from ";
         }
-        message += item->description();
+        message += npc->description();
         message += " at ";
         message += std::to_string(order.m_price);
         EventMediator::m_on_message.signal(message);
@@ -42,10 +42,10 @@ NPCTradeManager::NPCTradeManager()
 
 void NPCTradeManager::placeNPC(Map& map) const
 {
-    for (auto& [id, npc] : m_npc_dict)
+    for (auto& npc : m_npcs)
     {
         // TODO: implement random positioning
-        map.addInteractable({50, 50}, npc);
+        map.addInteractable({50, 50}, std::dynamic_pointer_cast<NPC>(npc));
     }
 }
 

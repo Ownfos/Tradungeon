@@ -26,6 +26,7 @@ add_executable(tradungeon
     action/DummyAction.cpp
     action/ItemDropAction.cpp
     action/ItemLootAction.cpp
+    action/ItemTradeAction.cpp
     action/ExitAction.cpp
     window/Window.cpp
     window/WindowManager.cpp

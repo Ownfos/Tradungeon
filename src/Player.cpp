@@ -39,6 +39,50 @@ Player::Player(const Point& pos, int inventory_weight_limit)
         EventMediator::m_on_message.signal("Dropped " + bundle.description());
     }));
 
+    // Item trade handler.
+    m_callback_handles.push_back(EventMediator::m_on_item_try_trade.addCallback([this](const Order& order){
+        // An NPC wants to sell an item to the player, so check if we have enough money.
+        if (order.m_type == OrderType::Sell)
+        {
+            if (m_money >= order.m_price)
+            {
+                EventMediator::m_on_item_trade_confirm.signal(order);
+            }
+            else
+            {
+                EventMediator::m_on_message.signal("You don't have enough money");
+            }
+        }
+        // An NPC wants to buy an item from the player, so check if we have one.
+        else
+        {
+            if (m_inventory.itemBundleWithID(order.m_item->id()))
+            {
+                EventMediator::m_on_item_trade_confirm.signal(order);
+            }
+            else
+            {
+                EventMediator::m_on_message.signal("You don't have that item");
+            }
+        }
+    }));
+    m_callback_handles.push_back(EventMediator::m_on_item_trade_confirm.addCallback([this](const Order& order){
+        auto item = ItemBundle{std::dynamic_pointer_cast<Item>(order.m_item), 1};
+
+        // An NPC sold an item to the player.
+        if (order.m_type == OrderType::Sell)
+        {
+            m_money -= order.m_price;
+            m_inventory.addItem(item);
+        }
+        // An NPC bought an item from the player.
+        else
+        {
+            m_money += order.m_price;
+            m_inventory.removeItem(item);
+        }
+    }));
+
     // Hunger/thirst increment handler.
     m_callback_handles.push_back(EventMediator::m_on_time_elapse.addCallback([this](int elapsed_time){
         m_hunger += elapsed_time * config::hunger_per_time;

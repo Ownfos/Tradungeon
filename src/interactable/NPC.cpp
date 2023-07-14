@@ -1,6 +1,8 @@
 #include "interactable/NPC.h"
 #include "interactable/Item.h"
-#include "action/DummyAction.h"
+#include "action/ItemTradeAction.h"
+#include <exception>
+#include <algorithm>
 
 namespace tradungeon
 {
@@ -16,20 +18,10 @@ std::string NPC::description() const
 
 ActionList NPC::availableActions() const
 {
-    // TODO: implement buy/sell actions
     auto actions = ActionList{};
     for (const Order& order : remainingOrders())
     {
-        auto item = std::dynamic_pointer_cast<Item>(order.m_item);
-        
-        auto desc = std::string();
-        desc += (order.m_type == OrderType::Buy ? "Buy " : "Sell ");
-        desc += item->description();
-        desc += " for ";
-        desc += std::to_string(order.m_price);
-        desc += "G";
-
-        actions.push_back(std::make_shared<DummyAction>(std::move(desc)));
+        actions.push_back(std::make_shared<ItemTradeAction>(order));
     }
     
     return actions;
@@ -53,6 +45,22 @@ void NPC::pushOrder(const Order& order)
 void NPC::clearOrders()
 {
     m_orders.clear();
+}
+
+void NPC::decreaseOrderQuantity(const Order& order)
+{
+    auto it = std::find(m_orders.begin(), m_orders.end(), order);
+
+    if (it == m_orders.end())
+    {
+        throw std::exception("The order does not belong to this NPC!");
+    }
+    
+    it->m_quantity -= 1;
+    if (it->m_quantity <= 0)
+    {
+        m_orders.erase(it);
+    }
 }
 
 } // namespace tradungeon

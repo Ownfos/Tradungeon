@@ -5,6 +5,11 @@
 namespace tradungeon
 {
 
+bool Order::operator==(const Order& other) const
+{
+    return (m_user->id() == other.m_user->id()) && (m_item->id() == other.m_item->id());
+}
+
 const std::vector<Order>& OrderQueue::get_queue() const
 {
     return m_queue;

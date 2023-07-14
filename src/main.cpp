@@ -12,50 +12,59 @@
 using namespace tradungeon;
 using namespace tradungeon::test;
 
-int main()
+void test()
 {
     try
     {
-        // test_random();
-        // test_text_buffer();
-        // test_console();
-        // test_market();
-        // test_market_simulator();
-        // test_ui();
-        // test_message_log();
-        // test_message_log_viewer();
-        // test_events();
-        // test_render_loop();
-        // test_array2d();
-        // test_map_generation();
-        // test_interactable();
-        // test_inventory();
-        // test_path_finding();
-        // return 0;
+        test_random();
+        test_text_buffer();
+        test_console();
+        test_market();
+        test_market_simulator();
+        test_ui();
+        test_message_log();
+        test_message_log_viewer();
+        test_events();
+        test_render_loop();
+        test_array2d();
+        test_map_generation();
+        test_interactable();
+        test_inventory();
+        test_path_finding();
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "FATAL ERROR: " << e.what() << std::endl;
+    }
+}
 
-        auto console = Console();
+int main()
+{
+    auto console = Console();
 
-        auto input_queue = AsyncQueue<int>();
-        auto terminate = std::atomic_bool{false};
+    auto input_queue = AsyncQueue<int>();
+    auto terminate = std::atomic_bool{false};
 
-        auto input_thread = std::thread([&]{
-            while(true)
+    auto input_thread = std::thread([&]{
+        while(!terminate)
+        {
+            auto input = console.getKey();
+
+            if (input == 27) // Virtual keycode for 'ESC'
             {
-                auto input = console.getKey();
-
-                if (input == 27) // Virtual keycode for 'ESC'
-                {
-                    terminate = true;
-                    return;
-                }
-                else
-                {
-                    input_queue.push(input);
-                }
+                terminate = true;
+                return;
             }
-        });
+            else
+            {
+                input_queue.push(input);
+            }
+        }
+    });
 
-        auto render_thread = std::thread([&]{
+    auto render_thread = std::thread([&]{
+        try
+        {
             auto game = Game();
 
             console.clearScreen();
@@ -78,13 +87,14 @@ int main()
                 console.setCursor({0, 0});
                 std::cout << game.render();
             }
-        });
+        }
+        catch(const std::exception& e)
+        {
+            terminate = true;
+            std::cout << "FATAL ERROR: " << e.what() << std::endl;
+        }
+    });
 
-        input_thread.join();
-        render_thread.join();
-    }
-    catch(const std::exception& e)
-    {
-        std::cout << "FATAL ERROR: " << e.what() << std::endl;
-    }
+    input_thread.join();
+    render_thread.join();
 }
