@@ -16,27 +16,14 @@ Player::Player(const Point& pos, int inventory_weight_limit)
 
     // Item loot/drop handlers.
     m_callback_handles.push_back(EventMediator::m_on_item_loot.addCallback([this](const DroppedItem* dropped_item){
-        const auto& bundle = dropped_item->bundle();
-
-        auto spare_weight = m_inventory.spareWeight();
-        auto num_lootable = spare_weight / bundle.m_item->weight();
-
-        // First put everthing in the inventory.
-        m_inventory.addItem(bundle);
+        const ItemBundle& bundle = dropped_item->bundle();
         EventMediator::m_on_message.signal("Looted " + bundle.description());
-
-        // If overweight happens, remove the excess items by invoking item drop event.
-        if (bundle.m_quantity > num_lootable)
-        {
-            EventMediator::m_on_message.signal("Inventory is full!\nDropped excess items on the ground");
-            auto excess_items = ItemBundle{bundle.m_item, bundle.m_quantity - num_lootable};
-            EventMediator::m_on_item_drop.signal(excess_items);
-        }
+        tryLootItem(bundle);
     }));
 
     m_callback_handles.push_back(EventMediator::m_on_item_drop.addCallback([this](const ItemBundle& bundle){
-        m_inventory.removeItem(bundle);
         EventMediator::m_on_message.signal("Dropped " + bundle.description());
+        m_inventory.removeItem(bundle);
     }));
 
     // Item trade handler.
@@ -67,19 +54,26 @@ Player::Player(const Point& pos, int inventory_weight_limit)
         }
     }));
     m_callback_handles.push_back(EventMediator::m_on_item_trade_confirm.addCallback([this](const Order& order){
-        auto item = ItemBundle{std::dynamic_pointer_cast<Item>(order.m_item), 1};
+        auto item = std::dynamic_pointer_cast<Item>(order.m_item);
+
+        // Print contract information.
+        auto contract_info = std::string(order.m_type == OrderType::Sell ? "Bought " : "Sold ");
+        contract_info += item->description();
+        contract_info += " at ";
+        contract_info += std::to_string(order.m_price);
+        EventMediator::m_on_message.signal(contract_info);
 
         // An NPC sold an item to the player.
         if (order.m_type == OrderType::Sell)
         {
             m_money -= order.m_price;
-            m_inventory.addItem(item);
+            tryLootItem({item, 1});
         }
         // An NPC bought an item from the player.
         else
         {
             m_money += order.m_price;
-            m_inventory.removeItem(item);
+            m_inventory.removeItem({item, 1});
         }
     }));
 
@@ -104,10 +98,42 @@ Point Player::position() const
     return m_pos;
 }
 
+int Player::hunger() const
+{
+    return m_hunger;
+}
+
+int Player::thirst() const
+{
+    return m_thirst;
+}
+
+int Player::money() const
+{
+    return m_money;
+}
+
 void Player::move(const Point& pos)
 {
     m_pos = pos;
     EventMediator::m_on_time_elapse.signal(config::time_per_move);
+}
+
+void Player::tryLootItem(const ItemBundle& bundle)
+{
+    auto spare_weight = m_inventory.spareWeight();
+    auto num_lootable = spare_weight / bundle.m_item->weight();
+
+    // First put everthing in the inventory.
+    m_inventory.addItem(bundle);
+
+    // If overweight happens, remove the excess items by invoking item drop event.
+    if (bundle.m_quantity > num_lootable)
+    {
+        EventMediator::m_on_message.signal("Inventory is full!");
+        auto excess_items = ItemBundle{bundle.m_item, bundle.m_quantity - num_lootable};
+        EventMediator::m_on_item_drop.signal(excess_items);
+    }
 }
 
 } // namespace tradungeon

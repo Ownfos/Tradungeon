@@ -10,7 +10,8 @@ GameplayScene::GameplayScene()
     : m_map(config::map_size, config::exit_min_distance, config::exit_max_distance),
     m_player(config::player_start_position, config::inventory_weight_limit),
     m_msg_log_window(std::make_shared<MessageLogWindow>(Viewport{{80, 0}, {40, 19}}, config::message_log_buffer_size)),
-    m_map_window(std::make_shared<MapWindow>(Viewport{{0, 0}, {80, 25}}, &m_map, &m_player))
+    m_map_window(std::make_shared<MapWindow>(Viewport{{0, 0}, {80, 25}}, &m_map, &m_player)),
+    m_status_window(std::make_shared<PlayerStatusWindow>(Viewport{{80, 18}, {40, 7}}, &m_player))
 {
 
     initializeMarket();
@@ -22,6 +23,7 @@ GameplayScene::GameplayScene()
 void GameplayScene::onLoad()
 {
     // Activate map and message viewers.
+    EventMediator::m_on_window_push.signal(m_status_window);
     EventMediator::m_on_window_push.signal(m_msg_log_window);
     EventMediator::m_on_window_push.signal(m_map_window);
 

@@ -17,26 +17,6 @@ NPCTradeManager::NPCTradeManager()
         auto item = std::dynamic_pointer_cast<Item>(order.m_item);
 
         npc->decreaseOrderQuantity(order);
-
-        // Print contract information.
-        // Note: order type is described in NPC's perspective.
-        auto message = std::string();
-        if (order.m_type == OrderType::Buy)
-        {
-            message += "Sold ";
-            message += item->description();
-            message += " to ";
-        }
-        else
-        {
-            message += "Bought ";
-            message += item->description();
-            message += " from ";
-        }
-        message += npc->description();
-        message += " at ";
-        message += std::to_string(order.m_price);
-        EventMediator::m_on_message.signal(message);
     });
 }
 

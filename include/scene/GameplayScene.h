@@ -4,6 +4,7 @@
 #include "scene/Scene.h"
 #include "window/MessageLogWindow.h"
 #include "window/MapWindow.h"
+#include "window/PlayerStatusWindow.h"
 #include "Clock.h"
 #include "NPCTradeManager.h"
 #include <any>
@@ -33,6 +34,7 @@ private:
     NPCTradeManager m_trade_manager;
     std::shared_ptr<MessageLogWindow> m_msg_log_window;
     std::shared_ptr<MapWindow> m_map_window;
+    std::shared_ptr<PlayerStatusWindow> m_status_window;
 
     std::vector<std::any> m_callback_handles;
 };

@@ -20,6 +20,10 @@ public:
 
     void move(const Point& pos);
 
+    // Adds item to the inventory.
+    // If we reach weight limit, excess items will be dropped on the map.
+    void tryLootItem(const ItemBundle& bundle);
+
 private:
     Point m_pos;
     Inventory m_inventory;
