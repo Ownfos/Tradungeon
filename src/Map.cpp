@@ -1,6 +1,5 @@
 #include "Map.h"
 #include "DiamondSquare.h"
-#include "PathFinding.h"
 #include "Random.h"
 #include "Config.h"
 #include "interactable/Exit.h"
@@ -207,9 +206,7 @@ bool Map::trySpawnExit()
         }
 
         // Check if the point is reachable from the center of the map.
-        auto movable = m_tiles.transform<int>([](auto tile){ return isMovableTileset(tile); });
-        auto path = dijkstra(movable, center, exit_pos);
-        if (!path.has_value())
+        if (!findPath(center, exit_pos))
         {
             continue;
         }
@@ -280,6 +277,12 @@ void Map::groupSimilarTileset(int threshold)
             }
         }
     }
+}
+
+std::optional<Path> Map::findPath(const Point& start, const Point& end) const
+{
+    auto movable = m_tiles.transform<int>([](auto tile){ return isMovableTileset(tile); });
+    return dijkstra(movable, start, end);
 }
 
 } // namespace tradungeon

@@ -20,12 +20,39 @@ NPCTradeManager::NPCTradeManager()
     });
 }
 
-void NPCTradeManager::placeNPC(Map& map) const
+void NPCTradeManager::placeNPC(Map& map, int spawn_radius) const
 {
+    // The player's initial position.
+    const auto player_pos = Point{
+        map.size().m_width / 2,
+        map.size().m_height / 2
+    };
+
     for (auto& npc : m_npcs)
     {
-        // TODO: implement random positioning
-        map.addInteractable({50, 50}, std::dynamic_pointer_cast<NPC>(npc));
+        while (true)
+        {
+            // Select a random displacement with size less than spawn_radius.
+            auto npc_displacement = Point{
+                Random::range(-spawn_radius, spawn_radius),
+                Random::range(-spawn_radius, spawn_radius)
+            };
+            if (npc_displacement.dotProduct(npc_displacement) > spawn_radius * spawn_radius)
+            {
+                continue;
+            }
+
+            // Check if the point is reachable from player's initial position.
+            auto npc_pos = player_pos + npc_displacement;
+            if (!map.findPath(player_pos, npc_pos))
+            {
+                continue;
+            }
+
+            // If we found a valid position, place the NPC and move on to the next one.
+            map.addInteractable(npc_pos, std::dynamic_pointer_cast<NPC>(npc));
+            break;
+        }
     }
 }
 

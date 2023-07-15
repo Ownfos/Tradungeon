@@ -15,7 +15,7 @@ class NPCTradeManager
 public:
     NPCTradeManager();
 
-    void placeNPC(Map& map) const;
+    void placeNPC(Map& map, int spawn_radius) const;
     void registerTradableItem(const ItemConfig& item_config);
     void generateDailyOrders();
 

@@ -86,7 +86,7 @@ void GameplayScene::resetMap()
 {
     // Create a new tileset.
     m_map.reset();
-    m_trade_manager.placeNPC(m_map);
+    m_trade_manager.placeNPC(m_map, config::npc_spawn_radius);
 
     // Teleport player to the initial position.
     // Since visibility is reset, we need to manually expand visibility near the player.

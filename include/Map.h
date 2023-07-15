@@ -2,6 +2,7 @@
 #define TRADUNGEON_MAP_H
 
 #include "Array2D.h"
+#include "PathFinding.h"
 #include "interactable/Interactable.h"
 #include <numeric>
 
@@ -41,6 +42,8 @@ public:
 
     bool isMovable(const Point& pos) const;
     bool isVisible(const Point& pos) const;
+
+    std::optional<Path> findPath(const Point& start, const Point& end) const;
 
 private:
     void generateTileset();

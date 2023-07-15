@@ -14,6 +14,7 @@ constexpr auto delta_time = std::chrono::milliseconds(1000 / fps);
 constexpr auto map_size = Size{100, 100};
 
 constexpr auto map_visibility_radius = 15;
+constexpr auto npc_spawn_radius = 10;
 
 // # of days required for a periodical map reset.
 constexpr auto map_reset_cycle = 99999999;

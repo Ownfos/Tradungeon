@@ -85,7 +85,7 @@ public:
     }
 
     template<typename U>
-    Array2D<U> transform(const std::function<U(const T&)>& op)
+    Array2D<U> transform(const std::function<U(const T&)>& op) const
     {
         auto ret = Array2D<U>(m_size);
         for (int i = 0; i < m_data.size(); ++i)
