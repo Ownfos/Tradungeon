@@ -4,6 +4,7 @@
 #include "window/Window.h"
 #include "Map.h"
 #include "Player.h"
+#include "PeriodicEvent.h"
 
 namespace tradungeon
 {
@@ -21,9 +22,8 @@ private:
     Map* m_map;
     Player* m_player;
 
-    // A counter and flag that manages periodically flickering tiles with interactables.
-    std::chrono::milliseconds m_timer{0};
     bool m_highlight_interactables{false};
+    PeriodicEvent<std::chrono::milliseconds> m_flicker_tiles;
 };
 
 } // namespace tradungeon

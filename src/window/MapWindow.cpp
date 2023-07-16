@@ -14,7 +14,8 @@ namespace tradungeon
 {
 
 MapWindow::MapWindow(const Viewport& viewport, Map* map, Player* player)
-    : Window(viewport), m_map(map), m_player(player)
+    : Window(viewport), m_map(map), m_player(player),
+    m_flicker_tiles(300ms, [this]{ m_highlight_interactables = !m_highlight_interactables; })
 {}
 
 bool MapWindow::onInput(int keycode)
@@ -32,6 +33,12 @@ bool MapWindow::onInput(int keycode)
         {
             m_map->expandVisibility(new_pos, config::map_visibility_radius);
             m_player->move(new_pos);
+
+            if (m_map->tileset(new_pos) == Tile::Water)
+            {
+                m_player->resetThirst();
+            }
+            
             return true;
         }
         else
@@ -84,8 +91,7 @@ bool MapWindow::onInput(int keycode)
     }
     else if (keycode == 'T')
     {
-        EventMediator::m_on_time_elapse.signal(timeunit::day);
-        EventMediator::m_on_message.signal("wait for one day");
+        EventMediator::m_on_time_elapse.signal(timeunit::hour);
     }
     return false;
 }
@@ -146,13 +152,7 @@ void MapWindow::onRender(TextBuffer& buffer)
 
 void MapWindow::onUpdate(std::chrono::milliseconds delta_time)
 {
-    // Flip flag every second.
-    m_timer += delta_time;
-    if (m_timer > 300ms)
-    {
-        m_timer -= 300ms;
-        m_highlight_interactables = !m_highlight_interactables;
-    }
+    m_flicker_tiles.advanceTime(delta_time);
 }
 
 } // namespace tradungeon

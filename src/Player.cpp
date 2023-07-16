@@ -119,6 +119,11 @@ void Player::move(const Point& pos)
     EventMediator::m_on_time_elapse.signal(config::time_per_move);
 }
 
+void Player::resetThirst()
+{
+    m_thirst = 0;
+}
+
 void Player::tryLootItem(const ItemBundle& bundle)
 {
     auto spare_weight = m_inventory.spareWeight();

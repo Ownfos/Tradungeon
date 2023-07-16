@@ -9,11 +9,12 @@ namespace tradungeon
 GameplayScene::GameplayScene()
     : m_map(config::map_size, config::exit_min_distance, config::exit_max_distance),
     m_player(config::player_start_position, config::inventory_weight_limit),
-    m_msg_log_window(std::make_shared<MessageLogWindow>(Viewport{{80, 0}, {40, 19}}, config::message_log_buffer_size)),
+    m_map_reset_event(config::map_reset_cycle * timeunit::day, [this]{ resetMap(); }),
+    m_market_reset_event(timeunit::day, [this]{ m_trade_manager.generateDailyOrders(); }),
+    m_msg_log_window(std::make_shared<MessageLogWindow>(Viewport{{80, 0}, {40, 18}}, config::message_log_buffer_size)),
     m_map_window(std::make_shared<MapWindow>(Viewport{{0, 0}, {80, 25}}, &m_map, &m_player)),
-    m_status_window(std::make_shared<PlayerStatusWindow>(Viewport{{80, 18}, {40, 7}}, &m_player))
+    m_status_window(std::make_shared<StatusWindow>(Viewport{{80, 17}, {40, 8}}, &m_player, &m_clock))
 {
-
     initializeMarket();
     resetMap();
 
@@ -37,25 +38,9 @@ void GameplayScene::onLoad()
 
     // Time related events.
     m_callback_handles.push_back(EventMediator::m_on_time_elapse.addCallback([this](int elapsed_time){
-        m_map_reset_clock.m_time += elapsed_time;
-        m_market_reset_clock.m_time += elapsed_time;
-
-        // Reset the map periodically.
-        if (m_map_reset_clock.day() >= config::map_reset_cycle)
-        {
-            resetMap();
-
-            // Start counting days from 0.
-            m_map_reset_clock.m_time -= config::map_reset_cycle * timeunit::day;
-        }
-
-        // Change the market status everyday.
-        if (m_market_reset_clock.day() > 0)
-        {
-            m_trade_manager.generateDailyOrders();
-
-            m_market_reset_clock.m_time -= timeunit::day;
-        }
+        m_clock.m_time += elapsed_time;
+        m_map_reset_event.advanceTime(elapsed_time);
+        m_market_reset_event.advanceTime(elapsed_time);
     }));
 
     // Game clear handler.

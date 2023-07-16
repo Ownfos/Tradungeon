@@ -36,7 +36,7 @@ add_executable(tradungeon
     window/InventoryWindow.cpp
     window/ActionListWindow.cpp
     window/InteractableListWindow.cpp
-    window/PlayerStatusWindow.cpp
+    window/StatusWindow.cpp
     scene/GameplayScene.cpp
 )
 
