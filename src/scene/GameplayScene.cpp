@@ -1,7 +1,8 @@
 #include "scene/GameplayScene.h"
 #include "EventMediator.h"
 #include "Config.h"
-#include "interactable/DummyItem.h"
+#include "interactable/UnusableItems.h"
+#include "interactable/EdibleItems.h"
 
 namespace tradungeon
 {
@@ -11,9 +12,9 @@ GameplayScene::GameplayScene()
     m_player(config::player_start_position, config::inventory_weight_limit),
     m_map_reset_event(config::map_reset_cycle * timeunit::day, [this]{ resetMap(); }),
     m_market_reset_event(timeunit::day, [this]{ m_trade_manager.generateDailyOrders(); }),
-    m_msg_log_window(std::make_shared<MessageLogWindow>(Viewport{{80, 0}, {40, 18}}, config::message_log_buffer_size)),
+    m_msg_log_window(std::make_shared<MessageLogWindow>(Viewport{{80, 0}, {40, 17}}, config::message_log_buffer_size)),
     m_map_window(std::make_shared<MapWindow>(Viewport{{0, 0}, {80, 25}}, &m_map, &m_player)),
-    m_status_window(std::make_shared<StatusWindow>(Viewport{{80, 17}, {40, 8}}, &m_player, &m_clock))
+    m_status_window(std::make_shared<StatusWindow>(Viewport{{80, 16}, {40, 9}}, &m_player, &m_clock))
 {
     initializeMarket();
     resetMap();
@@ -54,14 +55,27 @@ void GameplayScene::onLoad()
 void GameplayScene::initializeMarket()
 {
     // Register tradable items to the simulator.
-    auto item_config = ItemConfig{};
-    item_config.m_item = std::make_shared<DummyItem>("Apple", 0, 1);
-    item_config.m_net_demand = 10;
-    item_config.m_net_supply = 10;
-    item_config.m_initial_price = 1000;
-    item_config.m_num_buyers = 1;
-    item_config.m_num_sellers = 1;
-    m_trade_manager.registerTradableItem(item_config);
+    {
+        auto item_config = ItemConfig{};
+        item_config.m_item = std::make_shared<Apple>();
+        item_config.m_net_demand = 10;
+        item_config.m_net_supply = 10;
+        item_config.m_initial_price = 100;
+        item_config.m_num_buyers = 1;
+        item_config.m_num_sellers = 1;
+        m_trade_manager.registerTradableItem(item_config);
+    }
+
+    {
+        auto item_config = ItemConfig{};
+        item_config.m_item = std::make_shared<Diamond>();
+        item_config.m_net_demand = 10;
+        item_config.m_net_supply = 10;
+        item_config.m_initial_price = 1000;
+        item_config.m_num_buyers = 1;
+        item_config.m_num_sellers = 1;
+        m_trade_manager.registerTradableItem(item_config);
+    }
 
     // Prepare the orders for the first day.
     m_trade_manager.generateDailyOrders();

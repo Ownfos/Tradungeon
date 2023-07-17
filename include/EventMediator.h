@@ -5,6 +5,7 @@
 #include "Common.h"
 #include "Market.h"
 #include "interactable/DroppedItem.h"
+#include "interactable/EdibleItems.h"
 #include "window/Window.h"
 #include "scene/Scene.h"
 #include <string>
@@ -30,6 +31,9 @@ struct EventMediator
     
     // Move item from map to inventory.
     static Event<const DroppedItem*> m_on_item_loot;
+
+    // Use item and restore hunger guage.
+    static Event<std::shared_ptr<EdibleItem>> m_on_item_eat;
 
     // Buy or sell an item from NPC.
     // m_on_item_try_trade gets invoked first, then Player checks if it is possible.

@@ -7,6 +7,7 @@ namespace tradungeon
 Event<const std::string&> EventMediator::m_on_message;
 Event<const ItemBundle&> EventMediator::m_on_item_drop;
 Event<const DroppedItem*> EventMediator::m_on_item_loot;
+Event<std::shared_ptr<EdibleItem>> EventMediator::m_on_item_eat;
 Event<const Order&> EventMediator::m_on_item_try_trade;
 Event<const Order&> EventMediator::m_on_item_trade_confirm;
 Event<void> EventMediator::m_on_inventory_show;

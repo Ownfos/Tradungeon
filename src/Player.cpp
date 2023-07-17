@@ -26,6 +26,13 @@ Player::Player(const Point& pos, int inventory_weight_limit)
         m_inventory.removeItem(bundle);
     }));
 
+    // Item eat handler.
+    m_callback_handles.push_back(EventMediator::m_on_item_eat.addCallback([this](std::shared_ptr<EdibleItem> item){
+        EventMediator::m_on_message.signal("Ate " + item->description());
+        m_hunger = std::max(0, m_hunger - item->hungerRestoration()); // Make sure hunger doesn't go negative.
+        m_inventory.removeItem({item, 1});
+    }));
+
     // Item trade handler.
     m_callback_handles.push_back(EventMediator::m_on_item_try_trade.addCallback([this](const Order& order){
         // An NPC wants to sell an item to the player, so check if we have enough money.
@@ -106,6 +113,16 @@ int Player::hunger() const
 int Player::thirst() const
 {
     return m_thirst;
+}
+
+int Player::inventoryWeight() const
+{
+    return m_inventory.netWeight();
+}
+
+int Player::inventoryWeightLimit() const
+{
+    return m_inventory.weightLimit();
 }
 
 int Player::money() const

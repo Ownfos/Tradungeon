@@ -16,6 +16,8 @@ public:
     Point position() const;
     int hunger() const;
     int thirst() const;
+    int inventoryWeight() const;
+    int inventoryWeightLimit() const;
     int money() const;
 
     void move(const Point& pos);
