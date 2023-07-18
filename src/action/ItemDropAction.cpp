@@ -1,5 +1,6 @@
 #include "action/ItemDropAction.h"
 #include "EventMediator.h"
+#include <format>
 
 namespace tradungeon
 {
@@ -15,7 +16,7 @@ void ItemDropAction::execute()
 
 std::string ItemDropAction::description() const
 {
-    return "Drop " + m_bundle.description() + " on the ground";
+    return std::format("Drop {} on the ground", m_bundle.description());
 }
 
 } // namespace tradungeon

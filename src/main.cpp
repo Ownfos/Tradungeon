@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <thread>
+#include <format>
 
 using namespace tradungeon;
 using namespace tradungeon::test;
@@ -34,7 +35,7 @@ void test()
     }
     catch(const std::exception& e)
     {
-        std::cout << "FATAL ERROR: " << e.what() << std::endl;
+        std::cout << std::format("FATAL ERROR: {}\n", e.what());
     }
 }
 
@@ -91,7 +92,7 @@ int main()
         catch(const std::exception& e)
         {
             terminate = true;
-            std::cout << "FATAL ERROR: " << e.what() << std::endl;
+            std::cout << std::format("FATAL ERROR: {}\n", e.what());
         }
     });
 

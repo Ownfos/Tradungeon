@@ -1,5 +1,6 @@
 #include "action/ItemEatAction.h"
 #include "EventMediator.h"
+#include <format>
 
 namespace tradungeon
 {
@@ -15,7 +16,7 @@ void ItemEatAction::execute()
 
 std::string ItemEatAction::description() const
 {
-    return "Eat " + m_item->description() + " (hunger -" + std::to_string(m_item->hungerRestoration()) + ")";
+    return std::format("Eat {} (hunger -{})", m_item->description(), m_item->hungerRestoration());
 }
 
 } // namespace tradungeon

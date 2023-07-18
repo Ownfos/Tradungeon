@@ -1,11 +1,12 @@
 #include "interactable/Item.h"
+#include <format>
 
 namespace tradungeon
 {
 
 std::string ItemBundle::description() const
 {
-    return m_item->description() + " (x" + std::to_string(m_quantity) + ")";
+    return std::format("{} (x{})", m_item->description(), m_quantity);
 }
 
 int ItemBundle::weight() const

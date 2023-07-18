@@ -2,6 +2,7 @@
 #include "EventMediator.h"
 #include "window/InventoryWindow.h"
 #include "Config.h"
+#include <format>
 
 namespace tradungeon
 {
@@ -64,10 +65,11 @@ Player::Player(const Point& pos, int inventory_weight_limit)
         auto item = std::dynamic_pointer_cast<Item>(order.m_item);
 
         // Print contract information.
-        auto contract_info = std::string(order.m_type == OrderType::Sell ? "Bought " : "Sold ");
-        contract_info += item->description();
-        contract_info += " at ";
-        contract_info += std::to_string(order.m_price);
+        auto contract_info = std::format("{} {} at {}",
+            (order.m_type == OrderType::Sell ? "Bought" : "Sold"),
+            item->description(),
+            order.m_price
+        );
         EventMediator::m_on_message.signal(contract_info);
 
         // An NPC sold an item to the player.
