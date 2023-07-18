@@ -40,7 +40,9 @@ add_executable(tradungeon
     window/ActionListWindow.cpp
     window/InteractableListWindow.cpp
     window/StatusWindow.cpp
+    window/TitleMenuWindow.cpp
     scene/GameplayScene.cpp
+    scene/TitleScene.cpp
 )
 
 target_include_directories(tradungeon PUBLIC ${CMAKE_SOURCE_DIR}/include)

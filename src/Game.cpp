@@ -1,6 +1,6 @@
 #include "Game.h"
 #include "EventMediator.h"
-#include "scene/GameplayScene.h"
+#include "scene/TitleScene.h"
 #include "Config.h"
 
 namespace tradungeon
@@ -23,7 +23,7 @@ Game::Game()
         m_window_manager.pop();
     }));
 
-    loadScene(std::make_shared<GameplayScene>());
+    loadScene(std::make_shared<TitleScene>());
 }
 
 void Game::handleInput(int keycode)
