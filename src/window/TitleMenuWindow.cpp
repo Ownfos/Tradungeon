@@ -1,4 +1,5 @@
 #include "window/TitleMenuWindow.h"
+#include "window/HelpWindow.h"
 #include "scene/GameplayScene.h"
 #include "EventMediator.h"
 #include <format>
@@ -14,7 +15,7 @@ TitleMenuWindow::TitleMenuWindow(const Viewport& viewport)
 
 bool TitleMenuWindow::onInput(int keycode)
 {
-    // There are only two options ('New Game' and 'help'),
+    // There are only two options ('New Game' and 'Help'),
     // so moving up and down behaves the same.
     if (keycode == 'W' || keycode == 'S')
     {
@@ -28,7 +29,7 @@ bool TitleMenuWindow::onInput(int keycode)
         }
         else
         {
-            // TODO: implement help window that explains the goal of this game and how to control.
+            EventMediator::m_on_window_push.signal(std::make_shared<HelpWindow>());
         }
     }
     return true;
@@ -51,6 +52,7 @@ void TitleMenuWindow::onRender(TextBuffer& buffer)
     if (m_flicker_text)
     {
         renderString(buffer, "- press 'E' to select a menu -", Viewport{{0, 20}, m_viewport.m_size}, TextAlign::Center);
+        renderString(buffer, "- press 'W' or 'S' to scroll menu -", Viewport{{0, 21}, m_viewport.m_size}, TextAlign::Center);
     }
 }
 

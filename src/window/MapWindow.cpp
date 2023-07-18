@@ -1,6 +1,7 @@
 #include "window/MapWindow.h"
 #include "window/MinimapWindow.h"
 #include "window/InteractableListWindow.h"
+#include "window/HelpWindow.h"
 #include "interactable/DroppedItem.h"
 #include "interactable/DummyItem.h"
 #include "EventMediator.h"
@@ -46,6 +47,7 @@ bool MapWindow::onInput(int keycode)
             EventMediator::m_on_message.signal("You cannot move to that tile");
         }
     }
+    // TODO: remove this block when debugging is no longer required
     else if (keycode == 'L')
     {
         static int next_item_id = 0;
@@ -66,6 +68,11 @@ bool MapWindow::onInput(int keycode)
         EventMediator::m_on_inventory_show.signal();
         return true;
     }
+    else if (keycode == 'H')
+    {
+        EventMediator::m_on_window_push.signal(std::make_shared<HelpWindow>());
+        return true;
+    }
     else if (keycode == 'E')
     {
         const auto& interactables = m_map->interactables(m_player->position());
@@ -73,6 +80,7 @@ bool MapWindow::onInput(int keycode)
         EventMediator::m_on_window_push.signal(std::make_shared<InteractableListWindow>(viewport, interactables));
         return true;
     }
+    // TODO: remove this block when debugging is no longer required
     else if (keycode == 'R')
     {
         do
@@ -83,12 +91,14 @@ bool MapWindow::onInput(int keycode)
         EventMediator::m_on_message.signal("reset map");
         return true;
     }
+    // TODO: remove this block when debugging is no longer required
     else if (keycode == 'G')
     {
         m_map->groupSimilarTileset(6);
         EventMediator::m_on_message.signal("group similar tiles");
         return true;
     }
+    // TODO: remove this block when debugging is no longer required
     else if (keycode == 'T')
     {
         EventMediator::m_on_time_elapse.signal(timeunit::hour);
