@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "PeriodicEvent.h"
+#include "CraftRecipe.h"
 
 namespace tradungeon
 {
@@ -21,6 +22,7 @@ public:
 private:
     Map* m_map;
     Player* m_player;
+    std::vector<CraftRecipe> m_recipes;
 
     bool m_highlight_interactables{false};
     PeriodicEvent<std::chrono::milliseconds> m_flicker_tiles;

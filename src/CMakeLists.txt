@@ -39,6 +39,8 @@ add_executable(tradungeon
     window/InventoryWindow.cpp
     window/ActionListWindow.cpp
     window/InteractableListWindow.cpp
+    window/CraftRecipeListWindow.cpp
+    window/CraftRecipeWindow.cpp
     window/StatusWindow.cpp
     window/TitleMenuWindow.cpp
     window/HelpWindow.cpp

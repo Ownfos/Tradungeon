@@ -68,6 +68,17 @@ void GameplayScene::initializeMarket()
 
     {
         auto item_config = ItemConfig{};
+        item_config.m_item = std::make_shared<IronOre>();
+        item_config.m_net_demand = 10;
+        item_config.m_net_supply = 10;
+        item_config.m_initial_price = 1000;
+        item_config.m_num_buyers = 1;
+        item_config.m_num_sellers = 1;
+        m_trade_manager.registerTradableItem(item_config);
+    }
+
+    {
+        auto item_config = ItemConfig{};
         item_config.m_item = std::make_shared<Diamond>();
         item_config.m_net_demand = 10;
         item_config.m_net_supply = 10;

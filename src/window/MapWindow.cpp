@@ -1,9 +1,11 @@
 #include "window/MapWindow.h"
 #include "window/MinimapWindow.h"
 #include "window/InteractableListWindow.h"
+#include "window/CraftRecipeListWindow.h"
 #include "window/HelpWindow.h"
 #include "interactable/DroppedItem.h"
 #include "interactable/DummyItem.h"
+#include "interactable/UnusableItems.h"
 #include "EventMediator.h"
 #include "Config.h"
 #include <map>
@@ -17,7 +19,12 @@ namespace tradungeon
 MapWindow::MapWindow(const Viewport& viewport, Map* map, Player* player)
     : Window(viewport), m_map(map), m_player(player),
     m_flicker_tiles(300ms, [this]{ m_highlight_interactables = !m_highlight_interactables; })
-{}
+{
+    auto recipe = CraftRecipe{};
+    recipe.m_ingredients = {{std::make_shared<IronOre>(), 1}, {std::make_shared<WoodStick>(), 1}};
+    recipe.m_product = {std::make_shared<Diamond>(), 1};
+    m_recipes.push_back(recipe);
+}
 
 bool MapWindow::onInput(int keycode)
 {
@@ -47,16 +54,6 @@ bool MapWindow::onInput(int keycode)
             EventMediator::m_on_message.signal("You cannot move to that tile");
         }
     }
-    // TODO: remove this block when debugging is no longer required
-    else if (keycode == 'L')
-    {
-        static int next_item_id = 0;
-        auto bundle = ItemBundle{std::make_shared<DummyItem>("Item #" + std::to_string(next_item_id), next_item_id, 1), 10};
-        auto dropped_item = std::make_shared<DroppedItem>(bundle);
-        m_map->addInteractable(m_player->position(), dropped_item);
-        EventMediator::m_on_item_loot.signal(dropped_item.get());
-        ++next_item_id;
-    }
     else if (keycode == 'M')
     {
         auto viewport = Viewport{{20, 5}, {40, 17}};
@@ -79,6 +76,22 @@ bool MapWindow::onInput(int keycode)
         auto viewport = Viewport{{20, 10}, {40, 7}};
         EventMediator::m_on_window_push.signal(std::make_shared<InteractableListWindow>(viewport, interactables));
         return true;
+    }
+    else if (keycode == 'C')
+    {
+        auto viewport = Viewport{{20, 10}, {40, 7}};
+        EventMediator::m_on_window_push.signal(std::make_shared<CraftRecipeListWindow>(viewport, m_recipes, *m_player));
+        return true;
+    }
+    // TODO: remove this block when debugging is no longer required
+    else if (keycode == 'L')
+    {
+        static int next_item_id = 0;
+        auto bundle = ItemBundle{std::make_shared<DummyItem>("Item #" + std::to_string(next_item_id), next_item_id, 1), 10};
+        auto dropped_item = std::make_shared<DroppedItem>(bundle);
+        m_map->addInteractable(m_player->position(), dropped_item);
+        EventMediator::m_on_item_loot.signal(dropped_item.get());
+        ++next_item_id;
     }
     // TODO: remove this block when debugging is no longer required
     else if (keycode == 'R')

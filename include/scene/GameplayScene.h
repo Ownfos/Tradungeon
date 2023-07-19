@@ -34,6 +34,7 @@ private:
     PeriodicEvent<int> m_map_reset_event;
     PeriodicEvent<int> m_market_reset_event;
     NPCTradeManager m_trade_manager;
+
     std::shared_ptr<MessageLogWindow> m_msg_log_window;
     std::shared_ptr<MapWindow> m_map_window;
     std::shared_ptr<StatusWindow> m_status_window;

@@ -6,7 +6,7 @@ namespace tradungeon
 
 std::string ItemBundle::description() const
 {
-    return std::format("{} (x{})", m_item->description(), m_quantity);
+    return std::format("{} x{} [{}/ea]", m_item->description(), m_quantity, m_item->weight());
 }
 
 int ItemBundle::weight() const

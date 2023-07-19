@@ -160,4 +160,36 @@ void Player::tryLootItem(const ItemBundle& bundle)
     }
 }
 
+int Player::calculateAmountCraftable(const CraftRecipe& recipe)
+{
+    int num_craftable = std::numeric_limits<int>::max();
+    for (const ItemBundle& ingredient : recipe.m_ingredients)
+    {
+        // If any of the ingredient doesn't exist,
+        // it is obviously impossible to craft even one.
+        auto bundle = m_inventory.itemBundleWithID(ingredient.m_item->id());
+        if (!bundle.has_value())
+        {
+            return 0;
+        }
+
+        auto possessed = bundle->get().m_quantity;
+        auto required = ingredient.m_quantity;
+        auto possible = possessed / required;
+
+        num_craftable = std::min(num_craftable, possible);
+    }
+
+    return num_craftable;
+}
+
+void Player::craft(const CraftRecipe& recipe)
+{
+    for (const ItemBundle& ingredient : recipe.m_ingredients)
+    {
+        m_inventory.removeItem(ingredient);
+    }
+    m_inventory.addItem(recipe.m_product);
+}
+
 } // namespace tradungeon

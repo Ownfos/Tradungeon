@@ -28,8 +28,9 @@ void HelpWindow::onRender(TextBuffer& buffer)
         "- Esc: terminate the game\n"
         "- W, A, S, D: move player\n"
         "- E: open list of interactable entities on player's position\n"
-        "- I: open inventory window\n"
+        "- I: open inventory\n"
         "- M: open minimap\n"
+        "- C: open crafting menu\n"
         "- H: open this help message\n"
         "- Q: exit / go back\n\n"
         "[When menu window pops up]\n"
@@ -46,7 +47,7 @@ void HelpWindow::onRender(TextBuffer& buffer)
         "- '#': wall\n"
         "- 'E': exit\n";
     renderString(buffer, controls, Viewport{{20, 4}, {80, 20}});
-    renderString(buffer, map_legend, Viewport{{90, 11}, {20, 10}});
+    renderString(buffer, map_legend, Viewport{{90, 9}, {20, 10}});
 }
 
 } // namespace tradungeon

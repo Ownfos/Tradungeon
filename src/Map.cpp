@@ -3,6 +3,9 @@
 #include "Random.h"
 #include "Config.h"
 #include "interactable/Exit.h"
+#include "interactable/DroppedItem.h"
+#include "interactable/EdibleItems.h"
+#include "interactable/UnusableItems.h"
 #include <map>
 #include <limits>
 
@@ -228,7 +231,36 @@ void Map::spawnItems()
     {
         for (int x = 0; x < width; ++x)
         {
-            // TODO: spawn items according to tileset.
+            auto pos = Point{x, y};
+            switch (tileset(pos))
+            {
+            case Tile::Dirt:
+                if (Random::range(0.0, 1.0) < 0.003)
+                {
+                    addInteractable(pos, std::make_shared<DroppedItem>(ItemBundle{std::make_shared<Apple>(), 1}));
+                }
+                if (Random::range(0.0, 1.0) < 0.01)
+                {
+                    addInteractable(pos, std::make_shared<DroppedItem>(ItemBundle{std::make_shared<WoodStick>(), Random::range(1, 3)}));
+                }
+                break;
+            case Tile::Rock:
+                if (Random::range(0.0, 1.0) < 0.003)
+                {
+                    addInteractable(pos, std::make_shared<DroppedItem>(ItemBundle{std::make_shared<IronOre>(), 1}));
+                }
+                break;
+            case Tile::OreVein:
+                if (Random::range(0.0, 1.0) < 0.04)
+                {
+                    addInteractable(pos, std::make_shared<DroppedItem>(ItemBundle{std::make_shared<SilverOre>(), 1}));
+                }
+                if (Random::range(0.0, 1.0) < 0.02)
+                {
+                    addInteractable(pos, std::make_shared<DroppedItem>(ItemBundle{std::make_shared<GoldOre>(), 1}));
+                }
+                break;
+            }
         }
     }
 }

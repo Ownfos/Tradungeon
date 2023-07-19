@@ -16,7 +16,7 @@ void ItemDropAction::execute()
 
 std::string ItemDropAction::description() const
 {
-    return std::format("Drop {} on the ground", m_bundle.description());
+    return std::format("Drop {}", m_bundle.description());
 }
 
 } // namespace tradungeon

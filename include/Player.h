@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "Inventory.h"
+#include "CraftRecipe.h"
 #include <any>
 
 namespace tradungeon
@@ -27,6 +28,12 @@ public:
     // Adds item to the inventory.
     // If we reach weight limit, excess items will be dropped on the map.
     void tryLootItem(const ItemBundle& bundle);
+
+    // Returns how many products can be made within given item pool.
+    int calculateAmountCraftable(const CraftRecipe& recipe);
+
+    // Use the ingredients in the inventory to craft product.
+    void craft(const CraftRecipe& recipe);
 
 private:
     Point m_pos;

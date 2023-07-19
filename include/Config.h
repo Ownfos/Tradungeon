@@ -36,7 +36,7 @@ constexpr auto num_trials_spawn_exit = 10000;
 
 constexpr auto player_start_position = Point{map_size.m_width / 2, map_size.m_height / 2};
 
-constexpr auto inventory_weight_limit = 15;
+constexpr auto inventory_weight_limit = 100;
 constexpr auto message_log_buffer_size = 1000;
 
 } // namespace tradungeon::config
