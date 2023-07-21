@@ -42,6 +42,7 @@ void test()
 int main()
 {
     auto console = Console();
+    console.clearScreen();
 
     auto input_queue = AsyncQueue<int>();
     auto terminate = std::atomic_bool{false};
@@ -68,9 +69,6 @@ int main()
         {
             auto game = Game();
 
-            console.clearScreen();
-            std::cout << game.render();
-
             while(!terminate)
             {
                 std::this_thread::sleep_for(config::delta_time);
@@ -87,6 +85,9 @@ int main()
 
                 console.setCursor({0, 0});
                 std::cout << game.render();
+
+                // Execute window push/pop requests generted in this frame.
+                game.handleWindowChanges();
             }
         }
         catch(const std::exception& e)

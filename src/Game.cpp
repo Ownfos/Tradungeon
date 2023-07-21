@@ -15,12 +15,12 @@ Game::Game()
     }));
 
     // Window pop/push handlers.
+    // These requests are stored in a queue and handled at the very end of a frame.
     m_callback_handles.push_back(EventMediator::m_on_window_push.addCallback([&](std::shared_ptr<Window> window){
-        m_window_manager.push(window);
+        m_window_changes.push({WindowChange::Push, window});
     }));
-    
     m_callback_handles.push_back(EventMediator::m_on_window_pop.addCallback([&](){
-        m_window_manager.pop();
+        m_window_changes.push({WindowChange::Pop, nullptr});
     }));
 
     loadScene(std::make_shared<TitleScene>());
@@ -41,6 +41,24 @@ std::string_view Game::render()
     m_window_manager.render(m_buffer);
 
     return m_buffer.getContent();
+}
+
+void Game::handleWindowChanges()
+{
+    while (!m_window_changes.empty())
+    {
+        auto [type, window] = m_window_changes.front();
+        m_window_changes.pop();
+
+        if (type == WindowChange::Pop)
+        {
+            m_window_manager.pop();
+        }
+        else
+        {
+            m_window_manager.push(window);
+        }
+    }
 }
 
 void Game::loadScene(std::shared_ptr<Scene> scene)

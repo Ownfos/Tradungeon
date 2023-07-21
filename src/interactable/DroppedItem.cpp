@@ -20,7 +20,7 @@ std::string DroppedItem::description() const
 
 std::vector<std::shared_ptr<Action>> DroppedItem::availableActions() const
 {
-    return { std::make_shared<ItemLootAction>(this) };
+    return { std::make_shared<ItemLootAction>(shared_from_this()) };
 }
 
 } // namespace tradungeon

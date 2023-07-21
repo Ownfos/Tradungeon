@@ -90,7 +90,7 @@ bool MapWindow::onInput(int keycode)
         auto bundle = ItemBundle{std::make_shared<DummyItem>("Item #" + std::to_string(next_item_id), next_item_id, 1), 10};
         auto dropped_item = std::make_shared<DroppedItem>(bundle);
         m_map->addInteractable(m_player->position(), dropped_item);
-        EventMediator::m_on_item_loot.signal(dropped_item.get());
+        EventMediator::m_on_item_loot.signal(dropped_item);
         ++next_item_id;
     }
     // TODO: remove this block when debugging is no longer required

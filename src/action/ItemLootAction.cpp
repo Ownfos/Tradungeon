@@ -4,7 +4,7 @@
 namespace tradungeon
 {
 
-ItemLootAction::ItemLootAction(const DroppedItem* dropped_item)
+ItemLootAction::ItemLootAction(std::shared_ptr<const DroppedItem> dropped_item)
     : m_dropped_item(dropped_item)
 {}
 

@@ -16,7 +16,7 @@ Player::Player(const Point& pos, int inventory_weight_limit)
     }));
 
     // Item loot/drop handlers.
-    m_callback_handles.push_back(EventMediator::m_on_item_loot.addCallback([this](const DroppedItem* dropped_item){
+    m_callback_handles.push_back(EventMediator::m_on_item_loot.addCallback([this](std::shared_ptr<const DroppedItem> dropped_item){
         const ItemBundle& bundle = dropped_item->bundle();
         EventMediator::m_on_message.signal("Looted " + bundle.description());
         tryLootItem(bundle);

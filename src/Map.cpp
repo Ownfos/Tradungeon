@@ -8,6 +8,7 @@
 #include "interactable/UnusableItems.h"
 #include <map>
 #include <limits>
+#include <array>
 
 namespace tradungeon
 {
@@ -19,7 +20,7 @@ Map::Map(const Size& size, int exit_min_distance, int exit_max_distance)
     m_visibility(size, false),
     m_interactables(size)
 {
-    reset();
+    // reset();
 }
 
 Size Map::size() const
@@ -95,6 +96,7 @@ bool Map::isMovableTileset(Tile tile)
 void Map::reset()
 {
     generateTileset();
+    groupSimilarTileset(5);
 
     // Try to select a valid exit point.
     // If we fail, recursively repeat the reset process.
@@ -276,8 +278,8 @@ void Map::groupSimilarTileset(int threshold)
         {
             // Count the tileset for 8 adjacent tiles.
             auto tileset_count = std::map<Tile, int>();
-            auto offsets = std::vector<Point>{
-                {-1, 0},
+            constexpr auto offsets = std::array<Point, 8>{
+                Point{-1, 0},
                 {1, 0},
                 {0, -1},
                 {0, 1},

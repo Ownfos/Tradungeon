@@ -11,20 +11,20 @@ namespace tradungeon::config
 constexpr auto fps = 60;
 constexpr auto delta_time = std::chrono::milliseconds(1000 / fps);
 
-constexpr auto map_size = Size{100, 100};
+constexpr auto map_size = Size{1000, 1000};
 
 constexpr auto map_visibility_radius = 15;
 constexpr auto npc_spawn_radius = 10;
 
 // # of days required for a periodical map reset.
-constexpr auto map_reset_cycle = 100;
+constexpr auto map_reset_cycle = 1;
 
 constexpr auto time_per_move = 1;
 
-constexpr auto hunger_per_time = 2;
+constexpr auto hunger_per_time = 1;
 constexpr auto thirst_per_time = 1;
-constexpr auto hunger_threshold = 10000;
-constexpr auto thirst_threshold = 10000;
+constexpr auto hunger_threshold = timeunit::day * 3;
+constexpr auto thirst_threshold = timeunit::day;
 
 // The distance constraint from the center of the map to the exit.
 constexpr auto exit_min_distance = 10;

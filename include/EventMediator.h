@@ -30,7 +30,7 @@ struct EventMediator
     static Event<const ItemBundle&> m_on_item_drop;
     
     // Move item from map to inventory.
-    static Event<const DroppedItem*> m_on_item_loot;
+    static Event<std::shared_ptr<const DroppedItem>> m_on_item_loot;
 
     // Use item and restore hunger guage.
     static Event<std::shared_ptr<EdibleItem>> m_on_item_eat;

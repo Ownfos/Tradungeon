@@ -6,7 +6,7 @@
 namespace tradungeon
 {
 
-class DroppedItem : public Interactable
+class DroppedItem : public Interactable, public std::enable_shared_from_this<DroppedItem>
 {
 public:
     DroppedItem(const ItemBundle& bundle);

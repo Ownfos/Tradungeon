@@ -10,13 +10,13 @@ namespace tradungeon
 class ItemLootAction : public Action
 {
 public:
-    ItemLootAction(const DroppedItem* dropped_item);
+    ItemLootAction(std::shared_ptr<const DroppedItem> dropped_item);
 
     virtual void execute() override;
     virtual std::string description() const override;
 
 private:
-    const DroppedItem* m_dropped_item;
+    std::shared_ptr<const DroppedItem> m_dropped_item;
 };
 
 } // namespace tradungeon

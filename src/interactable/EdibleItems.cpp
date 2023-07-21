@@ -1,5 +1,6 @@
 #include "interactable/EdibleItems.h"
 #include "action/ItemEatAction.h"
+#include "Clock.h"
 
 namespace tradungeon
 {
@@ -37,7 +38,7 @@ int EdibleItem::hungerRestoration() const
 }
 
 Apple::Apple()
-    : EdibleItem("Apple", 5, 1, 10)
+    : EdibleItem("Apple", 5, 1, timeunit::hour)
 {}
 
 } // namespace tradungeon

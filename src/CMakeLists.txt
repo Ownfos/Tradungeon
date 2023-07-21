@@ -44,6 +44,7 @@ add_executable(tradungeon
     window/StatusWindow.cpp
     window/TitleMenuWindow.cpp
     window/HelpWindow.cpp
+    window/GeneratingMapWindow.cpp
     scene/GameplayScene.cpp
     scene/TitleScene.cpp
 )

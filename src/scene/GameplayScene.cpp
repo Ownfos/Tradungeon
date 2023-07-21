@@ -1,8 +1,10 @@
 #include "scene/GameplayScene.h"
+#include "window/GeneratingMapWindow.h"
 #include "EventMediator.h"
 #include "Config.h"
 #include "interactable/UnusableItems.h"
 #include "interactable/EdibleItems.h"
+#include <thread>
 
 namespace tradungeon
 {
@@ -15,12 +17,7 @@ GameplayScene::GameplayScene()
     m_msg_log_window(std::make_shared<MessageLogWindow>(Viewport{{80, 0}, {40, 17}}, config::message_log_buffer_size)),
     m_map_window(std::make_shared<MapWindow>(Viewport{{0, 0}, {80, 25}}, &m_map, &m_player)),
     m_status_window(std::make_shared<StatusWindow>(Viewport{{80, 16}, {40, 9}}, &m_player, &m_clock))
-{
-    initializeMarket();
-    resetMap();
-
-    m_msg_log_window->push("Welcome to Tradungeon!");
-}
+{}
 
 void GameplayScene::onLoad()
 {
@@ -30,8 +27,8 @@ void GameplayScene::onLoad()
     EventMediator::m_on_window_push.signal(m_map_window);
 
     // Item loot/drop handlers.
-    m_callback_handles.push_back(EventMediator::m_on_item_loot.addCallback([this](const DroppedItem* dropped_item){
-        m_map.removeInteractable(m_player.position(), dropped_item);
+    m_callback_handles.push_back(EventMediator::m_on_item_loot.addCallback([this](std::shared_ptr<const DroppedItem> dropped_item){
+        m_map.removeInteractable(m_player.position(), dropped_item.get());
     }));
     m_callback_handles.push_back(EventMediator::m_on_item_drop.addCallback([this](const ItemBundle& bundle){
         m_map.addInteractable(m_player.position(), std::make_shared<DroppedItem>(bundle));
@@ -50,6 +47,12 @@ void GameplayScene::onLoad()
         // EventMediator::m_on_scene_load.signal(std::make_shared<GameClearScene>(/* gameplay statistics to show on clear scene */));
         EventMediator::m_on_message.signal("You succeeded finding an exit out of this dungeon!");
     }));
+
+    // Initialize world.
+    initializeMarket();
+    resetMap();
+
+    m_msg_log_window->push("Welcome to Tradungeon!");
 }
 
 void GameplayScene::initializeMarket()
@@ -94,14 +97,22 @@ void GameplayScene::initializeMarket()
 
 void GameplayScene::resetMap()
 {
-    // Create a new tileset.
-    m_map.reset();
-    m_trade_manager.placeNPC(m_map, config::npc_spawn_radius);
+    // Pop-up notice to let the user know it will take some time.
+    EventMediator::m_on_window_push.signal(std::make_shared<GeneratingMapWindow>());
 
-    // Teleport player to the initial position.
-    // Since visibility is reset, we need to manually expand visibility near the player.
-    m_player.move(config::player_start_position);
-    m_map.expandVisibility(m_player.position(), config::map_visibility_radius);
+    std::thread([this]{
+        // Create a new tileset.
+        m_map.reset();
+        m_trade_manager.placeNPC(m_map, config::npc_spawn_radius);
+
+        // Teleport player to the initial position.
+        // Since visibility is reset, we need to manually expand visibility near the player.
+        m_player.move(config::player_start_position);
+        m_map.expandVisibility(m_player.position(), config::map_visibility_radius);
+
+        // Remove the notice.
+        EventMediator::m_on_window_pop.signal();
+    }).detach();
 }
 
 } // namespace tradungeon
