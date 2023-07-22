@@ -24,32 +24,32 @@ namespace tradungeon
 // but shares the same problem with the famous singleton pattern.
 struct EventMediator
 {
-    static Event<const std::string&> m_on_message;
+    static inline auto m_on_message = Event<const std::string&>();
 
     // Move item from inventory to map.
-    static Event<const ItemBundle&> m_on_item_drop;
+    static inline auto m_on_item_drop = Event<const ItemBundle&>();
     
     // Move item from map to inventory.
-    static Event<std::shared_ptr<const DroppedItem>> m_on_item_loot;
+    static inline auto  m_on_item_loot = Event<std::shared_ptr<const DroppedItem>>();
 
     // Use item and restore hunger guage.
-    static Event<std::shared_ptr<EdibleItem>> m_on_item_eat;
+    static inline auto m_on_item_eat = Event<std::shared_ptr<EdibleItem>>();
 
     // Buy or sell an item from NPC.
     // m_on_item_try_trade gets invoked first, then Player checks if it is possible.
     // If player doesn't have enought money or item, m_on_item_trade_confirm will not be invoked.
-    static Event<const Order&> m_on_item_try_trade;
-    static Event<const Order&> m_on_item_trade_confirm;
+    static inline auto m_on_item_try_trade =  Event<const Order&>();
+    static inline auto m_on_item_trade_confirm = Event<const Order&>();
 
-    static Event<void> m_on_inventory_show;
+    static inline auto m_on_inventory_show = Event<void>();
 
-    static Event<int> m_on_time_elapse;
+    static inline auto m_on_time_elapse = Event<int>();
 
-    static Event<std::shared_ptr<Scene>> m_on_scene_load;
-    static Event<std::shared_ptr<Window>> m_on_window_push;
-    static Event<void> m_on_window_pop;
+    static inline auto m_on_scene_load = Event<std::shared_ptr<Scene>>();
+    static inline auto m_on_window_push = Event<std::shared_ptr<Window>>();
+    static inline auto m_on_window_pop = Event<void>();
 
-    static Event<void> m_on_game_clear;
+    static inline auto m_on_game_clear = Event<void>();
 };
 
 } // namespace tradungeon

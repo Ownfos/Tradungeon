@@ -15,7 +15,6 @@ add_executable(tradungeon
     DiamondSquare.cpp
     PathFinding.cpp
     Player.cpp
-    EventMediator.cpp
     Clock.cpp
     Inventory.cpp
     interactable/Item.cpp

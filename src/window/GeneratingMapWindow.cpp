@@ -6,7 +6,7 @@ namespace tradungeon
 {
 
 GeneratingMapWindow::GeneratingMapWindow()
-    : Window(Viewport{{40, 10}, {40, 5}}),
+    : Window(Viewport{{20, 10}, {40, 5}}),
     m_flicker_timer(500ms, [this]{ m_flicker = !m_flicker; })
 {}
 
