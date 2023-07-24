@@ -51,4 +51,16 @@ Coal::Coal()
     : UnusableItem("Coal", 5, 2)
 {}
 
+IronBar::IronBar()
+    : UnusableItem("Iron bar", 100, 7)
+{}
+
+SilverBar::SilverBar()
+    : UnusableItem("Silver bar", 101, 10)
+{}
+
+GoldBar::GoldBar()
+    : UnusableItem("Gold bar", 102, 19)
+{}
+
 } // namespace tradungeon

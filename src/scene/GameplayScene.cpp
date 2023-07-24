@@ -97,11 +97,41 @@ void GameplayScene::initializeMarket()
 }
 
 void GameplayScene::initializeRecipes()
-{
-    auto recipe = CraftRecipe{};
-    recipe.m_ingredients = {{std::make_shared<Clam>(), 1}, {std::make_shared<WoodStick>(), 1}, {std::make_shared<Coal>(), 1}};
-    recipe.m_product = {std::make_shared<ClamSkewer>(), 1};
-    m_recipes.push_back(recipe);
+{   
+    {
+        auto recipe = CraftRecipe{};
+        recipe.m_ingredients = {{std::make_shared<IronOre>(), 1}, {std::make_shared<Coal>(), 1}};
+        recipe.m_product = {std::make_shared<IronBar>(), 1};
+        m_recipes.push_back(recipe);
+    }
+
+    {
+        auto recipe = CraftRecipe{};
+        recipe.m_ingredients = {{std::make_shared<SilverOre>(), 1}, {std::make_shared<Coal>(), 1}};
+        recipe.m_product = {std::make_shared<SilverBar>(), 1};
+        m_recipes.push_back(recipe);
+    }
+    
+    {
+        auto recipe = CraftRecipe{};
+        recipe.m_ingredients = {{std::make_shared<GoldOre>(), 1}, {std::make_shared<Coal>(), 1}};
+        recipe.m_product = {std::make_shared<GoldBar>(), 1};
+        m_recipes.push_back(recipe);
+    }
+
+    {
+        auto recipe = CraftRecipe{};
+        recipe.m_ingredients = {{std::make_shared<Apple>(), 1}, {std::make_shared<GoldBar>(), 1}};
+        recipe.m_product = {std::make_shared<GoldenApple>(), 1};
+        m_recipes.push_back(recipe);
+    }
+
+    {
+        auto recipe = CraftRecipe{};
+        recipe.m_ingredients = {{std::make_shared<Clam>(), 1}, {std::make_shared<WoodStick>(), 1}, {std::make_shared<Coal>(), 1}};
+        recipe.m_product = {std::make_shared<ClamSkewer>(), 1};
+        m_recipes.push_back(recipe);
+    }
 }
 
 void GameplayScene::resetMap()

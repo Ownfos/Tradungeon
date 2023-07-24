@@ -74,7 +74,7 @@ bool MapWindow::onInput(int keycode)
     }
     else if (keycode == 'C')
     {
-        auto viewport = Viewport{{20, 10}, {40, 7}};
+        auto viewport = Viewport{{20, 6}, {40, 10}};
         EventMediator::m_on_window_push.signal(std::make_shared<CraftRecipeListWindow>(viewport, m_recipes, m_player));
         return true;
     }

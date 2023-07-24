@@ -60,6 +60,24 @@ public:
     Coal();
 };
 
+class IronBar : public UnusableItem
+{
+public:
+    IronBar();
+};
+
+class SilverBar : public UnusableItem
+{
+public:
+    SilverBar();
+};
+
+class GoldBar : public UnusableItem
+{
+public:
+    GoldBar();
+};
+
 
 } // namespace tradungeon
 

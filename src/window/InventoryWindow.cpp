@@ -39,7 +39,7 @@ bool InventoryWindow::onInput(int keycode)
             actions.push_back(std::make_shared<ItemDropAction>(item_bundle));
 
             // Create a child window right beside the cursor.
-            auto viewport = Viewport{m_viewport.m_offset + Point{20, 3 + m_scroll_view.cursorPosition()}, {40, 7}};
+            auto viewport = Viewport{m_viewport.m_offset + Point{30, 3 + m_scroll_view.cursorPosition()}, {40, 7}};
             EventMediator::m_on_window_push.signal(std::make_shared<ActionListWindow>(viewport, actions));
         }
     }

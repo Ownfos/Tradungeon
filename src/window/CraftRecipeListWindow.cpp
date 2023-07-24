@@ -24,7 +24,7 @@ bool CraftRecipeListWindow::onInput(int keycode)
         {
             // Show available actions of selected interactable on a child window.
             const auto& recipe = m_recipes[m_scroll_view.cursorPosition()];
-            auto viewport = Viewport{m_viewport.m_offset + Point{20, 3 + m_scroll_view.cursorPosition()}, {40, 10}};
+            auto viewport = Viewport{m_viewport.m_offset + Point{30, 3 + m_scroll_view.cursorPosition()}, {40, 10}};
             EventMediator::m_on_window_push.signal(std::make_shared<CraftRecipeWindow>(viewport, recipe, m_player));
         }
     }

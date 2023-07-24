@@ -93,6 +93,8 @@ int main()
         catch(const std::exception& e)
         {
             terminate = true;
+            
+            console.clearScreen();
             std::cout << std::format("FATAL ERROR: {}\n", e.what());
         }
     });

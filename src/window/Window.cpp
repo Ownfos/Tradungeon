@@ -1,4 +1,5 @@
 #include "window/Window.h"
+#include <exception>
 
 namespace tradungeon
 {
@@ -25,10 +26,12 @@ void Window::clear(TextBuffer& buffer, char boundary, char background)
 
 void Window::renderChar(TextBuffer& buffer, char ch, const Point& pos)
 {
+    if (!pos.isInside(m_viewport.m_size))
+    {
+        throw std::exception("Trying to render a char at position beyond viewport boundary");
+    }
+
     auto abs_pos = pos + m_viewport.m_offset;
-
-    // TODO: throw exception if abs_pos is inside viewport boundary
-
     buffer.renderChar(ch, abs_pos);
 }
 

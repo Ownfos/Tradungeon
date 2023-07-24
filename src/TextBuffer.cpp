@@ -1,6 +1,7 @@
 #include "TextBuffer.h"
 #include <vector>
 #include <sstream>
+#include <exception>
 
 namespace tradungeon
 {
@@ -17,6 +18,11 @@ TextBuffer::TextBuffer(Size size)
 
 void TextBuffer::renderChar(char ch, const Point& pos)
 {
+    if (!pos.isInside(m_size))
+    {
+        throw std::exception("Trying to render a character on the outside of the TextBuffer's boundary");
+    }
+
     m_buffer[pos2Ind(pos)] = ch;
 }
 

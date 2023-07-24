@@ -234,7 +234,7 @@ void Map::spawnItems()
         {Tile::Dirt, 0.003, 3, std::make_shared<WoodStick>()},
         {Tile::Mud, 0.003, 1, std::make_shared<Clam>()},
         {Tile::Rock, 0.003, 1, std::make_shared<IronOre>()},
-        {Tile::Rock, 0.01, 1, std::make_shared<Coal>()},
+        {Tile::Rock, 0.02, 1, std::make_shared<Coal>()},
         {Tile::OreVein, 0.01, 1, std::make_shared<SilverOre>()},
         {Tile::OreVein, 0.01, 1, std::make_shared<GoldOre>()},
         {Tile::OreVein, 0.001, 1, std::make_shared<Diamond>()},
