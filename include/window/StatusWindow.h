@@ -13,14 +13,14 @@ namespace tradungeon
 class StatusWindow : public Window
 {
 public:
-    StatusWindow(const Viewport& viewport, Player* player, Clock* clock);
+    StatusWindow(const Viewport& viewport, Player& player, Clock& clock);
 
     virtual bool onInput(int keycode) override;
     virtual void onRender(TextBuffer& console) override;
 
 private:
-    Player* m_player;
-    Clock* m_clock;
+    Player& m_player;
+    Clock& m_clock;
 };
 
 } // namespace tradungeon

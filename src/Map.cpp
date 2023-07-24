@@ -228,40 +228,31 @@ bool Map::trySpawnExit()
 
 void Map::spawnItems()
 {
+    // Tile type, spawn probability, maximum quantity per spawn, item
+    auto item_spawn_table = std::vector<std::tuple<Tile, double, int, std::shared_ptr<Item>>>{
+        {Tile::Dirt, 0.003, 1, std::make_shared<Apple>()},
+        {Tile::Dirt, 0.003, 3, std::make_shared<WoodStick>()},
+        {Tile::Mud, 0.003, 1, std::make_shared<Clam>()},
+        {Tile::Rock, 0.003, 1, std::make_shared<IronOre>()},
+        {Tile::Rock, 0.01, 1, std::make_shared<Coal>()},
+        {Tile::OreVein, 0.01, 1, std::make_shared<SilverOre>()},
+        {Tile::OreVein, 0.01, 1, std::make_shared<GoldOre>()},
+        {Tile::OreVein, 0.001, 1, std::make_shared<Diamond>()},
+    };
+
     auto [width, height] = m_tiles.size();
     for (int y = 0; y < height; ++y)
     {
         for (int x = 0; x < width; ++x)
         {
             auto pos = Point{x, y};
-            switch (tileset(pos))
+            auto tile = tileset(pos);
+            for (auto  [type, prob, max_quantity, item] : item_spawn_table)
             {
-            case Tile::Dirt:
-                if (Random::range(0.0, 1.0) < 0.003)
+                if (type == tile && Random::range(0.0, 1.0) < prob)
                 {
-                    addInteractable(pos, std::make_shared<DroppedItem>(ItemBundle{std::make_shared<Apple>(), 1}));
+                    addInteractable(pos, std::make_shared<DroppedItem>(ItemBundle{item, Random::range(1, max_quantity + 1)}));
                 }
-                if (Random::range(0.0, 1.0) < 0.01)
-                {
-                    addInteractable(pos, std::make_shared<DroppedItem>(ItemBundle{std::make_shared<WoodStick>(), Random::range(1, 3)}));
-                }
-                break;
-            case Tile::Rock:
-                if (Random::range(0.0, 1.0) < 0.003)
-                {
-                    addInteractable(pos, std::make_shared<DroppedItem>(ItemBundle{std::make_shared<IronOre>(), 1}));
-                }
-                break;
-            case Tile::OreVein:
-                if (Random::range(0.0, 1.0) < 0.04)
-                {
-                    addInteractable(pos, std::make_shared<DroppedItem>(ItemBundle{std::make_shared<SilverOre>(), 1}));
-                }
-                if (Random::range(0.0, 1.0) < 0.02)
-                {
-                    addInteractable(pos, std::make_shared<DroppedItem>(ItemBundle{std::make_shared<GoldOre>(), 1}));
-                }
-                break;
             }
         }
     }

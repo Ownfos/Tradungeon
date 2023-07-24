@@ -15,8 +15,8 @@ GameplayScene::GameplayScene()
     m_map_reset_event(config::map_reset_cycle * timeunit::day, [this]{ resetMap(); }),
     m_market_reset_event(timeunit::day, [this]{ m_trade_manager.generateDailyOrders(); }),
     m_msg_log_window(std::make_shared<MessageLogWindow>(Viewport{{80, 0}, {40, 17}}, config::message_log_buffer_size)),
-    m_map_window(std::make_shared<MapWindow>(Viewport{{0, 0}, {80, 25}}, &m_map, &m_player)),
-    m_status_window(std::make_shared<StatusWindow>(Viewport{{80, 16}, {40, 9}}, &m_player, &m_clock))
+    m_map_window(std::make_shared<MapWindow>(Viewport{{0, 0}, {80, 25}}, m_map, m_player, m_recipes)),
+    m_status_window(std::make_shared<StatusWindow>(Viewport{{80, 16}, {40, 9}}, m_player, m_clock))
 {}
 
 void GameplayScene::onLoad()
@@ -49,6 +49,7 @@ void GameplayScene::onLoad()
     }));
 
     // Initialize world.
+    initializeRecipes();
     initializeMarket();
     resetMap();
 
@@ -93,6 +94,14 @@ void GameplayScene::initializeMarket()
 
     // Prepare the orders for the first day.
     m_trade_manager.generateDailyOrders();
+}
+
+void GameplayScene::initializeRecipes()
+{
+    auto recipe = CraftRecipe{};
+    recipe.m_ingredients = {{std::make_shared<Clam>(), 1}, {std::make_shared<WoodStick>(), 1}, {std::make_shared<Coal>(), 1}};
+    recipe.m_product = {std::make_shared<ClamSkewer>(), 1};
+    m_recipes.push_back(recipe);
 }
 
 void GameplayScene::resetMap()

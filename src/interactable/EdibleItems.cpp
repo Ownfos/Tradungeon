@@ -38,7 +38,19 @@ int EdibleItem::hungerRestoration() const
 }
 
 Apple::Apple()
-    : EdibleItem("Apple", 5, 1, timeunit::hour)
+    : EdibleItem("Apple", 6, 1, timeunit::hour)
+{}
+
+GoldenApple::GoldenApple()
+    : EdibleItem("Golden apple", 7, 3, timeunit::day)
+{}
+
+Clam::Clam()
+    : EdibleItem("Clam", 8, 1, timeunit::hour / 2)
+{}
+
+ClamSkewer::ClamSkewer()
+    : EdibleItem("Clam skewer", 9, 2, timeunit::hour * 3)
 {}
 
 } // namespace tradungeon

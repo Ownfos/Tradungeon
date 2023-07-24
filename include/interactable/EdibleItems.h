@@ -32,6 +32,24 @@ public:
     Apple();
 };
 
+class GoldenApple : public EdibleItem
+{
+public:
+    GoldenApple();
+};
+
+class Clam : public EdibleItem
+{
+public:
+    Clam();
+};
+
+class ClamSkewer : public EdibleItem
+{
+public:
+    ClamSkewer();
+};
+
 } // namespace tradungeon
 
 #endif

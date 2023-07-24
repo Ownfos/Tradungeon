@@ -16,15 +16,10 @@ using namespace std::chrono_literals;
 namespace tradungeon
 {
 
-MapWindow::MapWindow(const Viewport& viewport, Map* map, Player* player)
-    : Window(viewport), m_map(map), m_player(player),
+MapWindow::MapWindow(const Viewport& viewport, Map& map, Player& player, const std::vector<CraftRecipe>& recipes)
+    : Window(viewport), m_map(map), m_player(player), m_recipes(recipes),
     m_flicker_tiles(300ms, [this]{ m_highlight_interactables = !m_highlight_interactables; })
-{
-    auto recipe = CraftRecipe{};
-    recipe.m_ingredients = {{std::make_shared<IronOre>(), 1}, {std::make_shared<WoodStick>(), 1}};
-    recipe.m_product = {std::make_shared<Diamond>(), 1};
-    m_recipes.push_back(recipe);
-}
+{}
 
 bool MapWindow::onInput(int keycode)
 {
@@ -36,15 +31,15 @@ bool MapWindow::onInput(int keycode)
             {'S', {0, 1}},
             {'D', {1, 0}},
         };
-        auto new_pos = m_player->position() + direction[keycode];
-        if (new_pos.isInside(m_map->size()) && m_map->isMovable(new_pos))
+        auto new_pos = m_player.position() + direction[keycode];
+        if (new_pos.isInside(m_map.size()) && m_map.isMovable(new_pos))
         {
-            m_map->expandVisibility(new_pos, config::map_visibility_radius);
-            m_player->move(new_pos);
+            m_map.expandVisibility(new_pos, config::map_visibility_radius);
+            m_player.move(new_pos);
 
-            if (m_map->tileset(new_pos) == Tile::Water)
+            if (m_map.tileset(new_pos) == Tile::Water)
             {
-                m_player->resetThirst();
+                m_player.resetThirst();
             }
             
             return true;
@@ -72,7 +67,7 @@ bool MapWindow::onInput(int keycode)
     }
     else if (keycode == 'E')
     {
-        const auto& interactables = m_map->interactables(m_player->position());
+        const auto& interactables = m_map.interactables(m_player.position());
         auto viewport = Viewport{{20, 10}, {40, 7}};
         EventMediator::m_on_window_push.signal(std::make_shared<InteractableListWindow>(viewport, interactables));
         return true;
@@ -80,7 +75,7 @@ bool MapWindow::onInput(int keycode)
     else if (keycode == 'C')
     {
         auto viewport = Viewport{{20, 10}, {40, 7}};
-        EventMediator::m_on_window_push.signal(std::make_shared<CraftRecipeListWindow>(viewport, m_recipes, *m_player));
+        EventMediator::m_on_window_push.signal(std::make_shared<CraftRecipeListWindow>(viewport, m_recipes, m_player));
         return true;
     }
     // TODO: remove this block when debugging is no longer required
@@ -89,7 +84,7 @@ bool MapWindow::onInput(int keycode)
         static int next_item_id = 0;
         auto bundle = ItemBundle{std::make_shared<DummyItem>("Item #" + std::to_string(next_item_id), next_item_id, 1), 10};
         auto dropped_item = std::make_shared<DroppedItem>(bundle);
-        m_map->addInteractable(m_player->position(), dropped_item);
+        m_map.addInteractable(m_player.position(), dropped_item);
         EventMediator::m_on_item_loot.signal(dropped_item);
         ++next_item_id;
     }
@@ -98,16 +93,16 @@ bool MapWindow::onInput(int keycode)
     {
         do
         {
-            m_map->reset();
+            m_map.reset();
         }
-        while (!m_map->isMovable(m_player->position()));
+        while (!m_map.isMovable(m_player.position()));
         EventMediator::m_on_message.signal("reset map");
         return true;
     }
     // TODO: remove this block when debugging is no longer required
     else if (keycode == 'G')
     {
-        m_map->groupSimilarTileset(6);
+        m_map.groupSimilarTileset(6);
         EventMediator::m_on_message.signal("group similar tiles");
         return true;
     }
@@ -148,27 +143,27 @@ void MapWindow::onRender(TextBuffer& buffer)
             // Note that map_coord can go beyond map boundary
             // if viewport is big enough and player is near the edge.
             auto rel_coord = viewport_coord - viewport_center;
-            auto map_coord = m_player->position() + rel_coord;
+            auto map_coord = m_player.position() + rel_coord;
 
-            if (!map_coord.isInside(m_map->size()))
+            if (!map_coord.isInside(m_map.size()))
             {
                 renderChar(buffer, ' ', viewport_coord);
                 continue;
             }
 
-            if (!m_map->isVisible(map_coord))
+            if (!m_map.isVisible(map_coord))
             {
                 renderChar(buffer, '?', viewport_coord);
                 continue;
             }
 
-            if (m_highlight_interactables && !m_map->interactables(map_coord).empty())
+            if (m_highlight_interactables && !m_map.interactables(map_coord).empty())
             {
                 renderChar(buffer, '!', viewport_coord);
                 continue;
             }
 
-            renderChar(buffer, static_cast<char>(m_map->tileset(map_coord)), viewport_coord);
+            renderChar(buffer, static_cast<char>(m_map.tileset(map_coord)), viewport_coord);
         }
     }
 }

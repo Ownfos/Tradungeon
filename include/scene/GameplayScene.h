@@ -22,18 +22,27 @@ public:
 
 private:
     // Register tradable items and generate buy/sell orders for NPCs.
-    // This should be called only once throughout the game!
+    // This should be called only once throughout the game.
     void initializeMarket();
+
+    // Create list of craft reipces.
+    // This should be called only once throughout the game.
+    void initializeRecipes();
 
     // Create new tileset and move player to the initial position.
     void resetMap();
 
     Map m_map;
     Player m_player;
-    Clock m_clock;
+
+    Clock m_clock; // Records total playtime.
+
     PeriodicEvent<int> m_map_reset_event;
     PeriodicEvent<int> m_market_reset_event;
+
     NPCTradeManager m_trade_manager;
+
+    std::vector<CraftRecipe> m_recipes; // Passed to MapWindow, which then uses it to create CraftRecipeWindow.
 
     std::shared_ptr<MessageLogWindow> m_msg_log_window;
     std::shared_ptr<MapWindow> m_map_window;

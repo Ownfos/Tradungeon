@@ -47,4 +47,8 @@ Diamond::Diamond()
     : UnusableItem("Diamond", 4, 3)
 {}
 
+Coal::Coal()
+    : UnusableItem("Coal", 5, 2)
+{}
+
 } // namespace tradungeon

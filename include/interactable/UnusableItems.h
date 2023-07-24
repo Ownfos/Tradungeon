@@ -54,6 +54,13 @@ public:
     Diamond();
 };
 
+class Coal : public UnusableItem
+{
+public:
+    Coal();
+};
+
+
 } // namespace tradungeon
 
 #endif

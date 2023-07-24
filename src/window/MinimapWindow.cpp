@@ -4,7 +4,7 @@
 namespace tradungeon
 {
 
-MinimapWindow::MinimapWindow(const Viewport& viewport, Map* map, Player* player)
+MinimapWindow::MinimapWindow(const Viewport& viewport, Map& map, Player& player)
     : Window(viewport), m_map(map), m_player(player)
 {}
 
@@ -30,7 +30,7 @@ void MinimapWindow::onRender(TextBuffer& buffer)
     auto render_area_size = m_viewport.m_size - Size{render_area_offset.m_x * 2, render_area_offset.m_y * 2};
 
     // The position inside render area where player should be marked at.
-    auto player_render_area_coord = textureCoordinate(render_area_size, m_map->size(), m_player->position());
+    auto player_render_area_coord = textureCoordinate(render_area_size, m_map.size(), m_player.position());
 
     for (int x = 0; x < render_area_size.m_width; ++x)
     {
@@ -45,10 +45,10 @@ void MinimapWindow::onRender(TextBuffer& buffer)
             }
             else
             {
-                auto map_coord = textureCoordinate(m_map->size(), render_area_size, render_area_coord);
-                if (m_map->isVisible(map_coord))
+                auto map_coord = textureCoordinate(m_map.size(), render_area_size, render_area_coord);
+                if (m_map.isVisible(map_coord))
                 {
-                    renderChar(buffer, static_cast<char>(m_map->tileset(map_coord)), viewport_coord);
+                    renderChar(buffer, static_cast<char>(m_map.tileset(map_coord)), viewport_coord);
                 }
                 else
                 {

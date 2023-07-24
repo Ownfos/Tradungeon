@@ -11,7 +11,7 @@ namespace tradungeon
 class MinimapWindow : public Window
 {
 public:
-    MinimapWindow(const Viewport& viewport, Map* map, Player* player);
+    MinimapWindow(const Viewport& viewport, Map& map, Player& player);
 
     virtual bool onInput(int keycode) override;
     virtual void onRender(TextBuffer& console) override;
@@ -21,8 +21,8 @@ private:
     // if we were to render a texture into a square surface.
     Point textureCoordinate(const Size& texture_size, const Size& surface_size, const Point& surface_coord);
 
-    Map* m_map;
-    Player* m_player;
+    Map& m_map;
+    Player& m_player;
 };
 
 } // namespace tradungeon
