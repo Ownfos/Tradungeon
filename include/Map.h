@@ -16,7 +16,6 @@ enum class Tile : char
     Dirt = ' ',
     Rock = '`',
     OreVein = '-',
-    Lava = '*',
     Wall = '#',
     Exit = 'E'
 };
@@ -28,6 +27,7 @@ public:
 
     Size size() const;
     Tile tileset(const Point& pos) const;
+    Point exitPosition() const;
     const std::vector<std::shared_ptr<Interactable>>& interactables(const Point& pos) const;
 
     void addInteractable(const Point& pos, std::shared_ptr<Interactable> interactable);
@@ -54,6 +54,8 @@ private:
 
     int m_squared_exit_min_dist;
     int m_squared_exit_max_dist;
+
+    Point m_exit_pos;
 
     Array2D<Tile> m_tiles;
     Array2D<int> m_visibility;

@@ -19,9 +19,7 @@ Map::Map(const Size& size, int exit_min_distance, int exit_max_distance)
     m_tiles(size),
     m_visibility(size, false),
     m_interactables(size)
-{
-    // reset();
-}
+{}
 
 Size Map::size() const
 {
@@ -31,6 +29,11 @@ Size Map::size() const
 Tile Map::tileset(const Point& pos) const
 {
     return m_tiles[pos];
+}
+
+Point Map::exitPosition() const
+{
+    return m_exit_pos;
 }
 
 const std::vector<std::shared_ptr<Interactable>>& Map::interactables(const Point& pos) const
@@ -82,21 +85,18 @@ bool Map::isVisible(const Point& pos) const
 
 bool Map::isMovableTileset(Tile tile)
 {
-    switch(tile)
-    {
-    case Tile::Lava:
-    case Tile::Wall:
-        return false;
-        
-    default:
-        return true;
-    }
+    return tile != Tile::Wall;
 }
 
 void Map::reset()
 {
     generateTileset();
-    groupSimilarTileset(5);
+
+    // Reduce noise to generate smoother terrain.
+    for (int i = 0; i < 2; ++i)
+    {
+        groupSimilarTileset(5);
+    }
 
     // Try to select a valid exit point.
     // If we fail, recursively repeat the reset process.
@@ -123,7 +123,6 @@ void Map::generateTileset()
         {Tile::Rock, 0.2},
         {Tile::OreVein, 0.7},
         {Tile::Rock, 0.1},
-        {Tile::Lava, 0.4},
     };
 
     auto tileset_threshold = std::map<double, Tile>();
@@ -200,10 +199,10 @@ bool Map::trySpawnExit()
     for(int i = 0; i < config::num_trials_spawn_exit; ++i)
     {
         // Pick a random point.
-        auto exit_pos = Random::pointInRect(m_tiles.size());
+        m_exit_pos = Random::pointInRect(m_tiles.size());
         
         // Check if the point meets the min/max exit distance constraint.
-        auto diff = exit_pos - center;
+        auto diff = m_exit_pos - center;
         auto squared_distance = diff.dotProduct(diff);
         if (squared_distance < m_squared_exit_min_dist || squared_distance > m_squared_exit_max_dist)
         {
@@ -211,14 +210,14 @@ bool Map::trySpawnExit()
         }
 
         // Check if the point is reachable from the center of the map.
-        if (!findPath(center, exit_pos))
+        if (!findPath(center, m_exit_pos))
         {
             continue;
         }
 
         // Succeeded finding a valid exit.
-        m_tiles[exit_pos] = Tile::Exit;
-        addInteractable(exit_pos, std::make_shared<Exit>());
+        m_tiles[m_exit_pos] = Tile::Exit;
+        addInteractable(m_exit_pos, std::make_shared<Exit>());
         return true;
     }
 

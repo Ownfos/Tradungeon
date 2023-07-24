@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "EventMediator.h"
 #include "window/InventoryWindow.h"
+#include "interactable/ExitGuideItem.h"
 #include "Config.h"
 #include <format>
 
@@ -27,11 +28,15 @@ Player::Player(const Point& pos, int inventory_weight_limit)
         m_inventory.removeItem(bundle);
     }));
 
-    // Item eat handler.
+    // Item use handlers.
     m_callback_handles.push_back(EventMediator::m_on_item_eat.addCallback([this](std::shared_ptr<EdibleItem> item){
         EventMediator::m_on_message.signal("Ate " + item->description());
         m_hunger = std::max(0, m_hunger - item->hungerRestoration()); // Make sure hunger doesn't go negative.
         m_inventory.removeItem({item, 1});
+    }));
+
+    m_callback_handles.push_back(EventMediator::m_on_exit_guide.addCallback([this](){
+        m_inventory.removeItem({std::make_shared<ExitGuideItem>(), 1});
     }));
 
     // Item trade handler.
@@ -91,6 +96,7 @@ Player::Player(const Point& pos, int inventory_weight_limit)
         m_hunger += elapsed_time * config::hunger_per_time;
         m_thirst += elapsed_time * config::thirst_per_time;
 
+        // TODO: handle transition to gameover scene.
         if (m_hunger >= config::hunger_threshold)
         {
             EventMediator::m_on_message.signal("Player died of hunger");

@@ -50,6 +50,8 @@ struct EventMediator
     static inline auto m_on_window_pop = Event<void>();
 
     static inline auto m_on_game_clear = Event<void>();
+
+    static inline auto m_on_exit_guide = Event<void>();
 };
 
 } // namespace tradungeon

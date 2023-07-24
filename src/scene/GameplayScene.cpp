@@ -4,6 +4,7 @@
 #include "Config.h"
 #include "interactable/UnusableItems.h"
 #include "interactable/EdibleItems.h"
+#include "interactable/ExitGuideItem.h"
 #include <thread>
 
 namespace tradungeon
@@ -41,6 +42,12 @@ void GameplayScene::onLoad()
         m_market_reset_event.advanceTime(elapsed_time);
     }));
 
+    // Exit guide item handler.
+    m_callback_handles.push_back(EventMediator::m_on_exit_guide.addCallback([this]{
+        auto path = m_map.findPath(m_player.position(), m_map.exitPosition()).value();
+        EventMediator::m_on_message.signal(std::format("You heard a mysterious voice:\n\"{} steps...\"\n", path.size()));
+    }));
+
     // Game clear handler.
     m_callback_handles.push_back(EventMediator::m_on_game_clear.addCallback([]{
         // TODO: load game clear scene.
@@ -53,6 +60,7 @@ void GameplayScene::onLoad()
     initializeMarket();
     resetMap();
 
+    m_player.tryLootItem(ItemBundle{std::make_shared<ExitGuideItem>(), 3});
     m_msg_log_window->push("Welcome to Tradungeon!");
 }
 
@@ -97,7 +105,14 @@ void GameplayScene::initializeMarket()
 }
 
 void GameplayScene::initializeRecipes()
-{   
+{
+    {
+        auto recipe = CraftRecipe{};
+        recipe.m_ingredients = {{std::make_shared<IronBar>(), 2}, {std::make_shared<SilverBar>(), 1}, {std::make_shared<WoodStick>(), 1}};
+        recipe.m_product = {std::make_shared<ExitGuideItem>(), 1};
+        m_recipes.push_back(recipe);
+    }
+
     {
         auto recipe = CraftRecipe{};
         recipe.m_ingredients = {{std::make_shared<IronOre>(), 1}, {std::make_shared<Coal>(), 1}};

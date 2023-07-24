@@ -22,6 +22,7 @@ add_executable(tradungeon
     interactable/DummyItem.cpp
     interactable/UnusableItems.cpp
     interactable/EdibleItems.cpp
+    interactable/ExitGuideItem.cpp
     interactable/Exit.cpp
     interactable/NPC.cpp
     action/DummyAction.cpp
@@ -29,6 +30,7 @@ add_executable(tradungeon
     action/ItemLootAction.cpp
     action/ItemEatAction.cpp
     action/ItemTradeAction.cpp
+    action/ExitGuideAction.cpp
     action/ExitAction.cpp
     window/Window.cpp
     window/WindowManager.cpp

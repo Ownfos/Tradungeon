@@ -23,10 +23,6 @@ MessageLogWindow::MessageLogWindow(
 
 bool MessageLogWindow::onInput(int keycode)
 {
-    if (keycode == 'P')
-    {
-        push(std::string(rand() % 50, '*'));
-    }
     if (keycode == 221) // Virtual keycode for ']'
     {
         m_scroll_view.scrollDown();

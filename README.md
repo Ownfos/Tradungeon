@@ -5,12 +5,13 @@ You must earn money to prepare food for your journey towards the exit.
 Try to get out of this dungeon before it transforms itself into a completely new terrain.
 
 ## Core Gameplay Mechanics
-
 #### Loot
 - Explore the randomly generated dungeon and find valuable treasures.
 
 #### Craft
-- Make your own item by combining raw materials.
+- Make advanced items by combining raw materials.
+- Crafted items are generally more expansive.
+- Crafted foods are much more effective at dealing with hunger.
 
 #### Trade
 - There are other people trapped inside the dungeon.  
@@ -25,7 +26,7 @@ Try to buy cheap and sell expensive!
 - Look for water tiles to stay hydrated.
 
 ## Development Tools
-- C++
+- C++17 (plus std::format from C++20)
 - Cmake
 - Visual Studio 2022
 - Windows 11

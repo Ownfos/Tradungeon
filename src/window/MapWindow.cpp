@@ -49,10 +49,6 @@ bool MapWindow::onInput(int keycode)
             
             return true;
         }
-        else
-        {
-            EventMediator::m_on_message.signal("You cannot move to that tile");
-        }
     }
     else if (keycode == 'M')
     {
@@ -92,6 +88,13 @@ bool MapWindow::onInput(int keycode)
         m_map.addInteractable(m_player.position(), dropped_item);
         EventMediator::m_on_item_loot.signal(dropped_item);
         ++next_item_id;
+    }
+    // TODO: remove this block when debugging is no longer required
+    else if (keycode == 'P')
+    {
+        auto path = m_map.findPath(m_player.position(), m_map.exitPosition()).value();
+        EventMediator::m_on_message.signal(std::format("Distance to exit: {}", path.size()));
+        return true;
     }
     // TODO: remove this block when debugging is no longer required
     else if (keycode == 'R')

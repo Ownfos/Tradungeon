@@ -13,6 +13,12 @@
 using namespace tradungeon;
 using namespace tradungeon::test;
 
+
+// TODO: make an item that tells distance to the exit, and give some of them as a starting item. ex) pathfinder's stone
+// TODO: register new item types to the trade manager (GameplayScene.cpp)
+// TODO: adjust NPC spawn radius (Config.h)
+// TODO: adjust the # of NPCs (NPCTradeManager.cpp)
+
 void test()
 {
     try

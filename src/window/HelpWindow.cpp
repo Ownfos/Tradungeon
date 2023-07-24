@@ -43,7 +43,6 @@ void HelpWindow::onRender(TextBuffer& buffer)
         "- ' ': dirt\n"
         "- '`': rock\n"
         "- '-': ore vein\n"
-        "- '*': lava\n"
         "- '#': wall\n"
         "- '!': interactable instance exists\n"
         "- 'N': tradable NPC\n"
