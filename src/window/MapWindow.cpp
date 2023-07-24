@@ -21,6 +21,11 @@ MapWindow::MapWindow(const Viewport& viewport, Map& map, Player& player, const s
     m_flicker_tiles(300ms, [this]{ m_highlight_interactables = !m_highlight_interactables; })
 {}
 
+void MapWindow::updateNPCPositions(const std::vector<Point>& npc_positions)
+{
+    m_npc_positions = npc_positions;
+}
+
 bool MapWindow::onInput(int keycode)
 {
     if ("WASD"s.find(keycode) != std::string::npos)
@@ -145,24 +150,35 @@ void MapWindow::onRender(TextBuffer& buffer)
             auto rel_coord = viewport_coord - viewport_center;
             auto map_coord = m_player.position() + rel_coord;
 
+            // Do not render tiles beyond map boundary.
             if (!map_coord.isInside(m_map.size()))
             {
                 renderChar(buffer, ' ', viewport_coord);
                 continue;
             }
 
+            // Hide tiles that are not explored yet.
             if (!m_map.isVisible(map_coord))
             {
                 renderChar(buffer, '?', viewport_coord);
                 continue;
             }
 
+            // Periodically highlight tiles with interactable instances on.
             if (m_highlight_interactables && !m_map.interactables(map_coord).empty())
             {
                 renderChar(buffer, '!', viewport_coord);
                 continue;
             }
 
+            // Highlight tiles with NPCs on it.
+            if (isNPCPlacedOn(map_coord))
+            {
+                renderChar(buffer, 'N', viewport_coord);
+                continue;
+            }
+
+            // Otherwise, display the tile type.
             renderChar(buffer, static_cast<char>(m_map.tileset(map_coord)), viewport_coord);
         }
     }
@@ -171,6 +187,11 @@ void MapWindow::onRender(TextBuffer& buffer)
 void MapWindow::onUpdate(std::chrono::milliseconds delta_time)
 {
     m_flicker_tiles.advanceTime(delta_time);
+}
+
+bool MapWindow::isNPCPlacedOn(const Point& pos) const
+{
+    return std::find(m_npc_positions.begin(), m_npc_positions.end(), pos) != m_npc_positions.end();
 }
 
 } // namespace tradungeon

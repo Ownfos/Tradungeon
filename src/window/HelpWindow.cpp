@@ -45,6 +45,8 @@ void HelpWindow::onRender(TextBuffer& buffer)
         "- '-': ore vein\n"
         "- '*': lava\n"
         "- '#': wall\n"
+        "- '!': interactable instance exists\n"
+        "- 'N': tradable NPC\n"
         "- 'E': exit\n";
     renderString(buffer, controls, Viewport{{20, 4}, {80, 20}});
     renderString(buffer, map_legend, Viewport{{90, 9}, {20, 10}});

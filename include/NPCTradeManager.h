@@ -18,7 +18,9 @@ public:
 
     // Randomly place NPCs on a tile that is reachable from player's initial position
     // and return a complete set of positions that the NPCs lie on.
-    std::set<Point> placeNPC(Map& map, int spawn_radius) const;
+    // The return value will be used to highlight tiles on the map viewer,
+    // so that players can easily find NPCs.
+    std::vector<Point> placeNPC(Map& map, int spawn_radius) const;
 
     // Forwarding functions for MarketSimulator.
     void registerTradableItem(const ItemConfig& item_config);

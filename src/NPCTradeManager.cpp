@@ -20,8 +20,11 @@ NPCTradeManager::NPCTradeManager()
     });
 }
 
-void NPCTradeManager::placeNPC(Map& map, int spawn_radius) const
+std::vector<Point> NPCTradeManager::placeNPC(Map& map, int spawn_radius) const
 {
+    // List of all positions where NPCs are placed at.
+    std::vector<Point> npc_positions;
+
     // The player's initial position.
     const auto player_pos = Point{
         map.size().m_width / 2,
@@ -51,9 +54,12 @@ void NPCTradeManager::placeNPC(Map& map, int spawn_radius) const
 
             // If we found a valid position, place the NPC and move on to the next one.
             map.addInteractable(npc_pos, std::dynamic_pointer_cast<NPC>(npc));
+            npc_positions.push_back(npc_pos);
             break;
         }
     }
+
+    return npc_positions;
 }
 
 void NPCTradeManager::registerTradableItem(const ItemConfig& item_config)
