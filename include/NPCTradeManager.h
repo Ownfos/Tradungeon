@@ -5,6 +5,7 @@
 #include "MarketSimulator.h"
 #include "Map.h"
 #include <any>
+#include <set>
 
 namespace tradungeon
 {
@@ -15,17 +16,17 @@ class NPCTradeManager
 public:
     NPCTradeManager();
 
-    void placeNPC(Map& map, int spawn_radius) const;
+    // Randomly place NPCs on a tile that is reachable from player's initial position
+    // and return a complete set of positions that the NPCs lie on.
+    std::set<Point> placeNPC(Map& map, int spawn_radius) const;
+
+    // Forwarding functions for MarketSimulator.
     void registerTradableItem(const ItemConfig& item_config);
     void generateDailyOrders();
 
 private:
     std::vector<std::shared_ptr<Trader>> m_npcs;
     MarketSimulator m_simulator;
-    
-    // Auxiliary members that allow fast access by ID.
-    std::map<int, std::shared_ptr<NPC>> m_npc_dict;
-    std::map<int, std::shared_ptr<Item>> m_item_dict;
 
     std::any m_callback_handle;
 };

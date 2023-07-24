@@ -59,7 +59,6 @@ void NPCTradeManager::placeNPC(Map& map, int spawn_radius) const
 void NPCTradeManager::registerTradableItem(const ItemConfig& item_config)
 {
     m_simulator.registerTradableItem(item_config);
-    m_item_dict[item_config.m_item->id()] = item_config.m_item;
 }
 
 void NPCTradeManager::generateDailyOrders()
