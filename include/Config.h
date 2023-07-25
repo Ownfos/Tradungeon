@@ -29,8 +29,8 @@ constexpr auto thirst_threshold = timeunit::day / 2;
 constexpr auto thirst_warning_threshold = thirst_threshold / 2;
 
 // The distance constraint from the center of the map to the exit.
-constexpr auto exit_min_distance = 10;
-constexpr auto exit_max_distance = 30;
+constexpr auto exit_min_distance = 200;
+constexpr auto exit_max_distance = 300;
 
 // The number of random points to select while spawning an exit.
 // If we can't find one with this sample size, consider it a failure.
