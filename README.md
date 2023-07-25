@@ -32,6 +32,12 @@ Try to buy cheap and sell expensive!
 - Visual Studio Code
 - Windows 11
 
+## Screenshots
+![titlescreen](https://github.com/Ownfos/Tradungeon/blob/main/screenshots/titlescreen.jpg)
+![exploring](https://github.com/Ownfos/Tradungeon/blob/main/screenshots/exploring.jpg)
+![crafting](https://github.com/Ownfos/Tradungeon/blob/main/screenshots/crafting.jpg)
+![help](https://github.com/Ownfos/Tradungeon/blob/main/screenshots/help.jpg)
+
 ## How to Build and Run
 ```
 mkdir build
