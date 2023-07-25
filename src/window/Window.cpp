@@ -40,7 +40,11 @@ void Window::renderString(TextBuffer& buffer, std::string_view str, const Viewpo
     auto abs_viewport = rel_viewport;
     abs_viewport.m_offset += m_viewport.m_offset;
 
-    // TODO: throw exception if abs_viewport is inside viewport boundary
+    // Note: m_viewport uses absolute coordinate
+    if (!abs_viewport.isInside(m_viewport))
+    {
+        throw std::exception("Trying to render a char at region beyond viewport boundary");
+    }
 
     buffer.renderString(str, abs_viewport, align);
 }

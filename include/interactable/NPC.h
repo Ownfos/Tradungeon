@@ -13,7 +13,7 @@ public:
     NPC(int id, std::string name);
 
     virtual std::string description() const override;
-    virtual ActionList availableActions() const override;
+    virtual ActionList availableActions() override;
     
     virtual int id() const override;
     virtual const std::vector<Order>& remainingOrders() const override;

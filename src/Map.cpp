@@ -6,6 +6,7 @@
 #include "interactable/DroppedItem.h"
 #include "interactable/EdibleItems.h"
 #include "interactable/UnusableItems.h"
+#include "interactable/ExitGuideItem.h"
 #include <map>
 #include <limits>
 #include <array>
@@ -14,8 +15,8 @@ namespace tradungeon
 {
 
 Map::Map(const Size& size, int exit_min_distance, int exit_max_distance)
-    : m_squared_exit_min_dist(exit_min_distance * exit_min_distance),
-    m_squared_exit_max_dist(exit_max_distance * exit_max_distance),
+    : m_exit_min_dist(exit_min_distance),
+    m_exit_max_dist(exit_max_distance),
     m_tiles(size),
     m_visibility(size, false),
     m_interactables(size)
@@ -191,6 +192,12 @@ bool Map::trySpawnExit()
         m_tiles.size().m_height / 2
     };
 
+    // Player shouldn't start from an immovable tile.
+    if (!isMovableTileset(tileset(center)))
+    {
+        return false;
+    }
+
     // Try to find a point satisfying distance constraint
     // that is reachable from the center of the map.
     //
@@ -200,17 +207,16 @@ bool Map::trySpawnExit()
     {
         // Pick a random point.
         m_exit_pos = Random::pointInRect(m_tiles.size());
-        
-        // Check if the point meets the min/max exit distance constraint.
-        auto diff = m_exit_pos - center;
-        auto squared_distance = diff.dotProduct(diff);
-        if (squared_distance < m_squared_exit_min_dist || squared_distance > m_squared_exit_max_dist)
+
+        // Check if the point is reachable from the center of the map.
+        auto path_to_exit = findPath(center, m_exit_pos);
+        if (!path_to_exit.has_value())
         {
             continue;
         }
-
-        // Check if the point is reachable from the center of the map.
-        if (!findPath(center, m_exit_pos))
+        
+        // Check if the point meets the min/max exit distance constraint.
+        if (path_to_exit->size() < m_exit_min_dist || path_to_exit->size() > m_exit_max_dist)
         {
             continue;
         }
@@ -229,13 +235,16 @@ void Map::spawnItems()
 {
     // Tile type, spawn probability, maximum quantity per spawn, item
     auto item_spawn_table = std::vector<std::tuple<Tile, double, int, std::shared_ptr<Item>>>{
-        {Tile::Dirt, 0.003, 1, std::make_shared<Apple>()},
+        {Tile::Dirt, 0.003, 2, std::make_shared<Apple>()},
+        {Tile::Dirt, 0.01, 3, std::make_shared<WoodStick>()},
+        {Tile::Mud, 0.003, 2, std::make_shared<Clam>()},
+        {Tile::Mud, 0.001, 1, std::make_shared<ExitGuideItem>()},
+        {Tile::Rock, 0.01, 2, std::make_shared<Coal>()},
         {Tile::Dirt, 0.003, 3, std::make_shared<WoodStick>()},
-        {Tile::Mud, 0.003, 1, std::make_shared<Clam>()},
         {Tile::Rock, 0.003, 1, std::make_shared<IronOre>()},
-        {Tile::Rock, 0.02, 1, std::make_shared<Coal>()},
-        {Tile::OreVein, 0.01, 1, std::make_shared<SilverOre>()},
-        {Tile::OreVein, 0.01, 1, std::make_shared<GoldOre>()},
+        {Tile::OreVein, 0.007, 2, std::make_shared<IronOre>()},
+        {Tile::OreVein, 0.005, 1, std::make_shared<SilverOre>()},
+        {Tile::OreVein, 0.003, 1, std::make_shared<GoldOre>()},
         {Tile::OreVein, 0.001, 1, std::make_shared<Diamond>()},
     };
 

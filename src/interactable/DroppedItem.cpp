@@ -18,7 +18,7 @@ std::string DroppedItem::description() const
     return m_bundle.description();
 }
 
-std::vector<std::shared_ptr<Action>> DroppedItem::availableActions() const
+std::vector<std::shared_ptr<Action>> DroppedItem::availableActions()
 {
     return { std::make_shared<ItemLootAction>(shared_from_this()) };
 }

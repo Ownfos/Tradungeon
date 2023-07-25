@@ -8,7 +8,7 @@
 #include "Clock.h"
 #include "NPCTradeManager.h"
 #include "PeriodicEvent.h"
-#include <any>
+#include "Statistics.h"
 
 namespace tradungeon
 {
@@ -41,6 +41,8 @@ private:
     PeriodicEvent<int> m_market_reset_event;
 
     NPCTradeManager m_trade_manager;
+
+    std::unique_ptr<Statistics> m_statistics;
 
     std::vector<CraftRecipe> m_recipes; // Passed to MapWindow, which then uses it to create CraftRecipeWindow.
 

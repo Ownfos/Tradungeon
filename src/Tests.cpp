@@ -57,7 +57,7 @@ std::string TestInteractable::description() const
     return m_description;
 }
 
-std::vector<std::shared_ptr<Action>> TestInteractable::availableActions() const
+std::vector<std::shared_ptr<Action>> TestInteractable::availableActions()
 {
     return {
         std::make_shared<TestAction>("talk"),
@@ -85,7 +85,7 @@ std::string TestItem::description() const
     return m_name;
 }
 
-std::vector<std::shared_ptr<Action>> TestItem::availableActions() const
+std::vector<std::shared_ptr<Action>> TestItem::availableActions()
 {
     return {
         std::make_shared<TestAction>("Use"),

@@ -22,7 +22,7 @@ std::string UnusableItem::description() const
     return m_name;
 }
 
-std::vector<std::shared_ptr<Action>> UnusableItem::availableActions() const
+std::vector<std::shared_ptr<Action>> UnusableItem::availableActions()
 {
     return {};
 }

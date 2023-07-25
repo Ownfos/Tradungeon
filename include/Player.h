@@ -39,9 +39,13 @@ private:
     Point m_pos;
     Inventory m_inventory;
 
-    int m_money = 100000;
+    int m_money = 1000;
     int m_hunger = 0;
     int m_thirst = 0;
+
+    // Flags used to check if we printed warning messages already.
+    bool m_hunger_warning = false;
+    bool m_thirst_warning = false;
 
     std::vector<std::any> m_callback_handles;
 };

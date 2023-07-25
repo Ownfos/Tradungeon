@@ -10,7 +10,7 @@ class Exit : public Interactable
 {
 public:
     virtual std::string description() const override;
-    virtual ActionList availableActions() const override;
+    virtual ActionList availableActions() override;
 };
 
 } // namespace tradungeon

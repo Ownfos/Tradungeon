@@ -1,49 +1,12 @@
-#include "Tests.h"
 #include "Console.h"
 #include "Game.h"
-#include "EventMediator.h"
 #include "Config.h"
 #include "AsyncQueue.h"
-#include "scene/GameplayScene.h"
 #include <iostream>
-#include <sstream>
 #include <thread>
 #include <format>
 
 using namespace tradungeon;
-using namespace tradungeon::test;
-
-
-// TODO: make an item that tells distance to the exit, and give some of them as a starting item. ex) pathfinder's stone
-// TODO: register new item types to the trade manager (GameplayScene.cpp)
-// TODO: adjust NPC spawn radius (Config.h)
-// TODO: adjust the # of NPCs (NPCTradeManager.cpp)
-
-void test()
-{
-    try
-    {
-        test_random();
-        test_text_buffer();
-        test_console();
-        test_market();
-        test_market_simulator();
-        test_ui();
-        test_message_log();
-        test_message_log_viewer();
-        test_events();
-        test_render_loop();
-        test_array2d();
-        test_map_generation();
-        test_interactable();
-        test_inventory();
-        test_path_finding();
-    }
-    catch(const std::exception& e)
-    {
-        std::cout << std::format("FATAL ERROR: {}\n", e.what());
-    }
-}
 
 int main()
 {
@@ -84,7 +47,6 @@ int main()
                 if (input.has_value())
                 {
                     game.handleInput(input.value());
-                    // EventMediator::m_on_message.signal("Input: " + std::to_string(input.value()));
                 }
 
                 game.update(config::delta_time);
@@ -92,8 +54,7 @@ int main()
                 console.setCursor({0, 0});
                 std::cout << game.render();
 
-                // Execute window push/pop requests generted in this frame.
-                game.handleWindowChanges();
+                game.handleWindowAndSceneChanges();
             }
         }
         catch(const std::exception& e)

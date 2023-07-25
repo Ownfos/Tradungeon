@@ -75,6 +75,7 @@
         "xlocmon": "cpp",
         "xloctime": "cpp",
         "array": "cpp",
-        "cassert": "cpp"
+        "cassert": "cpp",
+        "set": "cpp"
     }
 }

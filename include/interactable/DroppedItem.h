@@ -14,7 +14,7 @@ public:
     const ItemBundle& bundle() const;
     
     virtual std::string description() const override;
-    virtual std::vector<std::shared_ptr<Action>> availableActions() const override;
+    virtual std::vector<std::shared_ptr<Action>> availableActions() override;
 
 private:
     ItemBundle m_bundle;

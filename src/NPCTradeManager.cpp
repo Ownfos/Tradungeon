@@ -6,8 +6,14 @@ namespace tradungeon
 
 NPCTradeManager::NPCTradeManager()
     : m_npcs({
-        std::make_shared<NPC>(1, "NPC#1"),
-        std::make_shared<NPC>(2, "NPC#2")
+        std::make_shared<NPC>(1, "Dave"),
+        std::make_shared<NPC>(2, "John Doe"),
+        std::make_shared<NPC>(3, "Mary"),
+        std::make_shared<NPC>(4, "Lisa"),
+        std::make_shared<NPC>(5, "Arnold"),
+        std::make_shared<NPC>(6, "Shaw"),
+        std::make_shared<NPC>(7, "Dorothy"),
+        std::make_shared<NPC>(8, "Oz"),
     }),
     m_simulator(m_npcs)
 {

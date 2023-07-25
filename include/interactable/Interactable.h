@@ -14,7 +14,7 @@ class Interactable : private Polymorphic
 {
 public:
     virtual std::string description() const = 0;
-    virtual ActionList availableActions() const = 0;
+    virtual ActionList availableActions() = 0;
 };
 
 } // namespace tradungeon

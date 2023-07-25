@@ -1,4 +1,5 @@
 #include "scene/GameplayScene.h"
+#include "scene/GameoverScene.h"
 #include "window/GeneratingMapWindow.h"
 #include "EventMediator.h"
 #include "Config.h"
@@ -15,6 +16,7 @@ GameplayScene::GameplayScene()
     m_player(config::player_start_position, config::inventory_weight_limit),
     m_map_reset_event(config::map_reset_cycle * timeunit::day, [this]{ resetMap(); }),
     m_market_reset_event(timeunit::day, [this]{ m_trade_manager.generateDailyOrders(); }),
+    m_statistics(std::make_unique<Statistics>()),
     m_msg_log_window(std::make_shared<MessageLogWindow>(Viewport{{80, 0}, {40, 17}}, config::message_log_buffer_size)),
     m_map_window(std::make_shared<MapWindow>(Viewport{{0, 0}, {80, 25}}, m_map, m_player, m_recipes)),
     m_status_window(std::make_shared<StatusWindow>(Viewport{{80, 16}, {40, 9}}, m_player, m_clock))
@@ -49,10 +51,11 @@ void GameplayScene::onLoad()
     }));
 
     // Game clear handler.
-    m_callback_handles.push_back(EventMediator::m_on_game_clear.addCallback([]{
-        // TODO: load game clear scene.
-        // EventMediator::m_on_scene_load.signal(std::make_shared<GameClearScene>(/* gameplay statistics to show on clear scene */));
-        EventMediator::m_on_message.signal("You succeeded finding an exit out of this dungeon!");
+    m_callback_handles.push_back(EventMediator::m_on_game_clear.addCallback([this]{
+        EventMediator::m_on_scene_load.signal(std::make_shared<GameoverScene>(std::move(m_statistics), "You succeeded finding an exit out of this dungeon!"));
+    }));
+    m_callback_handles.push_back(EventMediator::m_on_player_death.addCallback([this](const std::string& reason){
+        EventMediator::m_on_scene_load.signal(std::make_shared<GameoverScene>(std::move(m_statistics), reason));
     }));
 
     // Initialize world.
@@ -60,8 +63,7 @@ void GameplayScene::onLoad()
     initializeMarket();
     resetMap();
 
-    m_player.tryLootItem(ItemBundle{std::make_shared<ExitGuideItem>(), 3});
-    m_msg_log_window->push("Welcome to Tradungeon!");
+    m_player.tryLootItem(ItemBundle{std::make_shared<ExitGuideItem>(), 2});
 }
 
 void GameplayScene::initializeMarket()
@@ -70,11 +72,11 @@ void GameplayScene::initializeMarket()
     {
         auto item_config = ItemConfig{};
         item_config.m_item = std::make_shared<Apple>();
-        item_config.m_net_demand = 10;
+        item_config.m_net_demand = 15;
         item_config.m_net_supply = 10;
-        item_config.m_initial_price = 100;
-        item_config.m_num_buyers = 1;
-        item_config.m_num_sellers = 1;
+        item_config.m_initial_price = 1000;
+        item_config.m_num_buyers = 3;
+        item_config.m_num_sellers = 2;
         m_trade_manager.registerTradableItem(item_config);
     }
 
@@ -83,8 +85,63 @@ void GameplayScene::initializeMarket()
         item_config.m_item = std::make_shared<IronOre>();
         item_config.m_net_demand = 10;
         item_config.m_net_supply = 10;
-        item_config.m_initial_price = 1000;
-        item_config.m_num_buyers = 1;
+        item_config.m_initial_price = 100;
+        item_config.m_num_buyers = 2;
+        item_config.m_num_sellers = 3;
+        m_trade_manager.registerTradableItem(item_config);
+    }
+
+    {
+        auto item_config = ItemConfig{};
+        item_config.m_item = std::make_shared<IronBar>();
+        item_config.m_net_demand = 5;
+        item_config.m_net_supply = 5;
+        item_config.m_initial_price = 200;
+        item_config.m_num_buyers = 2;
+        item_config.m_num_sellers = 2;
+        m_trade_manager.registerTradableItem(item_config);
+    }
+
+    {
+        auto item_config = ItemConfig{};
+        item_config.m_item = std::make_shared<SilverOre>();
+        item_config.m_net_demand = 6;
+        item_config.m_net_supply = 6;
+        item_config.m_initial_price = 150;
+        item_config.m_num_buyers = 2;
+        item_config.m_num_sellers = 2;
+        m_trade_manager.registerTradableItem(item_config);
+    }
+
+    {
+        auto item_config = ItemConfig{};
+        item_config.m_item = std::make_shared<SilverBar>();
+        item_config.m_net_demand = 3;
+        item_config.m_net_supply = 3;
+        item_config.m_initial_price = 300;
+        item_config.m_num_buyers = 2;
+        item_config.m_num_sellers = 1;
+        m_trade_manager.registerTradableItem(item_config);
+    }
+
+    {
+        auto item_config = ItemConfig{};
+        item_config.m_item = std::make_shared<ClamSkewer>();
+        item_config.m_net_demand = 5;
+        item_config.m_net_supply = 3;
+        item_config.m_initial_price = 1500;
+        item_config.m_num_buyers = 3;
+        item_config.m_num_sellers = 1;
+        m_trade_manager.registerTradableItem(item_config);
+    }
+
+    {
+        auto item_config = ItemConfig{};
+        item_config.m_item = std::make_shared<GoldenApple>();
+        item_config.m_net_demand = 5;
+        item_config.m_net_supply = 3;
+        item_config.m_initial_price = 3000;
+        item_config.m_num_buyers = 3;
         item_config.m_num_sellers = 1;
         m_trade_manager.registerTradableItem(item_config);
     }
@@ -92,9 +149,9 @@ void GameplayScene::initializeMarket()
     {
         auto item_config = ItemConfig{};
         item_config.m_item = std::make_shared<Diamond>();
-        item_config.m_net_demand = 10;
-        item_config.m_net_supply = 10;
-        item_config.m_initial_price = 1000;
+        item_config.m_net_demand = 4;
+        item_config.m_net_supply = 4;
+        item_config.m_initial_price = 4000;
         item_config.m_num_buyers = 1;
         item_config.m_num_sellers = 1;
         m_trade_manager.registerTradableItem(item_config);
@@ -153,6 +210,7 @@ void GameplayScene::resetMap()
 {
     // Pop-up notice to let the user know it will take some time.
     EventMediator::m_on_window_push.signal(std::make_shared<GeneratingMapWindow>());
+    EventMediator::m_on_message.signal("The terrain is transforming...!");
 
     std::thread([this]{
         // Create a new tileset.

@@ -17,6 +17,7 @@ add_executable(tradungeon
     Player.cpp
     Clock.cpp
     Inventory.cpp
+    Statistics.cpp
     interactable/Item.cpp
     interactable/DroppedItem.cpp
     interactable/DummyItem.cpp
@@ -44,9 +45,11 @@ add_executable(tradungeon
     window/CraftRecipeWindow.cpp
     window/StatusWindow.cpp
     window/TitleMenuWindow.cpp
+    window/GameoverWindow.cpp
     window/HelpWindow.cpp
     window/GeneratingMapWindow.cpp
     scene/GameplayScene.cpp
+    scene/GameoverScene.cpp
     scene/TitleScene.cpp
 )
 

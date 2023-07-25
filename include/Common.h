@@ -46,6 +46,8 @@ struct Viewport
 {
     Point m_offset;
     Size m_size;
+
+    bool isInside(const Viewport& boundary) const;
 };
 
 template<typename T>

@@ -100,4 +100,13 @@ int Point::dotProduct(const Point& other) const
     return m_x * other.m_x + m_y * other.m_y;
 }
 
+bool Viewport::isInside(const Viewport& boundary) const
+{
+    if (m_offset.m_x < boundary.m_offset.m_x) return false;
+    if (m_offset.m_y < boundary.m_offset.m_y) return false;
+    if (m_offset.m_x + m_size.m_width > boundary.m_offset.m_x + boundary.m_size.m_width) return false;
+    if (m_offset.m_y + m_size.m_height > boundary.m_offset.m_y + boundary.m_size.m_height) return false;
+    return true;
+}
+
 } // namespace tradungeon

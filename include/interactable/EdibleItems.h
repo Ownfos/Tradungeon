@@ -15,7 +15,7 @@ public:
     virtual int id() const override;
     virtual int weight() const override;
     virtual std::string description() const override;
-    virtual std::vector<std::shared_ptr<Action>> availableActions() const override;
+    virtual std::vector<std::shared_ptr<Action>> availableActions() override;
 
     int hungerRestoration() const;
 

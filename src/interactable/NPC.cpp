@@ -16,7 +16,7 @@ std::string NPC::description() const
     return m_name;
 }
 
-ActionList NPC::availableActions() const
+ActionList NPC::availableActions()
 {
     auto actions = ActionList{};
     for (const Order& order : remainingOrders())

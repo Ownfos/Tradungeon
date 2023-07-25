@@ -20,7 +20,7 @@ void GeneratingMapWindow::onRender(TextBuffer& buffer)
 {
     if (m_flicker)
     {
-        renderString(buffer, "Generating map...", Viewport{{0, 2}, m_viewport.m_size}, TextAlign::Center);
+        renderString(buffer, "Generating map...", Viewport{{0, 2}, {m_viewport.m_size.m_width, 1}}, TextAlign::Center);
     }
 }
 

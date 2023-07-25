@@ -37,7 +37,8 @@ bool TitleMenuWindow::onInput(int keycode)
 
 void TitleMenuWindow::onRender(TextBuffer& buffer)
 {
-    renderString(buffer, "TRADUNGEON", Viewport{{0, 4}, m_viewport.m_size}, TextAlign::Center);
+    const auto line_area = Size{m_viewport.m_size.m_width, 1};
+    renderString(buffer, "TRADUNGEON", Viewport{{0, 4}, line_area}, TextAlign::Center);
 
     auto menu = std::vector<std::string>{
         "New Game",
@@ -46,13 +47,13 @@ void TitleMenuWindow::onRender(TextBuffer& buffer)
     for (int i = 0; i < 2; ++i)
     {
         auto string_to_display = (i == m_cursor_pos ? std::format("[ {} ]", menu[i]) : menu[i]);
-        renderString(buffer, string_to_display, Viewport{{0, 12 + i}, m_viewport.m_size}, TextAlign::Center);
+        renderString(buffer, string_to_display, Viewport{{0, 12 + i}, line_area}, TextAlign::Center);
     }
 
     if (m_flicker_text)
     {
-        renderString(buffer, "- press 'E' to select a menu -", Viewport{{0, 20}, m_viewport.m_size}, TextAlign::Center);
-        renderString(buffer, "- press 'W' or 'S' to scroll menu -", Viewport{{0, 21}, m_viewport.m_size}, TextAlign::Center);
+        renderString(buffer, "- press 'E' to select a menu -", Viewport{{0, 20}, line_area}, TextAlign::Center);
+        renderString(buffer, "- press 'W' or 'S' to scroll menu -", Viewport{{0, 21}, line_area}, TextAlign::Center);
     }
 }
 

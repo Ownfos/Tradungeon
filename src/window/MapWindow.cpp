@@ -39,6 +39,8 @@ bool MapWindow::onInput(int keycode)
         auto new_pos = m_player.position() + direction[keycode];
         if (new_pos.isInside(m_map.size()) && m_map.isMovable(new_pos))
         {
+            EventMediator::m_on_player_walk.signal();
+            
             m_map.expandVisibility(new_pos, config::map_visibility_radius);
             m_player.move(new_pos);
 
@@ -78,46 +80,6 @@ bool MapWindow::onInput(int keycode)
         auto viewport = Viewport{{20, 6}, {40, 10}};
         EventMediator::m_on_window_push.signal(std::make_shared<CraftRecipeListWindow>(viewport, m_recipes, m_player));
         return true;
-    }
-    // TODO: remove this block when debugging is no longer required
-    else if (keycode == 'L')
-    {
-        static int next_item_id = 0;
-        auto bundle = ItemBundle{std::make_shared<DummyItem>("Item #" + std::to_string(next_item_id), next_item_id, 1), 10};
-        auto dropped_item = std::make_shared<DroppedItem>(bundle);
-        m_map.addInteractable(m_player.position(), dropped_item);
-        EventMediator::m_on_item_loot.signal(dropped_item);
-        ++next_item_id;
-    }
-    // TODO: remove this block when debugging is no longer required
-    else if (keycode == 'P')
-    {
-        auto path = m_map.findPath(m_player.position(), m_map.exitPosition()).value();
-        EventMediator::m_on_message.signal(std::format("Distance to exit: {}", path.size()));
-        return true;
-    }
-    // TODO: remove this block when debugging is no longer required
-    else if (keycode == 'R')
-    {
-        do
-        {
-            m_map.reset();
-        }
-        while (!m_map.isMovable(m_player.position()));
-        EventMediator::m_on_message.signal("reset map");
-        return true;
-    }
-    // TODO: remove this block when debugging is no longer required
-    else if (keycode == 'G')
-    {
-        m_map.groupSimilarTileset(6);
-        EventMediator::m_on_message.signal("group similar tiles");
-        return true;
-    }
-    // TODO: remove this block when debugging is no longer required
-    else if (keycode == 'T')
-    {
-        EventMediator::m_on_time_elapse.signal(timeunit::hour);
     }
     return false;
 }

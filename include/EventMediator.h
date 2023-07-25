@@ -50,8 +50,13 @@ struct EventMediator
     static inline auto m_on_window_pop = Event<void>();
 
     static inline auto m_on_game_clear = Event<void>();
+    static inline auto m_on_player_death = Event<const std::string&>();
 
     static inline auto m_on_exit_guide = Event<void>();
+
+    // Used by 'Statistics'
+    static inline auto m_on_player_walk = Event<void>();
+    static inline auto m_on_item_craft = Event<void>();
 };
 
 } // namespace tradungeon

@@ -43,8 +43,9 @@ std::string_view Game::render()
     return m_buffer.getContent();
 }
 
-void Game::handleWindowChanges()
+void Game::handleWindowAndSceneChanges()
 {
+    // Push/pop windows.
     while (!m_window_changes.empty())
     {
         auto [type, window] = m_window_changes.front();
@@ -59,14 +60,21 @@ void Game::handleWindowChanges()
             m_window_manager.push(window);
         }
     }
+
+    // Load scene.
+    if (m_next_scene != nullptr)
+    {
+        m_window_manager.clear();
+        m_next_scene->onLoad();
+
+        m_scene = m_next_scene;
+        m_next_scene.reset();
+    }
 }
 
 void Game::loadScene(std::shared_ptr<Scene> scene)
 {
-    m_window_manager.clear();
-    scene->onLoad();
-
-    m_scene = scene;
+    m_next_scene = scene;
 }
 
 } // namespace tradungeon

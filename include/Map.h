@@ -52,8 +52,8 @@ private:
 
     static bool isMovableTileset(Tile tile);
 
-    int m_squared_exit_min_dist;
-    int m_squared_exit_max_dist;
+    int m_exit_min_dist;
+    int m_exit_max_dist;
 
     Point m_exit_pos;
 

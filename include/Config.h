@@ -14,7 +14,7 @@ constexpr auto delta_time = std::chrono::milliseconds(1000 / fps);
 constexpr auto map_size = Size{400, 400};
 
 constexpr auto map_visibility_radius = 15;
-constexpr auto npc_spawn_radius = 50;
+constexpr auto npc_spawn_radius = 70;
 
 // # of days required for a periodical map reset.
 constexpr auto map_reset_cycle = 5;
@@ -23,12 +23,14 @@ constexpr auto time_per_move = 1;
 
 constexpr auto hunger_per_time = 1;
 constexpr auto thirst_per_time = 1;
-constexpr auto hunger_threshold = timeunit::day * 3;
-constexpr auto thirst_threshold = timeunit::day;
+constexpr auto hunger_threshold = timeunit::day * 3 / 2;
+constexpr auto hunger_warning_threshold = hunger_threshold / 2;
+constexpr auto thirst_threshold = timeunit::day / 2;
+constexpr auto thirst_warning_threshold = thirst_threshold / 2;
 
 // The distance constraint from the center of the map to the exit.
-constexpr auto exit_min_distance = 130;
-constexpr auto exit_max_distance = 170;
+constexpr auto exit_min_distance = 10;
+constexpr auto exit_max_distance = 30;
 
 // The number of random points to select while spawning an exit.
 // If we can't find one with this sample size, consider it a failure.

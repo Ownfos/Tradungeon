@@ -23,7 +23,7 @@ std::string DummyItem::description() const
     return m_name;
 }
 
-std::vector<std::shared_ptr<Action>> DummyItem::availableActions() const
+std::vector<std::shared_ptr<Action>> DummyItem::availableActions()
 {
     return {
         std::make_shared<DummyAction>("Action 1"),

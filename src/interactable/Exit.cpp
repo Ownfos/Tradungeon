@@ -9,7 +9,7 @@ std::string Exit::description() const
     return "THE EXIT";
 }
 
-std::vector<std::shared_ptr<Action>> Exit::availableActions() const
+std::vector<std::shared_ptr<Action>> Exit::availableActions()
 {
     return { std::make_shared<ExitAction>() };
 }

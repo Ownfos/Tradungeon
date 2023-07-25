@@ -23,7 +23,10 @@ public:
     void update(std::chrono::milliseconds delta_time);
     std::string_view render();
 
-    void handleWindowChanges();
+    // Executed window push/pop and scene transition.
+    // Delaying these requests guarantees that current frame's
+    // input, update, and render are not interrupted.
+    void handleWindowAndSceneChanges();
 
     void loadScene(std::shared_ptr<Scene> scene);
 
@@ -32,7 +35,11 @@ private:
     WindowManager m_window_manager;
     std::shared_ptr<Scene> m_scene;
 
+    // These two variables are used to store and delay
+    // the execution of Scene/Window change requests.
     std::queue<std::pair<WindowChange, std::shared_ptr<Window>>> m_window_changes;
+    std::shared_ptr<Scene> m_next_scene;
+
     std::vector<std::any> m_callback_handles;
 };
 

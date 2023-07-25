@@ -33,6 +33,11 @@ Player::Player(const Point& pos, int inventory_weight_limit)
         EventMediator::m_on_message.signal("Ate " + item->description());
         m_hunger = std::max(0, m_hunger - item->hungerRestoration()); // Make sure hunger doesn't go negative.
         m_inventory.removeItem({item, 1});
+
+        if (m_hunger <= config::hunger_warning_threshold)
+        {
+            m_hunger_warning = false;
+        }
     }));
 
     m_callback_handles.push_back(EventMediator::m_on_exit_guide.addCallback([this](){
@@ -96,14 +101,24 @@ Player::Player(const Point& pos, int inventory_weight_limit)
         m_hunger += elapsed_time * config::hunger_per_time;
         m_thirst += elapsed_time * config::thirst_per_time;
 
-        // TODO: handle transition to gameover scene.
         if (m_hunger >= config::hunger_threshold)
         {
-            EventMediator::m_on_message.signal("Player died of hunger");
+            EventMediator::m_on_player_death.signal("You died of hunger...");
         }
+        else if (m_hunger >= config::hunger_threshold / 2 && !m_hunger_warning)
+        {
+            m_hunger_warning = true;
+            EventMediator::m_on_message.signal("You are very hungry...\nEat items to restore hunger");
+        }
+
         if (m_thirst >= config::thirst_threshold)
         {
-            EventMediator::m_on_message.signal("Player died of thirst");
+            EventMediator::m_on_player_death.signal("You died of thirst...");
+        }
+        else if (m_thirst >= config::thirst_threshold / 2 && !m_thirst_warning)
+        {
+            m_thirst_warning = true;
+            EventMediator::m_on_message.signal("You are very thirsty...\nFind a water tile to restore thirst");
         }
     }));
 }
@@ -147,6 +162,7 @@ void Player::move(const Point& pos)
 void Player::resetThirst()
 {
     m_thirst = 0;
+    m_thirst_warning = false;
 }
 
 void Player::tryLootItem(const ItemBundle& bundle)

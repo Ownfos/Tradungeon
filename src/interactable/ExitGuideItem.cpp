@@ -19,7 +19,7 @@ std::string ExitGuideItem::description() const
     return "Pathfinder's ring";
 }
 
-std::vector<std::shared_ptr<Action>> ExitGuideItem::availableActions() const
+std::vector<std::shared_ptr<Action>> ExitGuideItem::availableActions()
 {
     return { std::make_shared<ExitGuideAction>() };
 }

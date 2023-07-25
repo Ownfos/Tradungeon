@@ -24,11 +24,10 @@ std::string EdibleItem::description() const
     return m_name;
 }
 
-std::vector<std::shared_ptr<Action>> EdibleItem::availableActions() const
+std::vector<std::shared_ptr<Action>> EdibleItem::availableActions()
 {
-    // TODO: fix the const correctness issue...
     return {
-        std::make_shared<ItemEatAction>(const_cast<EdibleItem*>(this)->shared_from_this())
+        std::make_shared<ItemEatAction>(shared_from_this())
     };
 }
 
