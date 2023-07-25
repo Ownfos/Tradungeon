@@ -28,7 +28,8 @@ Try to buy cheap and sell expensive!
 ## Development Tools
 - C++17 (plus std::format from C++20)
 - Cmake
-- Visual Studio 2022
+- Visual Studio 2022 (for compiler)
+- Visual Studio Code
 - Windows 11
 
 ## How to Build and Run
