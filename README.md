@@ -25,18 +25,18 @@ Try to buy cheap and sell expensive!
 - You can loot food from the dungeon or buy them from NPCs.  
 - Look for water tiles to stay hydrated.
 
+## Screenshots
+![titlescreen](https://github.com/Ownfos/Tradungeon/blob/main/screenshots/titlescreen.jpg)
+![exploring](https://github.com/Ownfos/Tradungeon/blob/main/screenshots/exploring.jpg)
+![crafting](https://github.com/Ownfos/Tradungeon/blob/main/screenshots/crafting.jpg)
+![help](https://github.com/Ownfos/Tradungeon/blob/main/screenshots/help.jpg)
+
 ## Development Tools
 - C++17 (plus std::format from C++20)
 - Cmake
 - Visual Studio 2022 (for compiler)
 - Visual Studio Code
 - Windows 11
-
-## Screenshots
-![titlescreen](https://github.com/Ownfos/Tradungeon/blob/main/screenshots/titlescreen.jpg)
-![exploring](https://github.com/Ownfos/Tradungeon/blob/main/screenshots/exploring.jpg)
-![crafting](https://github.com/Ownfos/Tradungeon/blob/main/screenshots/crafting.jpg)
-![help](https://github.com/Ownfos/Tradungeon/blob/main/screenshots/help.jpg)
 
 ## How to Build and Run
 ```
