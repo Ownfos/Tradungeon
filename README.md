@@ -33,17 +33,14 @@ Try to buy cheap and sell expensive!
 
 ## Development Tools
 - C++17 (plus std::format from C++20)
-- Cmake
+- Cmake 3.26
 - Visual Studio 2022 (for compiler)
 - Visual Studio Code
 - Windows 11
 
 ## How to Build and Run
 ```
-mkdir build
-cd build
-cmake ..
-cmake -- build .
-./src/Debug/tradungeon.exe
+cmake -S . -B build
+cmake --build build
+./build/src/Debug/tradungeon.exe
 ```
-The path to executable file might be different on other build systems.
