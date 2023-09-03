@@ -10,7 +10,7 @@ Try to get out of this dungeon before it transforms itself into a completely new
 
 #### Craft
 - Make advanced items by combining raw materials.
-- Crafted items are generally more expansive.
+- Crafted items are generally more expensive.
 - Crafted foods are much more effective at dealing with hunger.
 
 #### Trade
